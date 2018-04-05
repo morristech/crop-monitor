@@ -2,9 +2,11 @@ package com.celpa.celpaapp.takecropphoto;
 
 
 import android.graphics.Bitmap;
+import android.os.Bundle;
 
 import com.celpa.celpaapp.BasePresenter;
 import com.celpa.celpaapp.BaseView;
+import com.celpa.celpaapp.data.Crop;
 
 public interface TakeCropPhotoContract {
 
@@ -13,6 +15,8 @@ public interface TakeCropPhotoContract {
         boolean takePhoto();
 
         void goToAddCropDetails();
+
+        void goToAddCropDetails(Crop crop);
 
     }
 
@@ -24,7 +28,7 @@ public interface TakeCropPhotoContract {
 
         void getWeather();
 
-        void processPhoto(Bitmap photo);
+        void processPhoto(byte[] photo);
 
     }
 

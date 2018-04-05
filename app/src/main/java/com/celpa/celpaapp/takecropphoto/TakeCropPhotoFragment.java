@@ -1,10 +1,13 @@
 package com.celpa.celpaapp.takecropphoto;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,6 +17,7 @@ import android.widget.Button;
 
 import com.celpa.celpaapp.R;
 import com.celpa.celpaapp.addcropdetails.AddCropDetailsActivity;
+import com.celpa.celpaapp.data.Crop;
 import com.celpa.celpaapp.utils.ActivityUtils;
 import com.wonderkiln.camerakit.CameraKit;
 import com.wonderkiln.camerakit.CameraKitError;
@@ -23,15 +27,22 @@ import com.wonderkiln.camerakit.CameraKitImage;
 import com.wonderkiln.camerakit.CameraKitVideo;
 import com.wonderkiln.camerakit.CameraView;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+
 public class TakeCropPhotoFragment extends Fragment
         implements TakeCropPhotoContract.View,
         View.OnClickListener,
         CameraKitEventListener {
 
+    private static final String EXTRA_CROP = "crop";
+
     private TakeCropPhotoContract.Presenter presenter;
 
     private CameraView cameraView;
     private Button takePhotoBtn;
+
+    private Bitmap capturedBitmap;
 
     public static TakeCropPhotoFragment newInstance() {
         return new TakeCropPhotoFragment();
@@ -90,6 +101,13 @@ public class TakeCropPhotoFragment extends Fragment
     }
 
     @Override
+    public void goToAddCropDetails(Crop crop) {
+        Intent intent = new Intent(getActivity(), AddCropDetailsActivity.class);
+        intent.putExtra(EXTRA_CROP, crop);
+        startActivity(intent);
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_takephoto:
@@ -110,8 +128,8 @@ public class TakeCropPhotoFragment extends Fragment
 
     @Override
     public void onImage(CameraKitImage cameraKitImage) {
-        Bitmap photo = cameraKitImage.getBitmap();
-        presenter.processPhoto(photo);
+        byte[] photoByte = cameraKitImage.getJpeg();
+        presenter.processPhoto(photoByte);
     }
 
     @Override

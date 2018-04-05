@@ -4,6 +4,8 @@ package com.celpa.celpaapp.takecropphoto;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
+import com.celpa.celpaapp.data.Crop;
+
 public class TakeCropPhotoPresenter implements TakeCropPhotoContract.Presenter {
 
     TakeCropPhotoContract.View takePhotoView;
@@ -34,8 +36,10 @@ public class TakeCropPhotoPresenter implements TakeCropPhotoContract.Presenter {
     }
 
     @Override
-    public void processPhoto(Bitmap photo) {
+    public void processPhoto(byte[] photoByte) {
         // Add location and weather
-        takePhotoView.goToAddCropDetails();
+        Crop crop = new Crop();
+        crop.img = photoByte;
+        takePhotoView.goToAddCropDetails(crop);
     }
 }
