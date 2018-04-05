@@ -12,18 +12,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.celpa.celpaapp.R;
-import com.celpa.celpaapp.utils.BitmapUtils;
-import com.flurgle.camerakit.CameraKit;
-import com.flurgle.camerakit.CameraListener;
-import com.flurgle.camerakit.CameraView;
+import com.wonderkiln.camerakit.CameraKit;
+import com.wonderkiln.camerakit.CameraKitError;
+import com.wonderkiln.camerakit.CameraKitEvent;
+import com.wonderkiln.camerakit.CameraKitEventListener;
+import com.wonderkiln.camerakit.CameraKitImage;
+import com.wonderkiln.camerakit.CameraKitVideo;
+import com.wonderkiln.camerakit.CameraView;
 
 public class TakePhotoFragment extends Fragment
         implements TakePhotoContract.View,
-        View.OnClickListener {
+        View.OnClickListener,
+        CameraKitEventListener {
 
     private TakePhotoContract.Presenter presenter;
-
-    boolean hasTakenPicture;
 
     private CameraView cameraView;
     private Button takePhotoBtn;
@@ -47,25 +49,7 @@ public class TakePhotoFragment extends Fragment
 
     private void setCamera() {
         cameraView.setPermissions(CameraKit.Constants.PERMISSIONS_PICTURE);
-        cameraView.setCameraListener(new CameraListener() {
-            @Override
-            public void onPictureTaken(byte[] jpeg) {
-                if(hasTakenPicture)
-                    return;
-
-                try {
-                    hasTakenPicture = true;
-                    super.onPictureTaken(jpeg);
-
-                    // Create bitmap
-                    Bitmap bitmap = BitmapUtils.createBitmap(getContext(), jpeg);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-        });
+        cameraView.addCameraKitListener(this);
     }
 
     @Override
@@ -98,4 +82,20 @@ public class TakePhotoFragment extends Fragment
                 takePhoto();
         }
     }
+
+    @Override
+    public void onEvent(CameraKitEvent cameraKitEvent) {}
+
+    @Override
+    public void onError(CameraKitError cameraKitError) {
+
+    }
+
+    @Override
+    public void onImage(CameraKitImage cameraKitImage) {
+        Bitmap photo = cameraKitImage.getBitmap();
+    }
+
+    @Override
+    public void onVideo(CameraKitVideo cameraKitVideo) {}
 }
