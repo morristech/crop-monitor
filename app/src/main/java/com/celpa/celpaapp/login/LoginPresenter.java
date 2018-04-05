@@ -1,6 +1,5 @@
 package com.celpa.celpaapp.login;
 
-
 public class LoginPresenter implements LoginContract.Presenter {
 
     LoginContract.View loginView;
@@ -24,7 +23,14 @@ public class LoginPresenter implements LoginContract.Presenter {
     }
 
     @Override
-    public void login() {
+    public void login(String userName, String userPassword) {
+        loginView.showLoggingInDialog();
+        loginView.hideLoggingInDialog();
 
+        boolean isValid = isValidUsername(userName) && isValidPassword(userPassword);
+        loginView.goToTakePhoto();
     }
+
+    @Override
+    public void register() {}
 }

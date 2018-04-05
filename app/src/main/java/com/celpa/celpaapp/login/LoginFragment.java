@@ -1,7 +1,86 @@
 package com.celpa.celpaapp.login;
 
 
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
-public class LoginFragment extends Fragment {
+import com.celpa.celpaapp.R;
+import com.celpa.celpaapp.common.LoadingDialog;
+import com.celpa.celpaapp.takecropphoto.TakeCropPhotoActivity;
+import com.celpa.celpaapp.utils.ActivityUtils;
+
+public class LoginFragment extends Fragment
+        implements LoginContract.View,
+        View.OnClickListener {
+
+    private static final String TAG = LoginFragment.class.getSimpleName();
+
+    private LoginContract.Presenter presenter;
+
+    private EditText userNameEditTxt;
+    private EditText passwordEditTxt;
+    private Button loginBtn;
+    private Button registerBtn;
+    private LoadingDialog loadingDialog;
+
+    public static LoginFragment newInstance() {
+        return new LoginFragment();
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_login, container, false);
+        userNameEditTxt = root.findViewById(R.id.edittext_username);
+        passwordEditTxt = root.findViewById(R.id.edittext_password);
+        loginBtn = root.findViewById(R.id.btn_login);
+        registerBtn = root.findViewById(R.id.btn_register);
+
+        loginBtn.setOnClickListener(this);
+        registerBtn.setOnClickListener(this);
+        return root;
+    }
+
+    @Override
+    public void setPresenter(LoginContract.Presenter presenter) {
+        this.presenter = presenter;
+    }
+
+    @Override
+    public void showLoggingInDialog() {
+        loadingDialog = LoadingDialog.newInstance(getString(R.string.please_wait));
+        loadingDialog.show(getFragmentManager(), TAG);
+    }
+
+    @Override
+    public void hideLoggingInDialog() {
+        loadingDialog.dismiss();
+    }
+
+    @Override
+    public void goToTakePhoto() {
+        getActivity().finish();
+        ActivityUtils.goToActivity(getActivity(), TakeCropPhotoActivity.class);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_login:
+                presenter.login(userNameEditTxt.getText().toString(), passwordEditTxt.getText().toString());
+                break;
+            case R.id.btn_register:
+                presenter.register();
+                break;
+            default:
+                break;
+        }
+    }
 }

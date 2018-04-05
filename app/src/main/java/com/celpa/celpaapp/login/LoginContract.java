@@ -8,7 +8,11 @@ public interface LoginContract {
 
     interface View extends BaseView<Presenter> {
 
-        void showLoadingDialog();
+        void showLoggingInDialog();
+
+        void hideLoggingInDialog();
+
+        void goToTakePhoto();
 
     }
 
@@ -18,7 +22,9 @@ public interface LoginContract {
 
         boolean isValidPassword(String password);
 
-        void login();
+        void login(String userName, String password);
+
+        void register();
 
     }
 
