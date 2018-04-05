@@ -1,14 +1,14 @@
-package com.celpa.celpaapp.takephoto;
+package com.celpa.celpaapp.takecropphoto;
 
 
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
-public class TakePhotoPresenter implements TakePhotoContract.Presenter {
+public class TakeCropPhotoPresenter implements TakeCropPhotoContract.Presenter {
 
-    TakePhotoContract.View takePhotoView;
+    TakeCropPhotoContract.View takePhotoView;
 
-    public TakePhotoPresenter(@NonNull TakePhotoContract.View view) {
+    public TakeCropPhotoPresenter(@NonNull TakeCropPhotoContract.View view) {
         takePhotoView = view;
         takePhotoView.setPresenter(this);
     }

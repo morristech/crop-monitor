@@ -1,7 +1,6 @@
-package com.celpa.celpaapp.takephoto;
+package com.celpa.celpaapp.takecropphoto;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,24 +19,24 @@ import com.wonderkiln.camerakit.CameraKitImage;
 import com.wonderkiln.camerakit.CameraKitVideo;
 import com.wonderkiln.camerakit.CameraView;
 
-public class TakePhotoFragment extends Fragment
-        implements TakePhotoContract.View,
+public class TakeCropPhotoFragment extends Fragment
+        implements TakeCropPhotoContract.View,
         View.OnClickListener,
         CameraKitEventListener {
 
-    private TakePhotoContract.Presenter presenter;
+    private TakeCropPhotoContract.Presenter presenter;
 
     private CameraView cameraView;
     private Button takePhotoBtn;
 
-    public static TakePhotoFragment newInstance() {
-        return new TakePhotoFragment();
+    public static TakeCropPhotoFragment newInstance() {
+        return new TakeCropPhotoFragment();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_takephoto, container, false);
+        View root = inflater.inflate(R.layout.fragment_takecropphoto, container, false);
         cameraView = root.findViewById(R.id.view_camera);
         takePhotoBtn = root.findViewById(R.id.btn_takephoto);
 
@@ -65,7 +64,7 @@ public class TakePhotoFragment extends Fragment
     }
 
     @Override
-    public void setPresenter(TakePhotoContract.Presenter presenter) {
+    public void setPresenter(TakeCropPhotoContract.Presenter presenter) {
         this.presenter = presenter;
     }
 
@@ -80,6 +79,9 @@ public class TakePhotoFragment extends Fragment
         switch (v.getId()) {
             case R.id.btn_takephoto:
                 takePhoto();
+                break;
+            default:
+                break;
         }
     }
 

@@ -1,4 +1,4 @@
-package com.celpa.celpaapp.takephoto;
+package com.celpa.celpaapp.takecropphoto;
 
 
 import android.graphics.Bitmap;
@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
 import com.celpa.celpaapp.BasePresenter;
 import com.celpa.celpaapp.BaseView;
 
-public interface TakePhotoContract {
+public interface TakeCropPhotoContract {
 
     interface View extends BaseView<Presenter> {
 
