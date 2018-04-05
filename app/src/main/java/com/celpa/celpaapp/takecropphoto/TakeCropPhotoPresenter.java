@@ -32,4 +32,10 @@ public class TakeCropPhotoPresenter implements TakeCropPhotoContract.Presenter {
     public void getWeather() {
 
     }
+
+    @Override
+    public void processPhoto(Bitmap photo) {
+        // Add location and weather
+        takePhotoView.goToAddCropDetails();
+    }
 }

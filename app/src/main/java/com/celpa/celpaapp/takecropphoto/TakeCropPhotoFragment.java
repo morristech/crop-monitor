@@ -6,11 +6,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.celpa.celpaapp.R;
+import com.celpa.celpaapp.addcropdetails.AddCropDetailsActivity;
+import com.celpa.celpaapp.utils.ActivityUtils;
 import com.wonderkiln.camerakit.CameraKit;
 import com.wonderkiln.camerakit.CameraKitError;
 import com.wonderkiln.camerakit.CameraKitEvent;
@@ -31,6 +35,12 @@ public class TakeCropPhotoFragment extends Fragment
 
     public static TakeCropPhotoFragment newInstance() {
         return new TakeCropPhotoFragment();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -75,6 +85,11 @@ public class TakeCropPhotoFragment extends Fragment
     }
 
     @Override
+    public void goToAddCropDetails() {
+        ActivityUtils.goToActivity(getActivity(), AddCropDetailsActivity.class);
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_takephoto:
@@ -96,8 +111,15 @@ public class TakeCropPhotoFragment extends Fragment
     @Override
     public void onImage(CameraKitImage cameraKitImage) {
         Bitmap photo = cameraKitImage.getBitmap();
+        presenter.processPhoto(photo);
     }
 
     @Override
     public void onVideo(CameraKitVideo cameraKitVideo) {}
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_takecropphoto, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 }

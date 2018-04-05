@@ -12,6 +12,8 @@ public interface TakeCropPhotoContract {
 
         boolean takePhoto();
 
+        void goToAddCropDetails();
+
     }
 
     interface Presenter extends BasePresenter {
@@ -21,6 +23,8 @@ public interface TakeCropPhotoContract {
         String getLocation();
 
         void getWeather();
+
+        void processPhoto(Bitmap photo);
 
     }
 
