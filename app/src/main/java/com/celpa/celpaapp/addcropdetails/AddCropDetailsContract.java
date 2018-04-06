@@ -17,6 +17,10 @@ public interface AddCropDetailsContract {
 
         void showLoadingDialog();
 
+        void showDatePickerDialog();
+
+        void setApproxDateOfHarvest(String dateOfHarvest);
+
     }
 
     interface Presenter extends BasePresenter {

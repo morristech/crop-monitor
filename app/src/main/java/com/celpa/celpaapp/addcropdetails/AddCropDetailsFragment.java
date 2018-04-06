@@ -1,6 +1,7 @@
 package com.celpa.celpaapp.addcropdetails;
 
 
+import android.app.DatePickerDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,9 +23,17 @@ import android.widget.TextView;
 import com.celpa.celpaapp.R;
 import com.celpa.celpaapp.common.LoadingDialog;
 import com.celpa.celpaapp.data.Crop;
+import com.celpa.celpaapp.utils.DateUtils;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class AddCropDetailsFragment extends Fragment
-        implements AddCropDetailsContract.View {
+        implements AddCropDetailsContract.View,
+        View.OnClickListener,
+        DatePickerDialog.OnDateSetListener {
 
     private static final String EXTRA_CROP = "crop";
 
@@ -31,6 +41,7 @@ public class AddCropDetailsFragment extends Fragment
 
     private AddCropDetailsContract.Presenter presenter;
 
+    private DatePickerDialog datePickerDialog;
     private LoadingDialog loadingDialog;
     private EditText fertsUsedEdittxt;
     private EditText waterAppliedEdittxt;
@@ -69,6 +80,17 @@ public class AddCropDetailsFragment extends Fragment
     private void init() {
         Bitmap photoTaken = BitmapFactory.decodeByteArray(crop.img, 0, crop.img.length);
         cropImgView.setImageBitmap(photoTaken);
+
+        changeApproxDateBtn.setOnClickListener(this);
+
+        // Init approx. date of harvest
+        final Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        String formattedDate = DateUtils.getFormattedString(year, month, day);
+        setApproxDateOfHarvest(formattedDate);
     }
 
 
@@ -98,6 +120,22 @@ public class AddCropDetailsFragment extends Fragment
     }
 
     @Override
+    public void showDatePickerDialog() {
+        final Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        datePickerDialog = new DatePickerDialog(getActivity(), this, year, month, day);
+        datePickerDialog.show();
+    }
+
+    @Override
+    public void setApproxDateOfHarvest(String dateOfHarvest) {
+        approxDateHarvestTxt.setText(dateOfHarvest);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_addcropdetails, menu);
         super.onCreateOptionsMenu(menu, inflater);
@@ -114,5 +152,23 @@ public class AddCropDetailsFragment extends Fragment
         }
 
         return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()) {
+            case R.id.btn_change_approx_date:
+                showDatePickerDialog();
+                break;
+            default:
+                break;
+
+        }
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        String formattedDate = DateUtils.getFormattedString(year, month, dayOfMonth);
+        setApproxDateOfHarvest(formattedDate);
     }
 }
