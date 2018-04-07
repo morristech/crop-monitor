@@ -25,3 +25,17 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+// Define versions in a single place
+ext {
+    // Sdk and tools
+    minSdkVersion = 15
+    targetSdkVersion = 26
+    compileSdkVersion = 26
+
+    // App dependencies
+    supportLibraryVersion = '26.0.2'
+    rxjavaVersion = '2.1.3'
+    rxandroidVersion = '2.0.1'
+    sqlbriteVersion = '2.0.0'
+}

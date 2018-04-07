@@ -6,7 +6,9 @@ import android.os.Parcelable;
 
 public class Crop implements Parcelable {
 
+    public long id;
     public byte[] img;
+    public String imgPath;
     public String name;
     public long noOfFertilizersUsed;
     public long approxDateOfHarvest;
@@ -16,7 +18,9 @@ public class Crop implements Parcelable {
     public Crop() {}
 
     public Crop(Parcel in) {
+        id = in.readLong();
         img = in.createByteArray();
+        imgPath = in.readString();
         name = in.readString();
         noOfFertilizersUsed = in.readLong();
         approxDateOfHarvest = in.readLong();
@@ -31,7 +35,9 @@ public class Crop implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
         dest.writeByteArray(img);
+        dest.writeString(imgPath);
         dest.writeString(name);
         dest.writeLong(noOfFertilizersUsed);
         dest.writeLong(approxDateOfHarvest);
