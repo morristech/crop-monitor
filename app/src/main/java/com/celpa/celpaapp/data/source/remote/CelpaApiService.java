@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import io.reactivex.Flowable;
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
@@ -32,5 +33,6 @@ public interface CelpaApiService {
 
     @Multipart
     @POST("crop/details")
-    Flowable<Optional<Crop>> uploadCropDetails(@Part List<MultipartBody.Part> photos, @Body JsonObject body);
+    Flowable<Optional<Crop>> uploadCropDetails(@Part List<MultipartBody.Part> photos, @Part("json") RequestBody json);
+
 }

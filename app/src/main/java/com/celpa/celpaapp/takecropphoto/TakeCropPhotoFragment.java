@@ -1,5 +1,6 @@
 package com.celpa.celpaapp.takecropphoto;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,6 +20,7 @@ import com.celpa.celpaapp.R;
 import com.celpa.celpaapp.addcropdetails.AddCropDetailsActivity;
 import com.celpa.celpaapp.data.Crop;
 import com.celpa.celpaapp.utils.ActivityUtils;
+import com.livinglifetechway.quickpermissions.annotations.WithPermissions;
 import com.wonderkiln.camerakit.CameraKit;
 import com.wonderkiln.camerakit.CameraKitError;
 import com.wonderkiln.camerakit.CameraKitEvent;
@@ -95,6 +97,7 @@ public class TakeCropPhotoFragment extends Fragment
         return true;
     }
 
+    @WithPermissions(permissions = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION})
     @Override
     public void goToAddCropDetails() {
         ActivityUtils.goToActivity(getActivity(), AddCropDetailsActivity.class);
