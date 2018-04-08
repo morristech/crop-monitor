@@ -3,9 +3,8 @@ package com.celpa.celpaapp.data.source.remote;
 
 import com.celpa.celpaapp.data.Farmer;
 import com.celpa.celpaapp.data.source.FarmerDataSource;
+import com.google.gson.JsonObject;
 
-import java.util.List;
-import java.util.Optional;
 
 import io.reactivex.Flowable;
 
@@ -22,18 +21,14 @@ public class FarmerRemoteDataSource implements FarmerDataSource {
     }
 
     @Override
-    public Flowable<List<Farmer>> getFarmers() {
-        CelpaApiService apiService = CelpaApiHelper.getApiInstance();
-        return apiService.getFarmers();
-    }
+    public void registerFarmer(Farmer farmer) {}
 
     @Override
-    public Flowable<Optional<Farmer>> getFarmer(String id) {
-        return null;
-    }
-
-    @Override
-    public void registerFarmer(Farmer farmer) {
+    public Flowable<JsonObject> loginFarmer(String userName, String password) {
+        CelpaApiService celpaApiService = CelpaApiHelper.getApiInstance();
+        return celpaApiService.isFarmerRegistered(userName, password)
+                .singleElement()
+                .toFlowable();
     }
 
 }

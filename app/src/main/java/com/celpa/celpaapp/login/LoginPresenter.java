@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.celpa.celpaapp.data.source.remote.CelpaApiHelper;
 import com.celpa.celpaapp.data.source.remote.CelpaApiService;
+import com.celpa.celpaapp.data.source.remote.FarmerRemoteDataSource;
 import com.celpa.celpaapp.utils.scheduler.BaseSchedulerProvider;
 import com.google.gson.JsonObject;
 
@@ -20,13 +21,15 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     private CompositeDisposable compositeDisposable;
 
+    private FarmerRemoteDataSource remoteDataSource;
+
     LoginContract.View loginView;
 
     public LoginPresenter(LoginContract.View view, BaseSchedulerProvider baseSchedulerProvider) {
         loginView = view;
         schedulerProvider = baseSchedulerProvider;
         compositeDisposable = new CompositeDisposable();
-
+        remoteDataSource = FarmerRemoteDataSource.getInstance();
         loginView.setPresenter(this);
     }
 
@@ -60,13 +63,9 @@ public class LoginPresenter implements LoginContract.Presenter {
         if (isValid) {
             loginView.showLoggingInDialog();
 
-            CelpaApiService celpaApiService = CelpaApiHelper.getApiInstance();
-            Flowable<JsonObject> flowable = celpaApiService.isFarmerRegistered(userName, password)
-                    .singleElement()
-                    .toFlowable();
-
             compositeDisposable.clear();
-            Disposable disposable = flowable.subscribeOn(schedulerProvider.io())
+            Disposable disposable = remoteDataSource.loginFarmer(userName, password)
+                    .subscribeOn(schedulerProvider.io())
                     .observeOn(schedulerProvider.ui())
                     .subscribe(json -> {
                                 loginView.hideLoggingInDialog();

@@ -66,6 +66,7 @@ public class LoginFragment extends Fragment
 
     @Override
     public void goToTakePhoto() {
+        presenter.unsubscribe();
         getActivity().finish();
         ActivityUtils.goToActivity(getActivity(), TakeCropPhotoActivity.class);
     }
