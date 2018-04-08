@@ -21,6 +21,16 @@ public class TakeCropPhotoPresenter implements TakeCropPhotoContract.Presenter {
     }
 
     @Override
+    public void subscribe() {
+
+    }
+
+    @Override
+    public void unsubscribe() {
+
+    }
+
+    @Override
     public Bitmap getBitmap() {
         return null;
     }
