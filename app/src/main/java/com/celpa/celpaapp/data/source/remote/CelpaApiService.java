@@ -12,15 +12,15 @@ import retrofit2.http.Query;
 
 public interface CelpaApiService {
 
-    String API_ENDPOINT_CURRENT = "http://192.168.1.33:3000";
+    String BASE_URL = "http://192.168.1.33:3000/celpa/";
 
-    @GET("/getFarmers")
+    @GET("getFarmers")
     Flowable<List<Farmer>> getFarmers();
 
-    @GET("/isFarmerRegistered")
+    @GET("isFarmerRegistered")
     Flowable<JsonObject> isFarmerRegistered(@Query("userName") String userName, @Query("password") String password);
 
-    @GET("/getFarmer")
+    @GET("getFarmer")
     Flowable<Farmer> getFarmer(@Query("userName") String userName, @Query("password") String password);
 
 

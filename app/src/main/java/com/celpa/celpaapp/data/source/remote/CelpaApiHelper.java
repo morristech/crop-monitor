@@ -35,7 +35,7 @@ public class CelpaApiHelper {
                     .create();
 
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(CelpaApiService.API_ENDPOINT_CURRENT)
+                    .baseUrl(CelpaApiService.BASE_URL)
                     .client(client)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
