@@ -17,6 +17,8 @@ public interface AddCropDetailsContract {
 
         void showLoadingDialog();
 
+        void hideLoadingDialog();
+
         void showDatePickerDialog();
 
         void setApproxDateOfHarvest(String dateOfHarvest);
@@ -24,10 +26,6 @@ public interface AddCropDetailsContract {
     }
 
     interface Presenter extends BasePresenter {
-
-        void saveCropDetailsInLocal(Crop crop);
-
-        void saveCropDetailsInRemote(Crop crop);
 
         void saveCropDetails(Crop crop);
 

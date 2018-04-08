@@ -1,27 +1,36 @@
 package com.celpa.celpaapp.data.source.remote;
 
 
+import com.celpa.celpaapp.data.Crop;
 import com.celpa.celpaapp.data.Farmer;
 import com.google.gson.JsonObject;
 
 import java.util.List;
+import java.util.Optional;
 
 import io.reactivex.Flowable;
+import okhttp3.MultipartBody;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
+import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 public interface CelpaApiService {
 
     String BASE_URL = "http://192.168.1.33:3000/celpa/";
 
-    @GET("getFarmers")
+    @GET("farmer/getFarmers")
     Flowable<List<Farmer>> getFarmers();
 
-    @GET("loginFarmer")
+    @GET("farmer/loginFarmer")
     Flowable<JsonObject> isFarmerRegistered(@Query("userName") String userName, @Query("password") String password);
 
-    @GET("getFarmer")
+    @GET("farmer/getFarmer")
     Flowable<Farmer> getFarmer(@Query("userName") String userName, @Query("password") String password);
 
-
+    @Multipart
+    @POST("crop/details")
+    Flowable<Optional<Crop>> uploadCropDetails(@Part List<MultipartBody.Part> photos, @Body JsonObject body);
 }

@@ -12,6 +12,6 @@ public interface CropDataSource {
 
     Flowable<Optional<Crop>> getCrop(String id);
 
-    void saveRecipe(Crop crop);
+    Flowable<Optional<Crop>> saveCrop(Crop crop);
 
 }

@@ -4,11 +4,13 @@ import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Crop implements Parcelable {
 
     public long id;
-    public byte[] img;
-    public String imgPath;
+    public List<Image> img = new ArrayList<>(0);
     public String name;
     public long noOfFertilizersUsed;
     public long approxDateOfHarvest;
@@ -19,8 +21,7 @@ public class Crop implements Parcelable {
 
     public Crop(Parcel in) {
         id = in.readLong();
-        img = in.createByteArray();
-        imgPath = in.readString();
+        in.readList(img, Image.class.getClassLoader());
         name = in.readString();
         noOfFertilizersUsed = in.readLong();
         approxDateOfHarvest = in.readLong();
@@ -36,8 +37,7 @@ public class Crop implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(id);
-        dest.writeByteArray(img);
-        dest.writeString(imgPath);
+        dest.writeList(img);
         dest.writeString(name);
         dest.writeLong(noOfFertilizersUsed);
         dest.writeLong(approxDateOfHarvest);

@@ -7,8 +7,11 @@ import android.text.TextUtils;
 
 import com.celpa.celpaapp.data.Crop;
 import com.celpa.celpaapp.data.CropDataSource;
+import com.celpa.celpaapp.data.Image;
+import com.celpa.celpaapp.utils.BitmapUtils;
 import com.celpa.celpaapp.utils.scheduler.BaseSchedulerProvider;
 import com.squareup.sqlbrite2.BriteDatabase;
+import com.squareup.sqlbrite2.QueryObservable;
 import com.squareup.sqlbrite2.SqlBrite;
 
 import java.util.List;
@@ -28,6 +31,8 @@ public class CropLocalDataSource implements CropDataSource {
 
     private Function<Cursor, Crop> cropMapperFunction;
 
+    private Context context;
+
     public static CropLocalDataSource getInstance(Context context, BaseSchedulerProvider schedulerProvider) {
         if(INSTANCE == null) {
             INSTANCE = new CropLocalDataSource(context, schedulerProvider);
@@ -37,11 +42,11 @@ public class CropLocalDataSource implements CropDataSource {
     }
 
     private CropLocalDataSource(Context context, BaseSchedulerProvider schedulerProvider) {
+        this.context = context;
         SqlBrite sqlBrite = new SqlBrite.Builder().build();
         CelpaDbHelper dbHelper = CelpaDbHelper.getInstance(context);
         databaseHelper = sqlBrite.wrapDatabaseHelper(dbHelper, schedulerProvider.io());
         cropMapperFunction = this::getCrop;
-
     }
 
     private Crop getCrop(Cursor c) {
@@ -56,7 +61,7 @@ public class CropLocalDataSource implements CropDataSource {
         Crop crop = new Crop();
         crop.id = id;
         crop.name = name;
-        crop.imgPath = imgPath;
+        crop.img.add(new Image(imgPath));
         crop.noOfFertilizersUsed = noOfFertsUsed;
         crop.noOfWaterAppliedPerDay = noOfWaterApplied;
         crop.approxDateOfHarvest = approxDateHarvest;
@@ -107,13 +112,22 @@ public class CropLocalDataSource implements CropDataSource {
     }
 
     @Override
-    public void saveRecipe(Crop crop) {
+    public Flowable<Optional<Crop>> saveCrop(Crop crop) {
+
         ContentValues values = new ContentValues();
-        values.put(CropEntry._ID, crop.id);
+        // Create file for bitmap, then save to local folder
+        crop.img.get(0).imgPath = BitmapUtils.saveBitmapToStorage(context, crop.img.get(0).img);
+
         values.put(CropEntry.COL_CROP_NAME, crop.name);
-        values.put(CropEntry.COL_CROP_IMG_PATH, crop.imgPath);
+        // For now get first index in list of imagePaths
+        values.put(CropEntry.COL_CROP_IMG_PATH, crop.img.get(0).imgPath);
         values.put(CropEntry.COL_NO_OF_FERTS_USED, crop.noOfFertilizersUsed);
         values.put(CropEntry.COL_NO_OF_WATER_APPLIED, crop.noOfWaterAppliedPerDay);
         values.put(CropEntry.COL_WEATHER, crop.weather);
+
+        databaseHelper.insert(CropEntry.TB_CROP, values);
+
+        return QueryObservable.just(Optional.of(crop)).toFlowable(BackpressureStrategy.BUFFER);
     }
+
 }
