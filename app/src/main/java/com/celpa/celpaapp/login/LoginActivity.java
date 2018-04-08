@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import com.celpa.celpaapp.BaseActivity;
 import com.celpa.celpaapp.R;
 import com.celpa.celpaapp.utils.ActivityUtils;
+import com.celpa.celpaapp.utils.scheduler.SchedulerProvider;
 
 public class LoginActivity extends BaseActivity {
 
@@ -24,6 +25,6 @@ public class LoginActivity extends BaseActivity {
             ActivityUtils.addFragmentActivity(getSupportFragmentManager(), loginFragment, R.id.content_frame);
         }
 
-        presenter = new LoginPresenter(loginFragment);
+        presenter = new LoginPresenter(loginFragment, SchedulerProvider.getInstance());
     }
 }

@@ -5,4 +5,8 @@ public interface BasePresenter {
 
     void onCreate();
 
+    void subscribe();
+
+    void unsubscribe();
+
 }

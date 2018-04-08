@@ -1,7 +1,9 @@
 package com.celpa.celpaapp.data.source.local;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.text.TextUtils;
 
 import com.celpa.celpaapp.data.Crop;
 import com.celpa.celpaapp.data.CropDataSource;
@@ -12,6 +14,7 @@ import com.squareup.sqlbrite2.SqlBrite;
 import java.util.List;
 import java.util.Optional;
 
+import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.functions.Function;
 
@@ -24,6 +27,14 @@ public class CropLocalDataSource implements CropDataSource {
     private final BriteDatabase databaseHelper;
 
     private Function<Cursor, Crop> cropMapperFunction;
+
+    public static CropLocalDataSource getInstance(Context context, BaseSchedulerProvider schedulerProvider) {
+        if(INSTANCE == null) {
+            INSTANCE = new CropLocalDataSource(context, schedulerProvider);
+        }
+
+        return INSTANCE;
+    }
 
     private CropLocalDataSource(Context context, BaseSchedulerProvider schedulerProvider) {
         SqlBrite sqlBrite = new SqlBrite.Builder().build();
@@ -56,16 +67,53 @@ public class CropLocalDataSource implements CropDataSource {
 
     @Override
     public Flowable<List<Crop>> getCrops() {
-        return null;
+        String[] projection = {
+                CropEntry._ID,
+                CropEntry.COL_CROP_NAME,
+                CropEntry.COL_CROP_IMG_PATH,
+                CropEntry.COL_NO_OF_FERTS_USED,
+                CropEntry.COL_NO_OF_WATER_APPLIED,
+                CropEntry.COL_APPROX_DATE_HARVEST,
+                CropEntry.COL_WEATHER
+        };
+
+        String sql = String.format("SELECT %s FROM %s",
+                TextUtils.join(",", projection), CropEntry._ID);
+
+        return databaseHelper.createQuery(CropEntry.TB_CROP, sql)
+                .mapToList(cropMapperFunction)
+                .toFlowable(BackpressureStrategy.BUFFER);
     }
 
     @Override
     public Flowable<Optional<Crop>> getCrop(String id) {
-        return null;
+        String[] projection = {
+                CropEntry._ID,
+                CropEntry.COL_CROP_NAME,
+                CropEntry.COL_CROP_IMG_PATH,
+                CropEntry.COL_NO_OF_FERTS_USED,
+                CropEntry.COL_NO_OF_WATER_APPLIED,
+                CropEntry.COL_APPROX_DATE_HARVEST,
+                CropEntry.COL_WEATHER
+        };
+
+        String sql = String.format("SELECT %s FROM %s WHERE %s = ?",
+                TextUtils.join(",", projection), CropEntry._ID);
+
+        return databaseHelper.createQuery(CropEntry.TB_CROP, sql, id)
+                .mapToOneOrDefault(cursor ->
+                    Optional.of(cropMapperFunction.apply(cursor)), Optional.<Crop>empty())
+                .toFlowable(BackpressureStrategy.BUFFER);
     }
 
     @Override
     public void saveRecipe(Crop crop) {
-
+        ContentValues values = new ContentValues();
+        values.put(CropEntry._ID, crop.id);
+        values.put(CropEntry.COL_CROP_NAME, crop.name);
+        values.put(CropEntry.COL_CROP_IMG_PATH, crop.imgPath);
+        values.put(CropEntry.COL_NO_OF_FERTS_USED, crop.noOfFertilizersUsed);
+        values.put(CropEntry.COL_NO_OF_WATER_APPLIED, crop.noOfWaterAppliedPerDay);
+        values.put(CropEntry.COL_WEATHER, crop.weather);
     }
 }
