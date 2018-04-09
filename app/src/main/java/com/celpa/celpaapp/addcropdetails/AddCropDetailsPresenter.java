@@ -3,6 +3,7 @@ package com.celpa.celpaapp.addcropdetails;
 
 import android.util.Log;
 
+import com.celpa.celpaapp.common.OkDialog;
 import com.celpa.celpaapp.data.Crop;
 import com.celpa.celpaapp.data.source.local.CropLocalDataSource;
 import com.celpa.celpaapp.data.source.remote.CropRemoteDataSource;
@@ -65,13 +66,15 @@ public class AddCropDetailsPresenter implements AddCropDetailsContract.Presenter
                 .firstOrError()
                 .toFlowable()
                 ;
+
         Disposable disposable = flowables
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(result -> {
                             Log.d(TAG, result.toString());
                             addCropDetailsView.hideLoadingDialog();
-                            addCropDetailsView.showOkDialog(addCropDetailsView.setCropSavedText());
+                            addCropDetailsView.showOkDialog(addCropDetailsView.getCropSavedText(),
+                                    () -> addCropDetailsView.closeEditor());
                         },
                         throwable ->  {
                             addCropDetailsView.hideLoadingDialog();

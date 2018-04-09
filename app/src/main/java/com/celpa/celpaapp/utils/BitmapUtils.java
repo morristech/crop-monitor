@@ -56,4 +56,11 @@ public class BitmapUtils {
         return result;
     }
 
+    public static Bitmap getBitmapFromStorage(Context context, String filePath) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        Bitmap result = BitmapFactory.decodeFile(filePath, options);
+
+        return result;
+    }
+
 }

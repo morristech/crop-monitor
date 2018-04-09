@@ -18,6 +18,19 @@ public interface TakeCropPhotoContract {
 
         void goToAddCropDetails(Crop crop);
 
+        String saveBitmapToStorage(byte[] photo);
+
+        void showLoadingDialog(String msg);
+
+        void updateLoadingDialog(String msg);
+
+        void hideLoadingDialog();
+
+        String getGettingLocationText();
+
+        String getGettingWeatherText();
+
+        String getParsingImageText();
     }
 
     interface Presenter extends BasePresenter {

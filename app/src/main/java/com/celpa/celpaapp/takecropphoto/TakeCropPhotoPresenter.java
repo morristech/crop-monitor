@@ -3,16 +3,30 @@ package com.celpa.celpaapp.takecropphoto;
 
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.celpa.celpaapp.data.Crop;
 import com.celpa.celpaapp.data.Image;
+import com.celpa.celpaapp.utils.scheduler.BaseSchedulerProvider;
+
+import io.reactivex.Flowable;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 public class TakeCropPhotoPresenter implements TakeCropPhotoContract.Presenter {
 
-    TakeCropPhotoContract.View takePhotoView;
+    private static final String TAG = TakeCropPhotoPresenter.class.getSimpleName();
 
-    public TakeCropPhotoPresenter(@NonNull TakeCropPhotoContract.View view) {
+    private TakeCropPhotoContract.View takePhotoView;
+
+    private CompositeDisposable compositeDisposable;
+    private BaseSchedulerProvider baseSchedulerProvider;
+
+    public TakeCropPhotoPresenter(TakeCropPhotoContract.View view,
+                                  BaseSchedulerProvider schedulerProvider) {
         takePhotoView = view;
+        compositeDisposable = new CompositeDisposable();
+        baseSchedulerProvider = schedulerProvider;
         takePhotoView.setPresenter(this);
     }
 
@@ -47,10 +61,29 @@ public class TakeCropPhotoPresenter implements TakeCropPhotoContract.Presenter {
     }
 
     @Override
-    public void processPhoto(byte[] photoByte) {
-        // Add location and weather
-        Crop crop = new Crop();
-        crop.img.add(new Image(photoByte));
-        takePhotoView.goToAddCropDetails(crop);
+    public void processPhoto(byte[] img) {
+
+        Flowable<String> flowable = Flowable.fromCallable(() -> {
+            String filePath = takePhotoView.saveBitmapToStorage(img);
+            return filePath;
+        });
+
+        takePhotoView.showLoadingDialog(takePhotoView.getParsingImageText());
+        Disposable disposable = flowable
+                .subscribeOn(baseSchedulerProvider.io())
+                .observeOn(baseSchedulerProvider.ui())
+                .subscribe(filePath -> {
+                            // Add location and weather
+                            Crop crop = new Crop();
+                            crop.img.add(new Image(filePath));
+                            takePhotoView.hideLoadingDialog();
+                            takePhotoView.goToAddCropDetails(crop);
+                        },
+                        throwable -> {
+                            takePhotoView.showLoadingDialog(throwable.getMessage());
+                        }
+                );
+
+        compositeDisposable.add(disposable);
     }
 }

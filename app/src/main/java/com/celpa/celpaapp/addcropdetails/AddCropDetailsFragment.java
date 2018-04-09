@@ -25,6 +25,7 @@ import com.celpa.celpaapp.R;
 import com.celpa.celpaapp.common.LoadingDialog;
 import com.celpa.celpaapp.common.OkDialog;
 import com.celpa.celpaapp.data.Crop;
+import com.celpa.celpaapp.utils.BitmapUtils;
 import com.celpa.celpaapp.utils.DateUtils;
 import com.livinglifetechway.quickpermissions.annotations.WithPermissions;
 
@@ -87,7 +88,7 @@ public class AddCropDetailsFragment extends Fragment
 
     private void init() {
 
-        Bitmap photoTaken = BitmapFactory.decodeByteArray(crop.img.get(0).img, 0, crop.img.get(0).img.length);
+        Bitmap photoTaken = BitmapUtils.getBitmapFromStorage(getContext(), crop.img.get(0).imgPath);
         cropImgView.setImageBitmap(photoTaken);
 
         changeApproxDateBtn.setOnClickListener(this);
@@ -167,8 +168,19 @@ public class AddCropDetailsFragment extends Fragment
     }
 
     @Override
-    public String setCropSavedText() {
+    public void showOkDialog(String msg, OkDialog.EventListener listener) {
+        okDialog = OkDialog.newInstance(msg, listener);
+        okDialog.show(getFragmentManager(), TAG);
+    }
+
+    @Override
+    public String getCropSavedText() {
         return getString(R.string.saved_crop);
+    }
+
+    @Override
+    public void closeEditor() {
+        getActivity().finish();
     }
 
     @Override

@@ -16,6 +16,8 @@ import com.celpa.celpaapp.R;
 
 public class OkDialog extends DialogFragment implements View.OnClickListener {
 
+    private EventListener listener;
+
     private TextView msgTxt;
     private Button okBtn;
     private String message = "";
@@ -23,6 +25,13 @@ public class OkDialog extends DialogFragment implements View.OnClickListener {
     public static OkDialog newInstance(String text) {
         OkDialog l = new OkDialog();
         l.message = text;
+        return l;
+    }
+
+    public static OkDialog newInstance(String text, EventListener listener) {
+        OkDialog l = new OkDialog();
+        l.message = text;
+        l.listener = listener;
         return l;
     }
 
@@ -59,14 +68,28 @@ public class OkDialog extends DialogFragment implements View.OnClickListener {
         }
     }
 
+    private void handleOk() {
+        if(listener == null)
+            dismiss();
+        else {
+            listener.onOk();
+        }
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_ok:
-                dismiss();
+                handleOk();
                 break;
             default:
                 break;
         }
+    }
+
+    public interface EventListener {
+
+        void onOk();
+
     }
 }

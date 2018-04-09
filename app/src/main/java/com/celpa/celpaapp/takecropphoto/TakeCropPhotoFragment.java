@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,8 +19,10 @@ import android.widget.Button;
 
 import com.celpa.celpaapp.R;
 import com.celpa.celpaapp.addcropdetails.AddCropDetailsActivity;
+import com.celpa.celpaapp.common.LoadingDialog;
 import com.celpa.celpaapp.data.Crop;
 import com.celpa.celpaapp.utils.ActivityUtils;
+import com.celpa.celpaapp.utils.BitmapUtils;
 import com.livinglifetechway.quickpermissions.annotations.WithPermissions;
 import com.wonderkiln.camerakit.CameraKit;
 import com.wonderkiln.camerakit.CameraKitError;
@@ -32,18 +35,21 @@ import com.wonderkiln.camerakit.CameraView;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
+import io.reactivex.Flowable;
+
 public class TakeCropPhotoFragment extends Fragment
         implements TakeCropPhotoContract.View,
         View.OnClickListener,
         CameraKitEventListener {
 
+    private static final String TAG = TakeCropPhotoFragment.class.getSimpleName();
     private static final String EXTRA_CROP = "crop";
 
     private TakeCropPhotoContract.Presenter presenter;
 
     private CameraView cameraView;
     private Button takePhotoBtn;
-
+    private LoadingDialog loadingDialog;
     private Bitmap capturedBitmap;
 
     public static TakeCropPhotoFragment newInstance() {
@@ -111,6 +117,47 @@ public class TakeCropPhotoFragment extends Fragment
     }
 
     @Override
+    public String saveBitmapToStorage(byte[] photoByte) {
+        String filePath = BitmapUtils.saveBitmapToStorage(getContext(), photoByte);
+        return filePath;
+    }
+
+    @Override
+    public void showLoadingDialog(String msg) {
+        loadingDialog = LoadingDialog.newInstance(msg);
+        loadingDialog.show(getFragmentManager(), TAG);
+    }
+
+    @Override
+    public void updateLoadingDialog(String msg) {
+        if(loadingDialog == null)
+            return;
+        loadingDialog.updateTxtMsg(msg);
+    }
+
+    @Override
+    public void hideLoadingDialog() {
+        if(loadingDialog == null)
+            return;
+        loadingDialog.dismiss();
+    }
+
+    @Override
+    public String getGettingLocationText() {
+        return getString(R.string.getting_location);
+    }
+
+    @Override
+    public String getGettingWeatherText() {
+        return getString(R.string.getting_weather);
+    }
+
+    @Override
+    public String getParsingImageText() {
+        return getString(R.string.parsing_image);
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_takephoto:
@@ -131,6 +178,7 @@ public class TakeCropPhotoFragment extends Fragment
 
     @Override
     public void onImage(CameraKitImage cameraKitImage) {
+
         byte[] photoByte = cameraKitImage.getJpeg();
         presenter.processPhoto(photoByte);
     }

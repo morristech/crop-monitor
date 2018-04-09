@@ -3,6 +3,7 @@ package com.celpa.celpaapp.addcropdetails;
 
 import com.celpa.celpaapp.BasePresenter;
 import com.celpa.celpaapp.BaseView;
+import com.celpa.celpaapp.common.OkDialog;
 import com.celpa.celpaapp.data.Crop;
 
 public interface AddCropDetailsContract {
@@ -25,7 +26,11 @@ public interface AddCropDetailsContract {
 
         void showOkDialog(String msg);
 
-        String setCropSavedText();
+        void showOkDialog(String msg, OkDialog.EventListener listener);
+
+        String getCropSavedText();
+
+        void closeEditor();
 
     }
 

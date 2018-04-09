@@ -118,9 +118,6 @@ public class CropLocalDataSource implements CropDataSource {
     public Flowable<JsonObject> saveCrop(Crop crop) {
 
         ContentValues values = new ContentValues();
-        // Create file for bitmap, then save to local folder
-        crop.img.get(0).imgPath = BitmapUtils.saveBitmapToStorage(context, crop.img.get(0).img);
-
         values.put(CropEntry.COL_CROP_NAME, crop.name);
         // For now get first index in list of imagePaths
         values.put(CropEntry.COL_CROP_IMG_PATH, crop.img.get(0).imgPath);

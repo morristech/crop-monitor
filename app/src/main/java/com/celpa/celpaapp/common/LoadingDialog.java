@@ -34,6 +34,10 @@ public class LoadingDialog extends DialogFragment {
         return view;
     }
 
+    public void updateTxtMsg(String msg) {
+        text.setText(msg);
+    }
+
     @Override
     public void onStart() {
         super.onStart();
