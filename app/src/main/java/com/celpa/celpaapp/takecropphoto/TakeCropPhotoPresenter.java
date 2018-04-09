@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.celpa.celpaapp.data.Crop;
 import com.celpa.celpaapp.data.Image;
+import com.celpa.celpaapp.utils.AppSettings;
 import com.celpa.celpaapp.utils.scheduler.BaseSchedulerProvider;
 
 import io.reactivex.Flowable;
@@ -62,7 +63,7 @@ public class TakeCropPhotoPresenter implements TakeCropPhotoContract.Presenter {
 
     @Override
     public void processPhoto(byte[] img) {
-
+        compositeDisposable.clear();
         Flowable<String> flowable = Flowable.fromCallable(() -> {
             String filePath = takePhotoView.saveBitmapToStorage(img);
             return filePath;
@@ -86,4 +87,22 @@ public class TakeCropPhotoPresenter implements TakeCropPhotoContract.Presenter {
 
         compositeDisposable.add(disposable);
     }
+
+    @Override
+    public void clearCacheAndLogout() {
+        compositeDisposable.clear();
+        takePhotoView.showLoadingDialog(takePhotoView.getLoggingOutText());
+        Disposable disposable = takePhotoView.clearCache()
+                .subscribeOn(baseSchedulerProvider.io())
+                .observeOn(baseSchedulerProvider.ui())
+                .subscribe(result -> {
+                        takePhotoView.closeMe();
+                        takePhotoView.goToLogin();
+                        takePhotoView.hideLoadingDialog();
+                    },
+                    throwable -> takePhotoView.hideLoadingDialog()
+                );
+        compositeDisposable.add(disposable);
+    }
+
 }

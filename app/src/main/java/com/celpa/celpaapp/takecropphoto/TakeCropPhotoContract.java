@@ -8,6 +8,8 @@ import com.celpa.celpaapp.BasePresenter;
 import com.celpa.celpaapp.BaseView;
 import com.celpa.celpaapp.data.Crop;
 
+import io.reactivex.Flowable;
+
 public interface TakeCropPhotoContract {
 
     interface View extends BaseView<Presenter> {
@@ -31,6 +33,14 @@ public interface TakeCropPhotoContract {
         String getGettingWeatherText();
 
         String getParsingImageText();
+
+        String getLoggingOutText();
+
+        void closeMe();
+
+        void goToLogin();
+
+        Flowable clearCache();
     }
 
     interface Presenter extends BasePresenter {
@@ -43,6 +53,7 @@ public interface TakeCropPhotoContract {
 
         void processPhoto(byte[] photo);
 
+        void clearCacheAndLogout();
     }
 
 }

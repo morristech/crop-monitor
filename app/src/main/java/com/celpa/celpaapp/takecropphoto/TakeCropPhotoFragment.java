@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -21,7 +22,9 @@ import com.celpa.celpaapp.R;
 import com.celpa.celpaapp.addcropdetails.AddCropDetailsActivity;
 import com.celpa.celpaapp.common.LoadingDialog;
 import com.celpa.celpaapp.data.Crop;
+import com.celpa.celpaapp.login.LoginActivity;
 import com.celpa.celpaapp.utils.ActivityUtils;
+import com.celpa.celpaapp.utils.AppSettings;
 import com.celpa.celpaapp.utils.BitmapUtils;
 import com.livinglifetechway.quickpermissions.annotations.WithPermissions;
 import com.wonderkiln.camerakit.CameraKit;
@@ -158,6 +161,27 @@ public class TakeCropPhotoFragment extends Fragment
     }
 
     @Override
+    public String getLoggingOutText() {
+        return getString(R.string.logging_out);
+    }
+
+    @Override
+    public void closeMe() {
+        getActivity().finish();
+    }
+
+    @Override
+    public void goToLogin() {
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public Flowable clearCache() {
+        return AppSettings.clearAll(getContext());
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_takephoto:
@@ -172,13 +196,10 @@ public class TakeCropPhotoFragment extends Fragment
     public void onEvent(CameraKitEvent cameraKitEvent) {}
 
     @Override
-    public void onError(CameraKitError cameraKitError) {
-
-    }
+    public void onError(CameraKitError cameraKitError) {}
 
     @Override
     public void onImage(CameraKitImage cameraKitImage) {
-
         byte[] photoByte = cameraKitImage.getJpeg();
         presenter.processPhoto(photoByte);
     }
@@ -190,5 +211,19 @@ public class TakeCropPhotoFragment extends Fragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_takecropphoto, menu);
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item_list:
+                break;
+            case R.id.item_logout:
+                presenter.clearCacheAndLogout();
+                break;
+            default:
+                break;
+        }
+        return true;
     }
 }
