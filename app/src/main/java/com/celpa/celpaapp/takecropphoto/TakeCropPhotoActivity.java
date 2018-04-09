@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.celpa.celpaapp.BaseActivity;
 import com.celpa.celpaapp.R;
 import com.celpa.celpaapp.utils.ActivityUtils;
+import com.celpa.celpaapp.utils.AppSettings;
 import com.celpa.celpaapp.utils.scheduler.SchedulerProvider;
 
 public class TakeCropPhotoActivity extends BaseActivity {
@@ -25,6 +26,6 @@ public class TakeCropPhotoActivity extends BaseActivity {
             ActivityUtils.addFragmentActivity(getSupportFragmentManager(), takeCropPhotoFragment, R.id.content_frame);
         }
 
-        presenter = new TakeCropPhotoPresenter(takeCropPhotoFragment, SchedulerProvider.getInstance());
+        presenter = new TakeCropPhotoPresenter(takeCropPhotoFragment, AppSettings.getInstance(this), SchedulerProvider.getInstance());
     }
 }

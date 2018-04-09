@@ -3,7 +3,6 @@ package com.celpa.celpaapp.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.celpa.celpaapp.data.source.local.CropLocalDataSource;
 import com.celpa.celpaapp.data.source.local.FarmerLocalDataSource;
@@ -18,29 +17,43 @@ public class AppSettings {
     private static final String PREF_NAME = "settings_pref";
     private static final String PREF_FARMER_ID = "farmer_id";
 
+    private static AppSettings INSTANCE;
+
+    private Context context;
+    private SharedPreferences prefs;
+
+    public static AppSettings getInstance(Context context) {
+        if(INSTANCE == null) {
+            INSTANCE = new AppSettings(context);
+        }
+        return INSTANCE;
+    }
+
     private static SharedPreferences getPrefs(Context context) {
         return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
     }
 
-    public static void setFarmer(Context context, int id) {
-        SharedPreferences prefs = getPrefs(context);
+    private AppSettings(Context context) {
+        this.context = context;
+        prefs = getPrefs(context);
+    }
+
+    public void setFarmer(int id) {
         prefs.edit().putInt(PREF_FARMER_ID, id).apply();
     }
 
-    public static int getFarmerLoggedIn(Context context) {
-        SharedPreferences prefs = getPrefs(context);
+    public int getFarmerLoggedIn() {
         return prefs.getInt(PREF_FARMER_ID, 0);
     }
 
-    public static Flowable clearAll(Context context) {
-        SharedPreferences prefs = getPrefs(context);
+    public Flowable clearAll() {
         prefs.edit().clear();
         prefs.edit().commit();
 
         return deleteAllRowsInDatabase(context);
     }
 
-    private static Flowable deleteAllRowsInDatabase(Context context) {
+    private Flowable deleteAllRowsInDatabase(Context context) {
 
         FarmerLocalDataSource farmerLocalDataSource = FarmerLocalDataSource.getInstance(context, SchedulerProvider.getInstance());
         CropLocalDataSource cropLocalDataSource = CropLocalDataSource.getInstance(context, SchedulerProvider.getInstance());

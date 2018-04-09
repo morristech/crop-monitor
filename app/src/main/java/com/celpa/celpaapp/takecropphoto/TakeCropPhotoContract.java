@@ -39,8 +39,6 @@ public interface TakeCropPhotoContract {
         void closeMe();
 
         void goToLogin();
-
-        Flowable clearCache();
     }
 
     interface Presenter extends BasePresenter {

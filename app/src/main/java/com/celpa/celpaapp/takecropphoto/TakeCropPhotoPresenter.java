@@ -22,12 +22,15 @@ public class TakeCropPhotoPresenter implements TakeCropPhotoContract.Presenter {
 
     private CompositeDisposable compositeDisposable;
     private BaseSchedulerProvider baseSchedulerProvider;
+    private AppSettings appSettings;
 
     public TakeCropPhotoPresenter(TakeCropPhotoContract.View view,
+                                  AppSettings settings,
                                   BaseSchedulerProvider schedulerProvider) {
         takePhotoView = view;
         compositeDisposable = new CompositeDisposable();
         baseSchedulerProvider = schedulerProvider;
+        appSettings = settings;
         takePhotoView.setPresenter(this);
     }
 
@@ -92,7 +95,7 @@ public class TakeCropPhotoPresenter implements TakeCropPhotoContract.Presenter {
     public void clearCacheAndLogout() {
         compositeDisposable.clear();
         takePhotoView.showLoadingDialog(takePhotoView.getLoggingOutText());
-        Disposable disposable = takePhotoView.clearCache()
+        Disposable disposable = appSettings.clearAll()
                 .subscribeOn(baseSchedulerProvider.io())
                 .observeOn(baseSchedulerProvider.ui())
                 .subscribe(result -> {

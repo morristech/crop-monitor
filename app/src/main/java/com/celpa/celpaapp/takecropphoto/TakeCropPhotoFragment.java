@@ -177,11 +177,6 @@ public class TakeCropPhotoFragment extends Fragment
     }
 
     @Override
-    public Flowable clearCache() {
-        return AppSettings.clearAll(getContext());
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_takephoto:
