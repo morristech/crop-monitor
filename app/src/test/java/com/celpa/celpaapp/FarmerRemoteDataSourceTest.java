@@ -31,21 +31,13 @@ public class FarmerRemoteDataSourceTest {
     }
 
     @Test
-    public void getFarmers() {
-        farmerRemoteDataSource.getFarmers()
-                .flatMap(farmers -> Flowable.fromIterable(farmers)
-                        .doOnNext(farmer -> {
-                            Log.d(TAG, farmer.toString());
-                }));
+    public void getFarmer() {
+        farmerRemoteDataSource.getFarmer(String.valueOf(1));
     }
 
     @Test
     public void doesFarmerExists() {
         CelpaApiService celpaApiService = CelpaApiHelper.getApiInstance();
-        celpaApiService.isFarmerRegistered("kheldiente", "mikediente123")
-                .doOnNext(json -> {
-                    boolean success = json.getAsJsonObject("success").getAsBoolean();
-                    Log.d(TAG, String.valueOf(success));
-                });
+        celpaApiService.isFarmerRegistered("kheldiente", "mikediente123");
     }
 }
