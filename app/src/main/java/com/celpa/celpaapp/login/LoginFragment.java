@@ -13,6 +13,7 @@ import android.widget.EditText;
 
 import com.celpa.celpaapp.R;
 import com.celpa.celpaapp.common.LoadingDialog;
+import com.celpa.celpaapp.common.OkDialog;
 import com.celpa.celpaapp.takecropphoto.TakeCropPhotoActivity;
 import com.celpa.celpaapp.utils.ActivityUtils;
 
@@ -29,6 +30,7 @@ public class LoginFragment extends Fragment
     private Button loginBtn;
     private Button registerBtn;
     private LoadingDialog loadingDialog;
+    private OkDialog okDialog;
 
     public static LoginFragment newInstance() {
         return new LoginFragment();
@@ -69,6 +71,17 @@ public class LoginFragment extends Fragment
         presenter.unsubscribe();
         getActivity().finish();
         ActivityUtils.goToActivity(getActivity(), TakeCropPhotoActivity.class);
+    }
+
+    @Override
+    public void showOkDialog(String msg) {
+        okDialog = OkDialog.newInstance(msg);
+        okDialog.show(getFragmentManager(), TAG);
+    }
+
+    @Override
+    public String setFailedToLoginText() {
+        return getString(R.string.invalid_login);
     }
 
     @Override

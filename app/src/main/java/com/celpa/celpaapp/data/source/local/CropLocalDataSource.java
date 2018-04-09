@@ -10,6 +10,7 @@ import com.celpa.celpaapp.data.CropDataSource;
 import com.celpa.celpaapp.data.Image;
 import com.celpa.celpaapp.utils.BitmapUtils;
 import com.celpa.celpaapp.utils.scheduler.BaseSchedulerProvider;
+import com.google.gson.JsonObject;
 import com.squareup.sqlbrite2.BriteDatabase;
 import com.squareup.sqlbrite2.QueryObservable;
 import com.squareup.sqlbrite2.SqlBrite;
@@ -93,7 +94,7 @@ public class CropLocalDataSource implements CropDataSource {
     }
 
     @Override
-    public Flowable<Optional<Crop>> getCrop(String id) {
+    public Flowable<Crop> getCrop(String id) {
         String[] projection = {
                 CropEntry._ID,
                 CropEntry.COL_CROP_NAME,
@@ -109,12 +110,12 @@ public class CropLocalDataSource implements CropDataSource {
 
         return databaseHelper.createQuery(TB_CROP, sql, id)
                 .mapToOneOrDefault(cursor ->
-                    Optional.of(cropMapperFunction.apply(cursor)), Optional.<Crop>empty())
+                    cropMapperFunction.apply(cursor), new Crop())
                 .toFlowable(BackpressureStrategy.BUFFER);
     }
 
     @Override
-    public Flowable<Optional<Crop>> saveCrop(Crop crop) {
+    public Flowable<JsonObject> saveCrop(Crop crop) {
 
         ContentValues values = new ContentValues();
         // Create file for bitmap, then save to local folder
@@ -129,7 +130,7 @@ public class CropLocalDataSource implements CropDataSource {
 
         databaseHelper.insert(TB_CROP, values);
 
-        return QueryObservable.just(Optional.of(crop)).toFlowable(BackpressureStrategy.BUFFER);
+        return QueryObservable.just(crop.toJsonObject()).toFlowable(BackpressureStrategy.BUFFER);
     }
 
     @Override

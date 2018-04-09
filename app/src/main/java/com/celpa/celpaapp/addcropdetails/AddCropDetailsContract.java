@@ -23,6 +23,10 @@ public interface AddCropDetailsContract {
 
         void setApproxDateOfHarvest(String dateOfHarvest);
 
+        void showOkDialog(String msg);
+
+        String setCropSavedText();
+
     }
 
     interface Presenter extends BasePresenter {

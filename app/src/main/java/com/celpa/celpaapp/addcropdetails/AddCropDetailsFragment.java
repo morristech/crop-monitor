@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.celpa.celpaapp.R;
 import com.celpa.celpaapp.common.LoadingDialog;
+import com.celpa.celpaapp.common.OkDialog;
 import com.celpa.celpaapp.data.Crop;
 import com.celpa.celpaapp.utils.DateUtils;
 import com.livinglifetechway.quickpermissions.annotations.WithPermissions;
@@ -47,6 +48,7 @@ public class AddCropDetailsFragment extends Fragment
 
     private DatePickerDialog datePickerDialog;
     private LoadingDialog loadingDialog;
+    private OkDialog okDialog;
     private EditText nameEdittxt;
     private EditText fertsUsedEdittxt;
     private EditText waterAppliedEdittxt;
@@ -156,6 +158,17 @@ public class AddCropDetailsFragment extends Fragment
     @Override
     public void setApproxDateOfHarvest(String dateOfHarvest) {
         approxDateHarvestTxt.setText(dateOfHarvest);
+    }
+
+    @Override
+    public void showOkDialog(String msg) {
+        okDialog = OkDialog.newInstance(msg);
+        okDialog.show(getFragmentManager(), TAG);
+    }
+
+    @Override
+    public String setCropSavedText() {
+        return getString(R.string.saved_crop);
     }
 
     @Override

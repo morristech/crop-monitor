@@ -70,14 +70,22 @@ public class LoginPresenter implements LoginContract.Presenter {
                     .subscribe(json -> {
                                 loginView.hideLoggingInDialog();
                                 // onNext
-                                boolean success = json.get().getAsJsonPrimitive("success").getAsBoolean();
+                                boolean success = json.getAsJsonPrimitive("success").getAsBoolean();
+                                Log.d(TAG, json.getAsJsonPrimitive("success").getAsString());
                                 if (success)
                                     loginView.goToTakePhoto();
+                                else
+                                    loginView.showOkDialog(loginView.setFailedToLoginText());
                             },
-                            throwable -> loginView.hideLoggingInDialog()
+                            throwable -> {
+                                loginView.hideLoggingInDialog();
+                                loginView.showOkDialog(throwable.getMessage());
+                            }
                     );
 
             compositeDisposable.add(disposable);
+        } else {
+            loginView.showOkDialog(loginView.setFailedToLoginText());
         }
     }
 

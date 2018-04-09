@@ -44,12 +44,12 @@ public class CropRemoteDataSource implements CropDataSource {
     }
 
     @Override
-    public Flowable<Optional<Crop>> getCrop(String id) {
+    public Flowable<Crop> getCrop(String id) {
         return null;
     }
 
     @Override
-    public Flowable<Optional<Crop>> saveCrop(Crop crop) {
+    public Flowable<JsonObject> saveCrop(Crop crop) {
         List<MultipartBody.Part> files = new ArrayList<>(0);
 
         for(Image photo: crop.img) {
@@ -60,7 +60,12 @@ public class CropRemoteDataSource implements CropDataSource {
 
         JsonObject json = new JsonObject();
         json.addProperty("name", crop.name);
-        json.addProperty("location", crop.weather);
+        json.addProperty("no_of_ferts_used", crop.noOfFertilizersUsed);
+        json.addProperty("no_of_water_applied", crop.noOfWaterAppliedPerDay);
+        json.addProperty("approx_date_harvest", crop.approxDateOfHarvest);
+        json.addProperty("weather", crop.weather);
+        json.addProperty("location", crop.location);
+        json.addProperty("timeStamp", crop.timeStamp);
 
         RequestBody requestBody = RetrofitUtils.createPartFromJson(json);
 

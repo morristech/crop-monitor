@@ -26,13 +26,13 @@ public interface CelpaApiService {
     Flowable<List<Farmer>> getFarmers();
 
     @GET("farmer/loginFarmer")
-    Flowable<Optional<JsonObject>> isFarmerRegistered(@Query("userName") String userName, @Query("password") String password);
+    Flowable<JsonObject> isFarmerRegistered(@Query("userName") String userName, @Query("password") String password);
 
     @GET("farmer/getFarmer")
     Flowable<Farmer> getFarmer(@Query("userName") String userName, @Query("password") String password);
 
     @Multipart
     @POST("crop/details")
-    Flowable<Optional<Crop>> uploadCropDetails(@Part List<MultipartBody.Part> photos, @Part("json") RequestBody json);
+    Flowable<JsonObject> uploadCropDetails(@Part List<MultipartBody.Part> photos, @Part("json") RequestBody json);
 
 }

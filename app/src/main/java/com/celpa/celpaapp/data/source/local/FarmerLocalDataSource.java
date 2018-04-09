@@ -69,17 +69,17 @@ public class FarmerLocalDataSource implements FarmerDataSource {
     }
 
     @Override
-    public Flowable<Optional<JsonObject>> registerFarmer(Farmer farmer) {
-        return QueryObservable.just(Optional.<JsonObject>empty()).toFlowable(BackpressureStrategy.BUFFER);
+    public Flowable<JsonObject> registerFarmer(Farmer farmer) {
+        return QueryObservable.just(new JsonObject()).toFlowable(BackpressureStrategy.BUFFER);
     }
 
     @Override
-    public Flowable<Optional<JsonObject>> loginFarmer(String userName, String password) {
+    public Flowable<JsonObject> loginFarmer(String userName, String password) {
         return null;
     }
 
     @Override
-    public Flowable<Optional<Farmer>> getFarmer(String id) {
+    public Flowable<Farmer> getFarmer(String id) {
         String[] projection = {
                 FarmerEntry._ID,
                 FarmerEntry.COL_FIRST_NAME,
@@ -94,12 +94,12 @@ public class FarmerLocalDataSource implements FarmerDataSource {
                 TextUtils.join(",", projection), TB_FARMER, FarmerEntry._ID);
 
         return databaseHelper.createQuery(TB_FARMER, sql, id)
-                .mapToOneOrDefault(cursor -> Optional.of(farmerMapperFunction.apply(cursor)), Optional.<Farmer>empty())
+                .mapToOneOrDefault(cursor -> farmerMapperFunction.apply(cursor), new Farmer())
                 .toFlowable(BackpressureStrategy.BUFFER);
     }
 
     @Override
-    public Flowable<Optional<Farmer>> saveFarmer(Farmer farmer) {
+    public Flowable<Farmer> saveFarmer(Farmer farmer) {
         ContentValues values = new ContentValues();
         values.put(FarmerEntry.COL_FIRST_NAME, farmer.firstName);
         values.put(FarmerEntry.COL_LAST_NAME, farmer.lastName);
@@ -109,7 +109,7 @@ public class FarmerLocalDataSource implements FarmerDataSource {
 
         databaseHelper.insert(TB_FARMER, values);
 
-        return QueryObservable.just(Optional.of(farmer)).toFlowable(BackpressureStrategy.BUFFER);
+        return QueryObservable.just(new Farmer()).toFlowable(BackpressureStrategy.BUFFER);
     }
 
     @Override

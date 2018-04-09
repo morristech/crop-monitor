@@ -7,8 +7,6 @@ import com.google.gson.JsonObject;
 import com.squareup.sqlbrite2.QueryObservable;
 
 
-import java.util.Optional;
-
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 
@@ -25,12 +23,12 @@ public class FarmerRemoteDataSource implements FarmerDataSource {
     }
 
     @Override
-    public Flowable<Optional<JsonObject>> registerFarmer(Farmer farmer) {
-        return QueryObservable.just(Optional.of(new JsonObject())).toFlowable(BackpressureStrategy.BUFFER);
+    public Flowable<JsonObject> registerFarmer(Farmer farmer) {
+        return QueryObservable.just(new JsonObject()).toFlowable(BackpressureStrategy.BUFFER);
     }
 
     @Override
-    public Flowable<Optional<JsonObject>> loginFarmer(String userName, String password) {
+    public Flowable<JsonObject> loginFarmer(String userName, String password) {
         CelpaApiService celpaApiService = CelpaApiHelper.getApiInstance();
         return celpaApiService.isFarmerRegistered(userName, password)
                 .singleElement()
@@ -38,12 +36,12 @@ public class FarmerRemoteDataSource implements FarmerDataSource {
     }
 
     @Override
-    public Flowable<Optional<Farmer>> getFarmer(String id) {
+    public Flowable<Farmer> getFarmer(String id) {
         return null;
     }
 
     @Override
-    public Flowable<Optional<Farmer>> saveFarmer(Farmer farmer) {
+    public Flowable<Farmer> saveFarmer(Farmer farmer) {
         return null;
     }
 

@@ -14,6 +14,10 @@ public interface LoginContract {
 
         void goToTakePhoto();
 
+        void showOkDialog(String msg);
+
+        String setFailedToLoginText();
+
     }
 
     interface Presenter extends BasePresenter {

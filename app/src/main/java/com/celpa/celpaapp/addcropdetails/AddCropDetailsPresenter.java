@@ -1,9 +1,13 @@
 package com.celpa.celpaapp.addcropdetails;
 
+
+import android.util.Log;
+
 import com.celpa.celpaapp.data.Crop;
 import com.celpa.celpaapp.data.source.local.CropLocalDataSource;
 import com.celpa.celpaapp.data.source.remote.CropRemoteDataSource;
 import com.celpa.celpaapp.utils.scheduler.BaseSchedulerProvider;
+import com.google.gson.JsonObject;
 
 import java.util.Optional;
 
@@ -11,7 +15,10 @@ import io.reactivex.Flowable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
+
 public class AddCropDetailsPresenter implements AddCropDetailsContract.Presenter {
+
+    private static final String TAG = AddCropDetailsPresenter.class.getSimpleName();
 
     private AddCropDetailsContract.View addCropDetailsView;
 
@@ -53,28 +60,33 @@ public class AddCropDetailsPresenter implements AddCropDetailsContract.Presenter
         addCropDetailsView.showLoadingDialog();
 
         compositeDisposable.clear();
-        Flowable flowables = Flowable.concat(saveCropToLocal(crop), saveCropToRemote(crop))
-                .filter(obj -> !obj.isPresent())
+        Flowable<JsonObject> flowables = Flowable.concat(saveCropToLocal(crop), saveCropToRemote(crop))
+                .filter(obj -> (obj.getAsJsonPrimitive("id").getAsLong() > 0)) // Only emit the object with id attribute; which is from remote!
                 .firstOrError()
-                .toFlowable();
-
+                .toFlowable()
+                ;
         Disposable disposable = flowables
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(result -> {
+                            Log.d(TAG, result.toString());
                             addCropDetailsView.hideLoadingDialog();
+                            addCropDetailsView.showOkDialog(addCropDetailsView.setCropSavedText());
                         },
-                        throwable -> addCropDetailsView.hideLoadingDialog()
+                        throwable ->  {
+                            addCropDetailsView.hideLoadingDialog();
+                            addCropDetailsView.showOkDialog(throwable.toString());
+                        }
                 );
 
         compositeDisposable.add(disposable);
     }
 
-    private Flowable<Optional<Crop>> saveCropToRemote(Crop crop) {
+    private Flowable<JsonObject> saveCropToRemote(Crop crop) {
         return remoteDataSource.saveCrop(crop);
     }
 
-    private Flowable<Optional<Crop>> saveCropToLocal(Crop crop) {
+    private Flowable<JsonObject> saveCropToLocal(Crop crop) {
         return localDataSource.saveCrop(crop);
     }
 

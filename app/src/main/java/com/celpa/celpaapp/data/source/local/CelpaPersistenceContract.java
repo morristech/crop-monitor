@@ -16,16 +16,20 @@ public class CelpaPersistenceContract {
 
         public static final String TB_CROP = "crop";
         public static final String COL_CROP_NAME = "crop_name";
-        public static final String COL_CROP_IMG_PATH = "img";
+        public static final String COL_CROP_IMG_PATH = "imgPath"; // {photos: [url, url]}
+        public static final String COL_TIMESTAMP = "timeStamp";
         public static final String COL_NO_OF_FERTS_USED = "no_of_ferts_used";
         public static final String COL_NO_OF_WATER_APPLIED = "no_of_water_applied";
         public static final String COL_APPROX_DATE_HARVEST = "approx_date_harvest";
-        public static final String COL_WEATHER = "waether";
+        public static final String COL_LOCATION = "location"; // {address: "", lat: "", lng: ""}
+        public static final String COL_WEATHER = "weather";
 
         public static final String CREATE_TB_CROP = "CREATE TABLE " + TB_CROP + "(" +
                 _ID + INTEGER_TYPE + PRIMARY_KEY + COMMA_SEP +
                 COL_CROP_NAME + TEXT_TYPE + COMMA_SEP +
+                COL_TIMESTAMP + INTEGER_TYPE + COMMA_SEP +
                 COL_CROP_IMG_PATH + TEXT_TYPE + COMMA_SEP +
+                COL_LOCATION + TEXT_TYPE + COMMA_SEP +
                 COL_WEATHER + TEXT_TYPE + COMMA_SEP +
                 COL_NO_OF_FERTS_USED + INTEGER_TYPE + COMMA_SEP +
                 COL_NO_OF_WATER_APPLIED + INTEGER_TYPE + COMMA_SEP +
@@ -52,7 +56,7 @@ public class CelpaPersistenceContract {
                 COL_LAST_NAME + TEXT_TYPE + COMMA_SEP +
                 COL_EMAIL + TEXT_TYPE + COMMA_SEP +
                 COL_USER_NAME + TEXT_TYPE + COMMA_SEP +
-                COL_PASSWORD + TEXT_TYPE + COMMA_SEP + ")";
+                COL_PASSWORD + TEXT_TYPE + ")";
 
         public static final String DROP_TB_FARMER = "DROP TABLE IF EXISTS " + TB_FARMER;
 

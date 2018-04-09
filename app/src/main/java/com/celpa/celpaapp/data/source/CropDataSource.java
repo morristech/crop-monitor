@@ -1,6 +1,8 @@
 package com.celpa.celpaapp.data;
 
 
+import com.google.gson.JsonObject;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -10,9 +12,9 @@ public interface CropDataSource {
 
     Flowable<List<Crop>> getCrops();
 
-    Flowable<Optional<Crop>> getCrop(String id);
+    Flowable<Crop> getCrop(String id);
 
-    Flowable<Optional<Crop>> saveCrop(Crop crop);
+    Flowable<JsonObject> saveCrop(Crop crop);
 
     Flowable deleteAll();
 }
