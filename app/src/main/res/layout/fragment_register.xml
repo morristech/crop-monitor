@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:paddingTop="30dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:paddingBottom="30dp"
+        >
+
+        <EditText
+            android:id="@+id/edittext_firstName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/first_name"
+            style="@style/AppEditText"
+            >
+            <requestFocus/>
+        </EditText>
+
+        <EditText
+            android:id="@+id/edittext_lastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/last_name"
+            style="@style/AppEditText"
+            android:layout_marginTop="20dp"
+            >
+            <requestFocus/>
+        </EditText>
+
+        <EditText
+            android:id="@+id/edittext_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/email"
+            style="@style/AppEditText"
+            android:layout_marginTop="20dp"
+            >
+            <requestFocus/>
+        </EditText>
+
+        <EditText
+            android:id="@+id/edittext_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/username"
+            style="@style/AppEditText"
+            android:layout_marginTop="20dp"
+            >
+            <requestFocus/>
+        </EditText>
+
+        <EditText
+            android:id="@+id/edittext_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/password"
+            style="@style/AppEditText"
+            android:inputType="textPassword"
+            android:layout_marginTop="20dp"
+            />
+
+        <Button
+            android:id="@+id/btn_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/register"
+            style="@style/AppButton"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center"
+            />
+
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>

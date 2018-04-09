@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="30dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:paddingBottom="30dp"
+        >
+
+        <ImageView
+            android:id="@+id/iv_crop"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@mipmap/ic_launcher" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            >
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/AppTextView"
+                    android:text="@string/location"
+                    />
+
+                <TextView
+                    android:id="@+id/txt_weather"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/AppTextView"
+                    android:text="@string/weather"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_approx_date_harvest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/AppTextView"
+                    android:text="@string/approx_date_of_harvest"
+                    android:layout_gravity="right"
+                    />
+
+                <Button
+                    android:id="@+id/btn_change_approx_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/AppButton"
+                    android:text="@string/change"
+                    android:layout_gravity="right"
+                    android:padding="0dp"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <EditText
+            android:layout_marginTop="10dp"
+            android:id="@+id/edittxt_crop_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/crop_name"
+            style="@style/AppEditText"
+            />
+
+        <EditText
+            android:layout_marginTop="20dp"
+            android:id="@+id/edittxt_fert_used"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/no_of_fertilizers_used"
+            android:inputType="numberDecimal"
+            style="@style/AppEditText"
+            />
+
+        <EditText
+            android:id="@+id/edittxt_water_applied"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/no_of_applied_water_per_day"
+            android:inputType="numberDecimal"
+            android:layout_marginTop="20dp"
+            style="@style/AppEditText"
+            />
+
+    </LinearLayout>
+
+</ScrollView>

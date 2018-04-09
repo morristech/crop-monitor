@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">CELPA</string>
+    <string name="take_photo">Take photo</string>
+    <string name="login">Login</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="register">Register</string>
+    <string name="please_wait">Please wait</string>
+    <string name="no_of_fertilizers_used">No. of fertilizers used</string>
+    <string name="approx_date_of_harvest">Approx. date of harvest</string>
+    <string name="no_of_applied_water_per_day">No. of applied water per day</string>
+    <string name="save_crop_details">Save</string>
+    <string name="logout">Logout</string>
+    <string name="list">List</string>
+    <string name="weather">Weather</string>
+    <string name="location">Location</string>
+    <string name="crop_name">Crop name</string>
+    <string name="approx_date">Approx date</string>
+    <string name="change">Change</string>
+    <string name="ok">OK</string>
+    <string name="saved_crop">Crop has been saved!</string>
+    <string name="invalid_login">Invalid username/password!</string>
+    <string name="getting_location">Getting location...</string>
+    <string name="getting_weather">Getting weather...</string>
+    <string name="parsing_image">Parsing image...</string>
+    <string name="logging_out">Logging out...</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="email">Email</string>
+</resources>
