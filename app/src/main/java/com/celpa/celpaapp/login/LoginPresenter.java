@@ -70,7 +70,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                     .subscribe(json -> {
                                 loginView.hideLoggingInDialog();
                                 // onNext
-                                boolean success = json.getAsJsonPrimitive("success").getAsBoolean();
+                                boolean success = json.get().getAsJsonPrimitive("success").getAsBoolean();
                                 if (success)
                                     loginView.goToTakePhoto();
                             },

@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import static com.celpa.celpaapp.data.source.local.CelpaPersistenceContract.CropEntry.CREATE_TB_CROP;
 import static com.celpa.celpaapp.data.source.local.CelpaPersistenceContract.CropEntry.DROP_TB_CROP;
+import static com.celpa.celpaapp.data.source.local.CelpaPersistenceContract.FarmerEntry.CREATE_TB_FARMER;
+import static com.celpa.celpaapp.data.source.local.CelpaPersistenceContract.FarmerEntry.DROP_TB_FARMER;
 
 public class CelpaDbHelper extends SQLiteOpenHelper {
 
@@ -30,10 +32,13 @@ public class CelpaDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TB_CROP);
+        db.execSQL(CREATE_TB_FARMER);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(DROP_TB_CROP);
+        db.execSQL(DROP_TB_FARMER);
+        onCreate(db);
     }
 }

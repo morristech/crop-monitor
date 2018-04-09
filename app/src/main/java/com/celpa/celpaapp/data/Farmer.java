@@ -6,6 +6,7 @@ public class Farmer {
     public long id;
     public String firstName;
     public String lastName;
+    public String email;
     public String userName;
     public String password;
 

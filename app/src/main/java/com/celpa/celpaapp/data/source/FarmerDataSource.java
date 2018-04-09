@@ -12,8 +12,14 @@ import io.reactivex.Flowable;
 
 public interface FarmerDataSource {
 
-    void registerFarmer(Farmer farmer);
+    Flowable<Optional<JsonObject>> registerFarmer(Farmer farmer);
 
-    Flowable<JsonObject> loginFarmer(String userName, String password);
+    Flowable<Optional<JsonObject>> loginFarmer(String userName, String password);
+
+    Flowable<Optional<Farmer>> getFarmer(String id);
+
+    Flowable<Optional<Farmer>> saveFarmer(Farmer farmer);
+
+    Flowable deleteAll();
 
 }

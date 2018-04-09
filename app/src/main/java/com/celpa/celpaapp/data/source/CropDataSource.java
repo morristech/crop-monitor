@@ -14,4 +14,5 @@ public interface CropDataSource {
 
     Flowable<Optional<Crop>> saveCrop(Crop crop);
 
+    Flowable deleteAll();
 }

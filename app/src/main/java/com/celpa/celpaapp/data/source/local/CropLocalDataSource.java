@@ -23,6 +23,8 @@ import io.reactivex.functions.Function;
 
 import com.celpa.celpaapp.data.source.local.CelpaPersistenceContract.*;
 
+import static com.celpa.celpaapp.data.source.local.CelpaPersistenceContract.CropEntry.TB_CROP;
+
 public class CropLocalDataSource implements CropDataSource {
 
     private static CropLocalDataSource INSTANCE;
@@ -85,7 +87,7 @@ public class CropLocalDataSource implements CropDataSource {
         String sql = String.format("SELECT %s FROM %s",
                 TextUtils.join(",", projection), CropEntry._ID);
 
-        return databaseHelper.createQuery(CropEntry.TB_CROP, sql)
+        return databaseHelper.createQuery(TB_CROP, sql)
                 .mapToList(cropMapperFunction)
                 .toFlowable(BackpressureStrategy.BUFFER);
     }
@@ -105,7 +107,7 @@ public class CropLocalDataSource implements CropDataSource {
         String sql = String.format("SELECT %s FROM %s WHERE %s = ?",
                 TextUtils.join(",", projection), CropEntry._ID);
 
-        return databaseHelper.createQuery(CropEntry.TB_CROP, sql, id)
+        return databaseHelper.createQuery(TB_CROP, sql, id)
                 .mapToOneOrDefault(cursor ->
                     Optional.of(cropMapperFunction.apply(cursor)), Optional.<Crop>empty())
                 .toFlowable(BackpressureStrategy.BUFFER);
@@ -125,9 +127,15 @@ public class CropLocalDataSource implements CropDataSource {
         values.put(CropEntry.COL_NO_OF_WATER_APPLIED, crop.noOfWaterAppliedPerDay);
         values.put(CropEntry.COL_WEATHER, crop.weather);
 
-        databaseHelper.insert(CropEntry.TB_CROP, values);
+        databaseHelper.insert(TB_CROP, values);
 
         return QueryObservable.just(Optional.of(crop)).toFlowable(BackpressureStrategy.BUFFER);
+    }
+
+    @Override
+    public Flowable deleteAll() {
+        databaseHelper.delete(TB_CROP, null, new String[]{});
+        return QueryObservable.just(Flowable.empty()).toFlowable(BackpressureStrategy.BUFFER);
     }
 
 }

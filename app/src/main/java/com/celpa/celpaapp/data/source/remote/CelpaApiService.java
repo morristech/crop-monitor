@@ -26,7 +26,7 @@ public interface CelpaApiService {
     Flowable<List<Farmer>> getFarmers();
 
     @GET("farmer/loginFarmer")
-    Flowable<JsonObject> isFarmerRegistered(@Query("userName") String userName, @Query("password") String password);
+    Flowable<Optional<JsonObject>> isFarmerRegistered(@Query("userName") String userName, @Query("password") String password);
 
     @GET("farmer/getFarmer")
     Flowable<Farmer> getFarmer(@Query("userName") String userName, @Query("password") String password);

@@ -68,4 +68,9 @@ public class CropRemoteDataSource implements CropDataSource {
         CelpaApiService apiService = CelpaApiHelper.getApiInstance();
         return apiService.uploadCropDetails(files, requestBody);
     }
+
+    @Override
+    public Flowable deleteAll() {
+        return null;
+    }
 }
