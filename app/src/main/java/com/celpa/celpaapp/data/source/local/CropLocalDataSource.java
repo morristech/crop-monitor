@@ -10,6 +10,7 @@ import com.celpa.celpaapp.data.CropDataSource;
 import com.celpa.celpaapp.data.Image;
 import com.celpa.celpaapp.utils.BitmapUtils;
 import com.celpa.celpaapp.utils.scheduler.BaseSchedulerProvider;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.squareup.sqlbrite2.BriteDatabase;
 import com.squareup.sqlbrite2.QueryObservable;
@@ -91,6 +92,11 @@ public class CropLocalDataSource implements CropDataSource {
         return databaseHelper.createQuery(TB_CROP, sql)
                 .mapToList(cropMapperFunction)
                 .toFlowable(BackpressureStrategy.BUFFER);
+    }
+
+    @Override
+    public Flowable<JsonArray> getCropsInJson() {
+        return null;
     }
 
     @Override

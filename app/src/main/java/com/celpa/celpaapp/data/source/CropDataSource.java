@@ -1,6 +1,7 @@
 package com.celpa.celpaapp.data;
 
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.util.List;
@@ -11,6 +12,8 @@ import io.reactivex.Flowable;
 public interface CropDataSource {
 
     Flowable<List<Crop>> getCrops();
+
+    Flowable<JsonArray> getCropsInJson();
 
     Flowable<Crop> getCrop(String id);
 

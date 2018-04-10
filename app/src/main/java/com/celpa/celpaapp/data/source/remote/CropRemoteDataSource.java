@@ -9,12 +9,12 @@ import com.celpa.celpaapp.data.CropDataSource;
 import com.celpa.celpaapp.data.Image;
 import com.celpa.celpaapp.utils.PhotoUploadHelper;
 import com.celpa.celpaapp.utils.RetrofitUtils;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import io.reactivex.Flowable;
 import okhttp3.MultipartBody;
@@ -41,6 +41,12 @@ public class CropRemoteDataSource implements CropDataSource {
     @Override
     public Flowable<List<Crop>> getCrops() {
         return null;
+    }
+
+    @Override
+    public Flowable<JsonArray> getCropsInJson() {
+        CelpaApiService apiService = CelpaApiHelper.getApiInstance();
+        return apiService.getCrops();
     }
 
     @Override

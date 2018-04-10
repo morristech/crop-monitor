@@ -3,6 +3,7 @@ package com.celpa.celpaapp.data.source.remote;
 
 import com.celpa.celpaapp.data.Crop;
 import com.celpa.celpaapp.data.Farmer;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.util.List;
@@ -30,6 +31,9 @@ public interface CelpaApiService {
 
     @POST("farmer/registerFarmer")
     Flowable<JsonObject> registerFarmer(@Body JsonObject body);
+
+    @GET("crop/getCrops")
+    Flowable<JsonArray> getCrops();
 
     @Multipart
     @POST("crop/details")
