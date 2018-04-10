@@ -86,6 +86,7 @@ public class RegisterFarmerPresenter implements RegisterFarmerContract.Presenter
                                         new OkDialog.EventListener() {
                                             @Override
                                             public void onOk() {
+                                                registerFarmerView.closeMe();
                                                 registerFarmerView.goToTakePhoto();
                                             }
                                         });
