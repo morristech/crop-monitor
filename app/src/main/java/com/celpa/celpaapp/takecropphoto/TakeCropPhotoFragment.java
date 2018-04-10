@@ -20,6 +20,7 @@ import android.widget.Button;
 
 import com.celpa.celpaapp.R;
 import com.celpa.celpaapp.addcropdetails.AddCropDetailsActivity;
+import com.celpa.celpaapp.allcrops.AllCropsActivity;
 import com.celpa.celpaapp.common.LoadingDialog;
 import com.celpa.celpaapp.data.Crop;
 import com.celpa.celpaapp.login.LoginActivity;
@@ -177,6 +178,12 @@ public class TakeCropPhotoFragment extends Fragment
     }
 
     @Override
+    public void goToList() {
+        Intent intent = new Intent(getActivity(), AllCropsActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_takephoto:
@@ -212,6 +219,7 @@ public class TakeCropPhotoFragment extends Fragment
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item_list:
+                goToList();
                 break;
             case R.id.item_logout:
                 presenter.clearCacheAndLogout();

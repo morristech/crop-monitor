@@ -34,7 +34,7 @@ public class LoginActivity extends BaseActivity {
                 ActivityUtils.addFragmentActivity(getSupportFragmentManager(), loginFragment, R.id.content_frame);
             }
 
-            presenter = new LoginPresenter(loginFragment, SchedulerProvider.getInstance());
+            presenter = new LoginPresenter(loginFragment, appSettings, SchedulerProvider.getInstance());
         }
     }
 

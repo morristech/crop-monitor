@@ -10,6 +10,7 @@ import com.celpa.celpaapp.data.Image;
 import com.celpa.celpaapp.utils.PhotoUploadHelper;
 import com.celpa.celpaapp.utils.RetrofitUtils;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.io.File;
@@ -44,9 +45,9 @@ public class CropRemoteDataSource implements CropDataSource {
     }
 
     @Override
-    public Flowable<JsonArray> getCropsInJson() {
+    public Flowable<JsonArray> getCropsInJson(long farmerId) {
         CelpaApiService apiService = CelpaApiHelper.getApiInstance();
-        return apiService.getCrops();
+        return apiService.getCrops(farmerId);
     }
 
     @Override

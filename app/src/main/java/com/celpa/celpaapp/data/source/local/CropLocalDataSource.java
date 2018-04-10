@@ -11,6 +11,7 @@ import com.celpa.celpaapp.data.Image;
 import com.celpa.celpaapp.utils.BitmapUtils;
 import com.celpa.celpaapp.utils.scheduler.BaseSchedulerProvider;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.squareup.sqlbrite2.BriteDatabase;
 import com.squareup.sqlbrite2.QueryObservable;
@@ -95,7 +96,7 @@ public class CropLocalDataSource implements CropDataSource {
     }
 
     @Override
-    public Flowable<JsonArray> getCropsInJson() {
+    public Flowable<JsonArray> getCropsInJson(long farmerId) {
         return null;
     }
 

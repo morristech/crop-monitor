@@ -39,6 +39,8 @@ public interface TakeCropPhotoContract {
         void closeMe();
 
         void goToLogin();
+
+        void goToList();
     }
 
     interface Presenter extends BasePresenter {

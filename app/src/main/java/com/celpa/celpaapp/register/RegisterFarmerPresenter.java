@@ -83,12 +83,9 @@ public class RegisterFarmerPresenter implements RegisterFarmerContract.Presenter
                                 appSettings.setFarmer(id);
                                 registerFarmerView.hideLoadingDialog();
                                 registerFarmerView.showOkDialog(registerFarmerView.getRegistrationSuccessfulTxt(),
-                                        new OkDialog.EventListener() {
-                                            @Override
-                                            public void onOk() {
-                                                registerFarmerView.closeMe();
-                                                registerFarmerView.goToTakePhoto();
-                                            }
+                                        () -> {
+                                            registerFarmerView.closeMe();
+                                            registerFarmerView.goToTakePhoto();
                                         });
                             },
                             throwable -> {

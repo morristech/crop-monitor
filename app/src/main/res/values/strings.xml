@@ -32,4 +32,8 @@
     <string name="fill_up_all_fields">Please fill up all the correct fields!</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="confirm_password_fail">Password must be the same!</string>
+    <string name="getting_crops">Getting crops...</string>
+    <string name="crop_image">Crop image</string>
+    <string name="harvest_date">Harvest date</string>
+    <string name="sample">Sample</string>
 </resources>

@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
@@ -95,5 +96,22 @@ public class Crop implements Parcelable {
         json.addProperty("location", location);
 
         return json;
+    }
+
+    public static Crop getCrop(JsonObject obj) {
+        Crop crop = new Crop();
+        crop.id = obj.getAsJsonPrimitive("id").getAsLong();
+        crop.name = obj.getAsJsonPrimitive("name").getAsString();
+        crop.noOfFertilizersUsed = obj.getAsJsonPrimitive("no_of_ferts_used").getAsLong();
+        crop.noOfWaterAppliedPerDay = obj.getAsJsonPrimitive("no_of_water_applied").getAsLong();
+        crop.approxDateOfHarvest = obj.getAsJsonPrimitive("approx_date_harvest").getAsLong();
+        crop.weather = obj.getAsJsonPrimitive("weather").getAsString();
+        crop.timeStamp = obj.getAsJsonPrimitive("timestamp").getAsLong();
+
+        JsonObject imgPath = obj.getAsJsonObject("img_path");
+        for(JsonElement imgElement: imgPath.getAsJsonArray("photos")) {
+            crop.img.add(new Image(imgElement.getAsString()));
+        }
+        return crop;
     }
 }

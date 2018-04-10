@@ -19,6 +19,7 @@ public interface LoginContract {
         String setFailedToLoginText();
 
         void goToRegistration();
+
     }
 
     interface Presenter extends BasePresenter {
@@ -28,6 +29,8 @@ public interface LoginContract {
         boolean isValidPassword(String password);
 
         void login(String userName, String password);
+
+        void saveId(long farmerId);
 
     }
 

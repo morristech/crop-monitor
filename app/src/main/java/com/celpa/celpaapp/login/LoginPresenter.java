@@ -5,6 +5,7 @@ import android.util.Log;
 import com.celpa.celpaapp.data.source.remote.CelpaApiHelper;
 import com.celpa.celpaapp.data.source.remote.CelpaApiService;
 import com.celpa.celpaapp.data.source.remote.FarmerRemoteDataSource;
+import com.celpa.celpaapp.utils.AppSettings;
 import com.celpa.celpaapp.utils.scheduler.BaseSchedulerProvider;
 import com.google.gson.JsonObject;
 
@@ -20,14 +21,17 @@ public class LoginPresenter implements LoginContract.Presenter {
     private final BaseSchedulerProvider schedulerProvider;
 
     private CompositeDisposable compositeDisposable;
-
+    private AppSettings appSettings;
     private FarmerRemoteDataSource remoteDataSource;
 
     LoginContract.View loginView;
 
-    public LoginPresenter(LoginContract.View view, BaseSchedulerProvider baseSchedulerProvider) {
+    public LoginPresenter(LoginContract.View view,
+                          AppSettings settings,
+                          BaseSchedulerProvider baseSchedulerProvider) {
         loginView = view;
         schedulerProvider = baseSchedulerProvider;
+        appSettings = settings;
         compositeDisposable = new CompositeDisposable();
         remoteDataSource = FarmerRemoteDataSource.getInstance();
         loginView.setPresenter(this);
@@ -72,9 +76,10 @@ public class LoginPresenter implements LoginContract.Presenter {
                                 // onNext
                                 long id = json.getAsJsonPrimitive("id").getAsLong();
                                 Log.d(TAG, String.valueOf(id));
-                                if (id > 0)
+                                if (id > 0) {
+                                    saveId(id);
                                     loginView.goToTakePhoto();
-                                else
+                                } else
                                     loginView.showOkDialog(loginView.setFailedToLoginText());
                             },
                             throwable -> {
@@ -87,6 +92,11 @@ public class LoginPresenter implements LoginContract.Presenter {
         } else {
             loginView.showOkDialog(loginView.setFailedToLoginText());
         }
+    }
+
+    @Override
+    public void saveId(long farmerId) {
+        appSettings.setFarmer(farmerId);
     }
 
 }
