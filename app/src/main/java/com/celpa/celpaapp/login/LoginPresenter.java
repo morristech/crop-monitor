@@ -64,15 +64,15 @@ public class LoginPresenter implements LoginContract.Presenter {
             loginView.showLoggingInDialog();
 
             compositeDisposable.clear();
-            Disposable disposable = remoteDataSource.loginFarmer(userName, password)
+            Disposable disposable = remoteDataSource.getFarmer(userName, password)
                     .subscribeOn(schedulerProvider.io())
                     .observeOn(schedulerProvider.ui())
                     .subscribe(json -> {
                                 loginView.hideLoggingInDialog();
                                 // onNext
-                                boolean success = json.getAsJsonPrimitive("success").getAsBoolean();
-                                Log.d(TAG, json.getAsJsonPrimitive("success").getAsString());
-                                if (success)
+                                long id = json.getAsJsonPrimitive("id").getAsLong();
+                                Log.d(TAG, String.valueOf(id));
+                                if (id > 0)
                                     loginView.goToTakePhoto();
                                 else
                                     loginView.showOkDialog(loginView.setFailedToLoginText());
@@ -89,6 +89,4 @@ public class LoginPresenter implements LoginContract.Presenter {
         }
     }
 
-    @Override
-    public void register() {}
 }

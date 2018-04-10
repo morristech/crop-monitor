@@ -1,6 +1,7 @@
 package com.celpa.celpaapp.login;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import com.celpa.celpaapp.R;
 import com.celpa.celpaapp.common.LoadingDialog;
 import com.celpa.celpaapp.common.OkDialog;
+import com.celpa.celpaapp.register.RegisterFarmerActivity;
 import com.celpa.celpaapp.takecropphoto.TakeCropPhotoActivity;
 import com.celpa.celpaapp.utils.ActivityUtils;
 
@@ -85,13 +87,19 @@ public class LoginFragment extends Fragment
     }
 
     @Override
+    public void goToRegistration() {
+        Intent intent = new Intent(getActivity(), RegisterFarmerActivity.class);
+        getActivity().startActivity(intent);
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_login:
                 presenter.login(userNameEditTxt.getText().toString(), passwordEditTxt.getText().toString());
                 break;
             case R.id.btn_register:
-                presenter.register();
+                goToRegistration();
                 break;
             default:
                 break;
