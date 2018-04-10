@@ -3,6 +3,7 @@ package com.celpa.celpaapp.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.celpa.celpaapp.data.source.local.CropLocalDataSource;
 import com.celpa.celpaapp.data.source.local.FarmerLocalDataSource;
@@ -38,18 +39,21 @@ public class AppSettings {
         prefs = getPrefs(context);
     }
 
-    public void setFarmer(int id) {
-        prefs.edit().putInt(PREF_FARMER_ID, id).apply();
+    public void setFarmer(long id) {
+        prefs.edit().putLong(PREF_FARMER_ID, id).apply();
     }
 
-    public int getFarmerLoggedIn() {
-        return prefs.getInt(PREF_FARMER_ID, 0);
+    public long getFarmerLoggedIn() {
+        return prefs.getLong(PREF_FARMER_ID, 0);
+    }
+
+    public boolean isLoggedIn() {
+        Log.d(TAG, String.valueOf(prefs.getLong(PREF_FARMER_ID, 0)));
+        return prefs.getLong(PREF_FARMER_ID, 0) > 0;
     }
 
     public Flowable clearAll() {
-        prefs.edit().clear();
-        prefs.edit().commit();
-
+        prefs.edit().clear().apply();
         return deleteAllRowsInDatabase(context);
     }
 
