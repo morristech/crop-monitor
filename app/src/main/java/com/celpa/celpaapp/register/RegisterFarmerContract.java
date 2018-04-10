@@ -18,6 +18,12 @@ public interface RegisterFarmerContract {
 
         void showOkDialog(String msg, OkDialog.EventListener listener);
 
+        String getRegisterFarmerTxt();
+
+        String getPleaseFillUpAllFieldsTxt();
+
+        String getRegistrationSuccessfulTxt();
+
         void goToTakePhoto();
 
         void closeMe();
@@ -28,6 +34,10 @@ public interface RegisterFarmerContract {
 
         boolean isValid(Farmer farmer);
 
+        boolean isValidEmail(String email);
+
         void registerFarmer(Farmer farmer);
+
+        boolean isSamePassword(String password, String confirmPassword);
     }
 }

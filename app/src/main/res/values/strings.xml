@@ -27,4 +27,9 @@
     <string name="first_name">First name</string>
     <string name="last_name">Last name</string>
     <string name="email">Email</string>
+    <string name="registering">Registering...</string>
+    <string name="registered_farmer">You are now registered!</string>
+    <string name="fill_up_all_fields">Please fill up all the correct fields!</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="confirm_password_fail">Password must be the same!</string>
 </resources>

@@ -14,9 +14,9 @@ public interface FarmerDataSource {
 
     Flowable<JsonObject> registerFarmer(Farmer farmer);
 
-    Flowable<JsonObject> loginFarmer(String userName, String password);
+    Flowable<JsonObject> getFarmer(String userName, String password);
 
-    Flowable<Farmer> getFarmer(String id);
+    Flowable<JsonObject> getFarmer(String id);
 
     Flowable<Farmer> saveFarmer(Farmer farmer);
 

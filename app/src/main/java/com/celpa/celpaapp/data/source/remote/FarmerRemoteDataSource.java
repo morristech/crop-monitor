@@ -24,19 +24,28 @@ public class FarmerRemoteDataSource implements FarmerDataSource {
 
     @Override
     public Flowable<JsonObject> registerFarmer(Farmer farmer) {
-        return QueryObservable.just(new JsonObject()).toFlowable(BackpressureStrategy.BUFFER);
+        JsonObject json = new JsonObject();
+        json.addProperty("firstName", farmer.firstName);
+        json.addProperty("lastName", farmer.lastName);
+        json.addProperty("email", farmer.email);
+        json.addProperty("userName", farmer.userName);
+        json.addProperty("password", farmer.password);
+
+        CelpaApiService apiService = CelpaApiHelper.getApiInstance();
+        return apiService.registerFarmer(json);
     }
 
+
     @Override
-    public Flowable<JsonObject> loginFarmer(String userName, String password) {
+    public Flowable<JsonObject> getFarmer(String userName, String password) {
         CelpaApiService celpaApiService = CelpaApiHelper.getApiInstance();
-        return celpaApiService.isFarmerRegistered(userName, password)
+        return celpaApiService.getFarmer(userName, password)
                 .singleElement()
                 .toFlowable();
     }
 
     @Override
-    public Flowable<Farmer> getFarmer(String id) {
+    public Flowable<JsonObject> getFarmer(String id) {
         return null;
     }
 

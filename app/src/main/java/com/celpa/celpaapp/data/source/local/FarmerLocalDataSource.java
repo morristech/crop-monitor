@@ -20,8 +20,6 @@ import io.reactivex.functions.Function;
 
 import com.celpa.celpaapp.data.source.local.CelpaPersistenceContract.*;
 
-import java.util.Optional;
-
 import static com.celpa.celpaapp.data.source.local.CelpaPersistenceContract.FarmerEntry.TB_FARMER;
 
 public class FarmerLocalDataSource implements FarmerDataSource {
@@ -30,7 +28,7 @@ public class FarmerLocalDataSource implements FarmerDataSource {
 
     private final BriteDatabase databaseHelper;
 
-    private Function<Cursor, Farmer> farmerMapperFunction;
+    private Function<Cursor, JsonObject> farmerMapperFunction;
 
     private Context context;
 
@@ -49,7 +47,7 @@ public class FarmerLocalDataSource implements FarmerDataSource {
         farmerMapperFunction = this::getFarmer;
     }
 
-    private Farmer getFarmer(Cursor c) {
+    private JsonObject getFarmer(Cursor c) {
         long id = c.getLong(c.getColumnIndexOrThrow(FarmerEntry._ID));
         String firstName = c.getString(c.getColumnIndexOrThrow(FarmerEntry.COL_FIRST_NAME));
         String lastName = c.getString(c.getColumnIndexOrThrow(FarmerEntry.COL_LAST_NAME));
@@ -65,7 +63,7 @@ public class FarmerLocalDataSource implements FarmerDataSource {
         farmer.userName = userName;
         farmer.password = password;
 
-        return farmer;
+        return farmer.toJsonObject();
     }
 
     @Override
@@ -74,12 +72,27 @@ public class FarmerLocalDataSource implements FarmerDataSource {
     }
 
     @Override
-    public Flowable<JsonObject> loginFarmer(String userName, String password) {
-        return null;
+    public Flowable<JsonObject> getFarmer(String userName, String password) {
+        String[] projection = {
+                FarmerEntry._ID,
+                FarmerEntry.COL_FIRST_NAME,
+                FarmerEntry.COL_LAST_NAME,
+                FarmerEntry.COL_USER_NAME,
+                FarmerEntry.COL_EMAIL,
+                FarmerEntry.COL_USER_NAME,
+                FarmerEntry.COL_PASSWORD
+        };
+
+        String sql = String.format("SELECT %s FROM %s WHERE %s = ? AND %s = ?",
+                TextUtils.join(",", projection), TB_FARMER, FarmerEntry._ID);
+
+        return databaseHelper.createQuery(TB_FARMER, sql, userName, password)
+                .mapToOneOrDefault(cursor -> farmerMapperFunction.apply(cursor), new JsonObject())
+                .toFlowable(BackpressureStrategy.BUFFER);
     }
 
     @Override
-    public Flowable<Farmer> getFarmer(String id) {
+    public Flowable<JsonObject> getFarmer(String id) {
         String[] projection = {
                 FarmerEntry._ID,
                 FarmerEntry.COL_FIRST_NAME,
@@ -94,7 +107,7 @@ public class FarmerLocalDataSource implements FarmerDataSource {
                 TextUtils.join(",", projection), TB_FARMER, FarmerEntry._ID);
 
         return databaseHelper.createQuery(TB_FARMER, sql, id)
-                .mapToOneOrDefault(cursor -> farmerMapperFunction.apply(cursor), new Farmer())
+                .mapToOneOrDefault(cursor -> farmerMapperFunction.apply(cursor), new JsonObject())
                 .toFlowable(BackpressureStrategy.BUFFER);
     }
 

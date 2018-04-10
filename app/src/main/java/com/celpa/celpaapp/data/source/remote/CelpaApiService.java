@@ -20,16 +20,16 @@ import retrofit2.http.Query;
 
 public interface CelpaApiService {
 
-    String BASE_URL = "http://192.168.1.33:3000/celpa/";
+    String BASE_URL = "http://192.168.1.19:3000/celpa/";
 
     @GET("farmer/getFarmers")
     Flowable<List<Farmer>> getFarmers();
 
-    @GET("farmer/loginFarmer")
-    Flowable<JsonObject> isFarmerRegistered(@Query("userName") String userName, @Query("password") String password);
-
     @GET("farmer/getFarmer")
-    Flowable<Farmer> getFarmer(@Query("userName") String userName, @Query("password") String password);
+    Flowable<JsonObject> getFarmer(@Query("userName") String userName, @Query("password") String password);
+
+    @POST("farmer/registerFarmer")
+    Flowable<JsonObject> registerFarmer(@Body JsonObject body);
 
     @Multipart
     @POST("crop/details")
