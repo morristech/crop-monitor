@@ -13,7 +13,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.celpa.celpaapp.R;
 import com.celpa.celpaapp.allcrops.adapter.CropAdapter;
@@ -23,6 +22,8 @@ import com.celpa.celpaapp.data.Crop;
 import com.celpa.celpaapp.utils.AppSettings;
 
 import java.util.List;
+
+import static com.celpa.celpaapp.data.source.remote.CelpaApiService.BASE_URL_IMG;
 
 public class AllCropsFragment extends Fragment
         implements AllCropsContract.View {
@@ -75,6 +76,7 @@ public class AllCropsFragment extends Fragment
     @Override
     public void displayCrops(List<Crop> crops) {
         cropAdapter = new CropAdapter(crops);
+        cropAdapter.setBaseUrlForImage(BASE_URL_IMG);
         layoutManager = new LinearLayoutManager(getContext());
         cropRecyclerView.setLayoutManager(layoutManager);
         cropRecyclerView.setItemAnimator(new DefaultItemAnimator());

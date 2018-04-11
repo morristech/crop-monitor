@@ -10,14 +10,19 @@ import android.widget.TextView;
 
 import com.celpa.celpaapp.R;
 import com.celpa.celpaapp.data.Crop;
+import com.celpa.celpaapp.utils.DateUtils;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.PicassoProvider;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class CropAdapter extends RecyclerView.Adapter<CropAdapter.ViewHolder> {
 
+    private static String BASE_URL_IMAGE = "";
     private List<Crop> crops = new ArrayList<>(0);
 
     public CropAdapter(List<Crop> crops) {
@@ -40,6 +45,10 @@ public class CropAdapter extends RecyclerView.Adapter<CropAdapter.ViewHolder> {
     @Override
     public int getItemCount() {
         return crops.size();
+    }
+
+    public void setBaseUrlForImage(String url) {
+        BASE_URL_IMAGE = url;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -65,15 +74,22 @@ public class CropAdapter extends RecyclerView.Adapter<CropAdapter.ViewHolder> {
 
         public void bindCrop(Crop crop) {
             cropNameTxt.setText(crop.name);
-            locationTxt.setText(crop.location);
+
+            try {
+                JsonObject locationObj = new JsonParser().parse(crop.location).getAsJsonObject();
+                locationTxt.setText(locationObj.getAsJsonPrimitive("address").getAsString());
+            } catch (JsonParseException e) {
+                e.printStackTrace();
+            }
+
             weatherTxt.setText(crop.weather);
-            harvestDateTxt.setText(String.valueOf(crop.approxDateOfHarvest));
+            harvestDateTxt.setText(DateUtils.getFormattedString(crop.approxDateOfHarvest));
             fertsUsedTxt.setText(String.valueOf(crop.noOfFertilizersUsed));
             waterAppliedTxt.setText(String.valueOf(crop.noOfWaterAppliedPerDay));
 
             // Trigger the download of the URL async into the image view
             Picasso.get()
-                    .load(crop.img.get(0).imgPath)
+                    .load(BASE_URL_IMAGE + crop.img.get(0).imgPath)
                     .resize(100, 100)
                     .centerInside()
                     .error(R.drawable.error_img)

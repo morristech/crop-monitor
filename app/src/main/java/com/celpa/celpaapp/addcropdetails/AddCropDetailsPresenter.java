@@ -46,9 +46,7 @@ public class AddCropDetailsPresenter implements AddCropDetailsContract.Presenter
     public void onCreate() {}
 
     @Override
-    public void subscribe() {
-
-    }
+    public void subscribe() {}
 
     @Override
     public void unsubscribe() {

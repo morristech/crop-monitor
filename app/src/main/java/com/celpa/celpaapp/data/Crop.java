@@ -108,6 +108,7 @@ public class Crop implements Parcelable {
         Crop crop = new Crop();
         crop.id = obj.getAsJsonPrimitive("id").getAsLong();
         crop.name = obj.getAsJsonPrimitive("name").getAsString();
+        crop.location = obj.getAsJsonObject("location").toString();
         crop.noOfFertilizersUsed = obj.getAsJsonPrimitive("no_of_ferts_used").getAsLong();
         crop.noOfWaterAppliedPerDay = obj.getAsJsonPrimitive("no_of_water_applied").getAsLong();
         crop.approxDateOfHarvest = obj.getAsJsonPrimitive("approx_date_harvest").getAsLong();

@@ -153,6 +153,12 @@ public class AddCropDetailsFragment extends Fragment
         crop.name = nameEdittxt.getText().toString();
         crop.noOfFertilizersUsed = Long.parseLong(fertsUsedEdittxt.getText().toString());
         crop.noOfWaterAppliedPerDay = Long.parseLong(waterAppliedEdittxt.getText().toString());
+
+        int year = datePickerDialog.getDatePicker().getYear();
+        int month = datePickerDialog.getDatePicker().getMonth();
+        int dayOfMonth = datePickerDialog.getDatePicker().getDayOfMonth();
+
+        crop.approxDateOfHarvest = DateUtils.getDate(year, month, dayOfMonth).getTime() / 1000;
         crop.weather = "";
         crop.timeStamp = System.currentTimeMillis() / 1000;
 

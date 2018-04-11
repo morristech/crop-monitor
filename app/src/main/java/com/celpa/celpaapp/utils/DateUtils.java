@@ -6,6 +6,19 @@ import java.util.Date;
 
 public class DateUtils {
 
+    public static Date getDate(int year, int month, int dayOfMonth) {
+        String dateString = String.format("%s-%s-%s 00:00:00", year, month, dayOfMonth);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date;
+        try {
+            date = formatter.parse(dateString);
+            return date;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return new Date();
+    }
+
     public static String getFormattedString(int year, int month, int dayOfMonth) {
         String dateString = String.format("%s-%s-%s 00:00:00", year, month, dayOfMonth);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -18,5 +31,11 @@ public class DateUtils {
         }
 
         return "--";
+    }
+
+    public static String getFormattedString(long unixTimestamp) {
+        SimpleDateFormat formatter = new SimpleDateFormat("EEEE, dd/MM/yyyy");
+        Date date = new Date(unixTimestamp * 1000);
+        return formatter.format(date.getTime());
     }
 }
