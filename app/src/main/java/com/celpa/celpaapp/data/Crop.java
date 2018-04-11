@@ -1,6 +1,8 @@
 package com.celpa.celpaapp.data;
 
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -117,5 +119,14 @@ public class Crop implements Parcelable {
             crop.img.add(new Image(imgElement.getAsString()));
         }
         return crop;
+    }
+
+    public static JsonObject convertLocationToJsonObject(Address address) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("address", address.getAddressLine(0));
+        jsonObject.addProperty("latitude", address.getLatitude());
+        jsonObject.addProperty("longitude", address.getLongitude());
+
+        return jsonObject;
     }
 }

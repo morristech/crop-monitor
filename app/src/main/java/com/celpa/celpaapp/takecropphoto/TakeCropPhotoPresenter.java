@@ -2,13 +2,18 @@ package com.celpa.celpaapp.takecropphoto;
 
 
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Location;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.celpa.celpaapp.data.Crop;
 import com.celpa.celpaapp.data.Image;
 import com.celpa.celpaapp.utils.AppSettings;
+import com.celpa.celpaapp.utils.CropLocationHelper;
 import com.celpa.celpaapp.utils.scheduler.BaseSchedulerProvider;
+
+import java.util.ArrayList;
 
 import io.reactivex.Flowable;
 import io.reactivex.disposables.CompositeDisposable;
@@ -20,17 +25,22 @@ public class TakeCropPhotoPresenter implements TakeCropPhotoContract.Presenter {
 
     private TakeCropPhotoContract.View takePhotoView;
 
+    private Crop crop = new Crop();
+
     private CompositeDisposable compositeDisposable;
     private BaseSchedulerProvider baseSchedulerProvider;
     private AppSettings appSettings;
+    private CropLocationHelper cropLocationHelper;
 
     public TakeCropPhotoPresenter(TakeCropPhotoContract.View view,
                                   AppSettings settings,
+                                  CropLocationHelper locationHelper,
                                   BaseSchedulerProvider schedulerProvider) {
         takePhotoView = view;
         compositeDisposable = new CompositeDisposable();
         baseSchedulerProvider = schedulerProvider;
         appSettings = settings;
+        cropLocationHelper = locationHelper;
         takePhotoView.setPresenter(this);
     }
 
@@ -46,7 +56,7 @@ public class TakeCropPhotoPresenter implements TakeCropPhotoContract.Presenter {
 
     @Override
     public void unsubscribe() {
-
+        compositeDisposable.clear();
     }
 
     @Override
@@ -67,26 +77,65 @@ public class TakeCropPhotoPresenter implements TakeCropPhotoContract.Presenter {
     @Override
     public void processPhoto(byte[] img) {
         compositeDisposable.clear();
-        Flowable<String> flowable = Flowable.fromCallable(() -> {
+
+        Flowable<String> saveBitmapToStorage = Flowable.fromCallable(() -> {
             String filePath = takePhotoView.saveBitmapToStorage(img);
             return filePath;
         });
+        Flowable<Location> getLastLocation = cropLocationHelper.getLastLocation();
+//        Flowable flowables = Flowable.concat(getLastLocation, saveBitmapToStorage);
 
         takePhotoView.showLoadingDialog(takePhotoView.getParsingImageText());
-        Disposable disposable = flowable
+//        Disposable disposable = flowables
+//                .subscribeOn(baseSchedulerProvider.io())
+//                .observeOn(baseSchedulerProvider.ui())
+//                .flatMap(obj ->  {
+//                            if(obj instanceof Location) {
+//                                return cropLocationHelper.getRxLocation().geocoding().fromLocation((Location) obj).toFlowable();
+//                            } else if(obj instanceof String) {
+//                                return Flowable.just((String) obj);
+//                            }
+//                            return Flowable.empty();
+//                })
+//                .doOnNext(obj -> {
+//                            if(obj instanceof Address) {
+//                                // Add location and weather
+//                                crop.location = Crop.convertLocationToJsonObject((Address) obj).toString();
+//                            }
+//                            else if(obj instanceof String) {
+//                                crop.img.add(new Image((String) obj));
+//                                takePhotoView.hideLoadingDialog();
+//                                takePhotoView.goToAddCropDetails(crop);
+//                            }
+//                })
+//                .subscribe(throwable -> {
+//                            takePhotoView.hideLoadingDialog();
+//                            takePhotoView.showOkDialog(throwable.toString());
+//                        }
+//                )
+//                ;
+
+        Disposable disposable = getLastLocation
                 .subscribeOn(baseSchedulerProvider.io())
                 .observeOn(baseSchedulerProvider.ui())
+                .flatMap(location -> cropLocationHelper.getRxLocation().geocoding().fromLocation(location).toFlowable())
+                .flatMap(address -> {
+                    crop.location = Crop.convertLocationToJsonObject(address).toString();
+                    return saveBitmapToStorage;
+                })
                 .subscribe(filePath -> {
-                            // Add location and weather
-                            Crop crop = new Crop();
+                            unsubscribe();
                             crop.img.add(new Image(filePath));
                             takePhotoView.hideLoadingDialog();
                             takePhotoView.goToAddCropDetails(crop);
                         },
                         throwable -> {
-                            takePhotoView.showLoadingDialog(throwable.getMessage());
+                            unsubscribe();
+                            takePhotoView.hideLoadingDialog();
+                            takePhotoView.showOkDialog(throwable.toString());
                         }
-                );
+                )
+                ;
 
         compositeDisposable.add(disposable);
     }

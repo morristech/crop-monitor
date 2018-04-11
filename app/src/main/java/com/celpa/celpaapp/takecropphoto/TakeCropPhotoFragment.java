@@ -22,6 +22,7 @@ import com.celpa.celpaapp.R;
 import com.celpa.celpaapp.addcropdetails.AddCropDetailsActivity;
 import com.celpa.celpaapp.allcrops.AllCropsActivity;
 import com.celpa.celpaapp.common.LoadingDialog;
+import com.celpa.celpaapp.common.OkDialog;
 import com.celpa.celpaapp.data.Crop;
 import com.celpa.celpaapp.login.LoginActivity;
 import com.celpa.celpaapp.utils.ActivityUtils;
@@ -54,6 +55,7 @@ public class TakeCropPhotoFragment extends Fragment
     private CameraView cameraView;
     private Button takePhotoBtn;
     private LoadingDialog loadingDialog;
+    private OkDialog okDialog;
     private Bitmap capturedBitmap;
 
     public static TakeCropPhotoFragment newInstance() {
@@ -107,7 +109,6 @@ public class TakeCropPhotoFragment extends Fragment
         return true;
     }
 
-    @WithPermissions(permissions = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION})
     @Override
     public void goToAddCropDetails() {
         ActivityUtils.goToActivity(getActivity(), AddCropDetailsActivity.class);
@@ -144,6 +145,12 @@ public class TakeCropPhotoFragment extends Fragment
         if(loadingDialog == null)
             return;
         loadingDialog.dismiss();
+    }
+
+    @Override
+    public void showOkDialog(String msg) {
+        okDialog = OkDialog.newInstance(msg);
+        okDialog.show(getFragmentManager(), TAG);
     }
 
     @Override
@@ -200,6 +207,7 @@ public class TakeCropPhotoFragment extends Fragment
     @Override
     public void onError(CameraKitError cameraKitError) {}
 
+    @WithPermissions(permissions = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION})
     @Override
     public void onImage(CameraKitImage cameraKitImage) {
         byte[] photoByte = cameraKitImage.getJpeg();

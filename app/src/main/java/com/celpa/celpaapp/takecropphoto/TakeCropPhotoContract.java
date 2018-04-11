@@ -28,6 +28,8 @@ public interface TakeCropPhotoContract {
 
         void hideLoadingDialog();
 
+        void showOkDialog(String msg);
+
         String getGettingLocationText();
 
         String getGettingWeatherText();
