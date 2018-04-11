@@ -58,6 +58,7 @@ public class AllCropsPresenter implements AllCropsContract.Presenter {
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(jsonArr -> {
+                            unsubscribe();
                             List<Crop> crops = new ArrayList<>(0);
                             JsonArray array = jsonArr.getAsJsonArray();
                             Log.d(TAG, String.valueOf(array.size()));
@@ -68,6 +69,7 @@ public class AllCropsPresenter implements AllCropsContract.Presenter {
                             allCropsView.displayCrops(crops);
                         },
                         throwable -> {
+                            unsubscribe();
                             allCropsView.showOkDialog(throwable.getMessage());
                         }
                 );

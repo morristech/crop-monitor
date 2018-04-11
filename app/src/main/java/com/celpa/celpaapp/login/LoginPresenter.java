@@ -72,6 +72,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                     .subscribeOn(schedulerProvider.io())
                     .observeOn(schedulerProvider.ui())
                     .subscribe(json -> {
+                                unsubscribe();
                                 loginView.hideLoggingInDialog();
                                 // onNext
                                 long id = json.getAsJsonPrimitive("id").getAsLong();
@@ -83,6 +84,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                                     loginView.showOkDialog(loginView.setFailedToLoginText());
                             },
                             throwable -> {
+                                unsubscribe();
                                 loginView.hideLoggingInDialog();
                                 loginView.showOkDialog(throwable.getMessage());
                             }

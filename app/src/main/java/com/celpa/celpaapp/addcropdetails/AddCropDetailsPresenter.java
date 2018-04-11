@@ -71,12 +71,14 @@ public class AddCropDetailsPresenter implements AddCropDetailsContract.Presenter
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(result -> {
+                            unsubscribe();
                             Log.d(TAG, result.toString());
                             addCropDetailsView.hideLoadingDialog();
                             addCropDetailsView.showOkDialog(addCropDetailsView.getCropSavedText(),
                                     () -> addCropDetailsView.closeEditor());
                         },
                         throwable ->  {
+                            unsubscribe();
                             addCropDetailsView.hideLoadingDialog();
                             addCropDetailsView.showOkDialog(throwable.toString());
                         }

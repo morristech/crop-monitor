@@ -78,6 +78,7 @@ public class RegisterFarmerPresenter implements RegisterFarmerContract.Presenter
                     .subscribeOn(schedulerProvider.io())
                     .observeOn(schedulerProvider.ui())
                     .subscribe(json -> {
+                                unsubscribe();
                                 Log.d(TAG, json.toString());
                                 long id = json.getAsJsonPrimitive("id").getAsLong();
                                 appSettings.setFarmer(id);
@@ -89,6 +90,7 @@ public class RegisterFarmerPresenter implements RegisterFarmerContract.Presenter
                                         });
                             },
                             throwable -> {
+                                unsubscribe();
                                 registerFarmerView.showOkDialog(throwable.getMessage());
                             }
                     );
