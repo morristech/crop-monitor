@@ -66,6 +66,7 @@ public class CropRemoteDataSource implements CropDataSource {
         }
 
         JsonObject json = new JsonObject();
+        json.addProperty("farmer_id", crop.farmerId);
         json.addProperty("name", crop.name);
         json.addProperty("no_of_ferts_used", crop.noOfFertilizersUsed);
         json.addProperty("no_of_water_applied", crop.noOfWaterAppliedPerDay);

@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.celpa.celpaapp.R;
 import com.celpa.celpaapp.data.Crop;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.PicassoProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +70,14 @@ public class CropAdapter extends RecyclerView.Adapter<CropAdapter.ViewHolder> {
             harvestDateTxt.setText(String.valueOf(crop.approxDateOfHarvest));
             fertsUsedTxt.setText(String.valueOf(crop.noOfFertilizersUsed));
             waterAppliedTxt.setText(String.valueOf(crop.noOfWaterAppliedPerDay));
+
+            // Trigger the download of the URL async into the image view
+            Picasso.get()
+                    .load(crop.img.get(0).imgPath)
+                    .resize(100, 100)
+                    .centerInside()
+                    .error(R.drawable.error_img)
+                    .into(cropImgView);
         }
     }
 

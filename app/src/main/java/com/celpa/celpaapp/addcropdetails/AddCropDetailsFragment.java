@@ -25,6 +25,7 @@ import com.celpa.celpaapp.R;
 import com.celpa.celpaapp.common.LoadingDialog;
 import com.celpa.celpaapp.common.OkDialog;
 import com.celpa.celpaapp.data.Crop;
+import com.celpa.celpaapp.utils.AppSettings;
 import com.celpa.celpaapp.utils.BitmapUtils;
 import com.celpa.celpaapp.utils.DateUtils;
 import com.livinglifetechway.quickpermissions.annotations.WithPermissions;
@@ -148,10 +149,12 @@ public class AddCropDetailsFragment extends Fragment
 
     @WithPermissions(permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE})
     public void saveToLocalAndRemoteSources() {
+        crop.farmerId = AppSettings.getInstance(getContext()).getFarmerLoggedIn();
         crop.name = nameEdittxt.getText().toString();
         crop.noOfFertilizersUsed = Long.parseLong(fertsUsedEdittxt.getText().toString());
         crop.noOfWaterAppliedPerDay = Long.parseLong(waterAppliedEdittxt.getText().toString());
         crop.weather = "";
+        crop.timeStamp = System.currentTimeMillis() / 1000;
 
         presenter.saveCropDetails(crop);
     }

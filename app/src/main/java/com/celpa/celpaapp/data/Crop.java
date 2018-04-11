@@ -14,6 +14,7 @@ import java.util.List;
 public class Crop implements Parcelable {
 
     public long id = 0;
+    public long farmerId = 0;
     public List<Image> img = new ArrayList<>(0);
     public String name = "";
     public long timeStamp = 0;
@@ -27,6 +28,7 @@ public class Crop implements Parcelable {
 
     public Crop(Parcel in) {
         id = in.readLong();
+        farmerId = in.readLong();
         name = in.readString();
         in.readList(img, Image.class.getClassLoader());
         timeStamp = in.readLong();
@@ -45,6 +47,7 @@ public class Crop implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(id);
+        dest.writeLong(farmerId);
         dest.writeString(name);
         dest.writeList(img);
         dest.writeLong(timeStamp);
@@ -80,6 +83,7 @@ public class Crop implements Parcelable {
 
     public JsonObject toJsonObject() {
         JsonObject json = new JsonObject();
+        json.addProperty("farmer_id", farmerId);
         json.addProperty("id", id);
         json.addProperty("name", name);
 

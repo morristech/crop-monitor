@@ -53,6 +53,7 @@ public class AllCropsPresenter implements AllCropsContract.Presenter {
     public void getCrops() {
         compositeDisposable.clear();
 
+        // allCropsView.showLoadingDialog();
         Disposable disposable = remoteDataSource.getCropsInJson(allCropsView.getFarmerId())
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
@@ -63,6 +64,7 @@ public class AllCropsPresenter implements AllCropsContract.Presenter {
                             for(JsonElement element: array) {
                                 crops.add(Crop.getCrop(element.getAsJsonObject()));
                             }
+                            // allCropsView.hideLoadingDialog();
                             allCropsView.displayCrops(crops);
                         },
                         throwable -> {
