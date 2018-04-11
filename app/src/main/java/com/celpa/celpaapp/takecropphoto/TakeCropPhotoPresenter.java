@@ -83,38 +83,8 @@ public class TakeCropPhotoPresenter implements TakeCropPhotoContract.Presenter {
             return filePath;
         });
         Flowable<Location> getLastLocation = cropLocationHelper.getLastLocation();
-//        Flowable flowables = Flowable.concat(getLastLocation, saveBitmapToStorage);
 
         takePhotoView.showLoadingDialog(takePhotoView.getParsingImageText());
-//        Disposable disposable = flowables
-//                .subscribeOn(baseSchedulerProvider.io())
-//                .observeOn(baseSchedulerProvider.ui())
-//                .flatMap(obj ->  {
-//                            if(obj instanceof Location) {
-//                                return cropLocationHelper.getRxLocation().geocoding().fromLocation((Location) obj).toFlowable();
-//                            } else if(obj instanceof String) {
-//                                return Flowable.just((String) obj);
-//                            }
-//                            return Flowable.empty();
-//                })
-//                .doOnNext(obj -> {
-//                            if(obj instanceof Address) {
-//                                // Add location and weather
-//                                crop.location = Crop.convertLocationToJsonObject((Address) obj).toString();
-//                            }
-//                            else if(obj instanceof String) {
-//                                crop.img.add(new Image((String) obj));
-//                                takePhotoView.hideLoadingDialog();
-//                                takePhotoView.goToAddCropDetails(crop);
-//                            }
-//                })
-//                .subscribe(throwable -> {
-//                            takePhotoView.hideLoadingDialog();
-//                            takePhotoView.showOkDialog(throwable.toString());
-//                        }
-//                )
-//                ;
-
         Disposable disposable = getLastLocation
                 .subscribeOn(baseSchedulerProvider.io())
                 .observeOn(baseSchedulerProvider.ui())

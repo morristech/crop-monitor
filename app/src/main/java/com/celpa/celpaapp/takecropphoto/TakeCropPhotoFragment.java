@@ -56,7 +56,6 @@ public class TakeCropPhotoFragment extends Fragment
     private Button takePhotoBtn;
     private LoadingDialog loadingDialog;
     private OkDialog okDialog;
-    private Bitmap capturedBitmap;
 
     public static TakeCropPhotoFragment newInstance() {
         return new TakeCropPhotoFragment();
