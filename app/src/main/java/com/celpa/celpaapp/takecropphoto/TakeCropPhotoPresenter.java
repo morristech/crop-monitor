@@ -12,6 +12,9 @@ import com.celpa.celpaapp.data.Image;
 import com.celpa.celpaapp.utils.AppSettings;
 import com.celpa.celpaapp.utils.CropLocationHelper;
 import com.celpa.celpaapp.utils.scheduler.BaseSchedulerProvider;
+import com.celpa.celpaapp.utils.weather.OpenWeather;
+import com.celpa.celpaapp.utils.weather.OpenWeatherHelper;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 
@@ -31,16 +34,19 @@ public class TakeCropPhotoPresenter implements TakeCropPhotoContract.Presenter {
     private BaseSchedulerProvider baseSchedulerProvider;
     private AppSettings appSettings;
     private CropLocationHelper cropLocationHelper;
+    private OpenWeather weather;
 
     public TakeCropPhotoPresenter(TakeCropPhotoContract.View view,
                                   AppSettings settings,
                                   CropLocationHelper locationHelper,
+                                  OpenWeather openWeather,
                                   BaseSchedulerProvider schedulerProvider) {
         takePhotoView = view;
         compositeDisposable = new CompositeDisposable();
         baseSchedulerProvider = schedulerProvider;
         appSettings = settings;
         cropLocationHelper = locationHelper;
+        weather = openWeather;
         takePhotoView.setPresenter(this);
     }
 
@@ -60,18 +66,13 @@ public class TakeCropPhotoPresenter implements TakeCropPhotoContract.Presenter {
     }
 
     @Override
-    public Bitmap getBitmap() {
-        return null;
+    public Flowable<Location> getLocation() {
+        return cropLocationHelper.getLastLocation();
     }
 
     @Override
-    public String getLocation() {
-        return null;
-    }
-
-    @Override
-    public void getWeather() {
-
+    public Flowable<JsonObject> getWeather(double lat, double lon) {
+        return weather.getWeatherFromCoords(lat, lon);
     }
 
     @Override
@@ -82,15 +83,24 @@ public class TakeCropPhotoPresenter implements TakeCropPhotoContract.Presenter {
             String filePath = takePhotoView.saveBitmapToStorage(img);
             return filePath;
         });
-        Flowable<Location> getLastLocation = cropLocationHelper.getLastLocation();
 
-        takePhotoView.showLoadingDialog(takePhotoView.getParsingImageText());
-        Disposable disposable = getLastLocation
+        takePhotoView.showLoadingDialog(takePhotoView.getGettingLocationText());
+        Disposable disposable = getLocation()
                 .subscribeOn(baseSchedulerProvider.io())
                 .observeOn(baseSchedulerProvider.ui())
                 .flatMap(location -> cropLocationHelper.getRxLocation().geocoding().fromLocation(location).toFlowable())
                 .flatMap(address -> {
                     crop.location = Crop.convertLocationToJsonObject(address).toString();
+                    takePhotoView.updateLoadingDialog(takePhotoView.getGettingWeatherText());
+                    return getWeather(address.getLatitude(), address.getLongitude())
+                            // Prevent network main thread exception
+                            .subscribeOn(baseSchedulerProvider.io())
+                            .observeOn(baseSchedulerProvider.ui())
+                            ;
+                })
+                .flatMap(jsonObject -> {
+                    crop.weather = OpenWeather.getWeather(jsonObject);
+                    takePhotoView.updateLoadingDialog(takePhotoView.getParsingImageText());
                     return saveBitmapToStorage;
                 })
                 .subscribe(filePath -> {
@@ -100,7 +110,6 @@ public class TakeCropPhotoPresenter implements TakeCropPhotoContract.Presenter {
                             takePhotoView.goToAddCropDetails(crop);
                         },
                         throwable -> {
-                            unsubscribe();
                             takePhotoView.hideLoadingDialog();
                             takePhotoView.showOkDialog(throwable.toString());
                         }
@@ -118,6 +127,7 @@ public class TakeCropPhotoPresenter implements TakeCropPhotoContract.Presenter {
                 .subscribeOn(baseSchedulerProvider.io())
                 .observeOn(baseSchedulerProvider.ui())
                 .subscribe(result -> {
+                        unsubscribe();
                         takePhotoView.closeMe();
                         takePhotoView.goToLogin();
                         takePhotoView.hideLoadingDialog();

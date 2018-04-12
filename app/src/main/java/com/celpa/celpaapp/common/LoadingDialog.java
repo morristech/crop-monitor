@@ -30,12 +30,13 @@ public class LoadingDialog extends DialogFragment {
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(false);
         text = view.findViewById(R.id.txt_progress_msg);
-        text.setText(message);
+        updateTxtMsg(message);
         return view;
     }
 
     public void updateTxtMsg(String msg) {
-        text.setText(msg);
+        message = msg;
+        text.setText(message);
     }
 
     @Override

@@ -22,9 +22,6 @@ import retrofit2.http.Query;
 
 public interface CelpaApiService {
 
-    String BASE_URL = "http://192.168.1.33:3000/celpa/";
-    String BASE_URL_IMG = "http://192.168.1.33:3000";
-
     @GET("farmer/getFarmers")
     Flowable<List<Farmer>> getFarmers();
 

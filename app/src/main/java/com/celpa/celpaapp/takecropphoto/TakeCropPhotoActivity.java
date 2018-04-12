@@ -8,13 +8,13 @@ import com.celpa.celpaapp.utils.ActivityUtils;
 import com.celpa.celpaapp.utils.AppSettings;
 import com.celpa.celpaapp.utils.CropLocationHelper;
 import com.celpa.celpaapp.utils.scheduler.SchedulerProvider;
+import com.celpa.celpaapp.utils.weather.OpenWeather;
 
 public class TakeCropPhotoActivity extends BaseActivity {
 
     private static final String TAG = TakeCropPhotoActivity.class.getSimpleName();
 
     private TakeCropPhotoPresenter presenter;
-    private CropLocationHelper cropLocationHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +31,7 @@ public class TakeCropPhotoActivity extends BaseActivity {
         presenter = new TakeCropPhotoPresenter(takeCropPhotoFragment,
                 AppSettings.getInstance(this),
                 CropLocationHelper.getInstance(this),
+                OpenWeather.getInstance(),
                 SchedulerProvider.getInstance());
     }
 }

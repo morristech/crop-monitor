@@ -1,7 +1,8 @@
-package com.celpa.celpaapp.data.source.remote;
+package com.celpa.celpaapp.utils.weather;
 
 
 import com.celpa.celpaapp.BuildConfig;
+import com.celpa.celpaapp.data.source.remote.CelpaApiService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -13,13 +14,13 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class CelpaApiHelper {
+public class OpenWeatherHelper {
 
     private static final long DEFAULT_TIMEOUT = 60;
 
-    private static CelpaApiService apiService;
+    private static OpenWeatherApiService apiService;
 
-    public static CelpaApiService getApiInstance() {
+    public static OpenWeatherApiService getApiInstance() {
 
         if(apiService == null) {
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
@@ -36,19 +37,16 @@ public class CelpaApiHelper {
                     .create();
 
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(BuildConfig.BASE_URL)
+                    .baseUrl(BuildConfig.OPEN_WEATHER_URL)
                     .client(client)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();
 
-            apiService = retrofit.create(CelpaApiService.class);
+            apiService = retrofit.create(OpenWeatherApiService.class);
         }
 
         return apiService;
 
     }
-
-
-
 }

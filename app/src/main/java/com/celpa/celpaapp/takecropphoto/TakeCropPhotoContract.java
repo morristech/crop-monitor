@@ -2,11 +2,13 @@ package com.celpa.celpaapp.takecropphoto;
 
 
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.os.Bundle;
 
 import com.celpa.celpaapp.BasePresenter;
 import com.celpa.celpaapp.BaseView;
 import com.celpa.celpaapp.data.Crop;
+import com.google.gson.JsonObject;
 
 import io.reactivex.Flowable;
 
@@ -47,11 +49,9 @@ public interface TakeCropPhotoContract {
 
     interface Presenter extends BasePresenter {
 
-        Bitmap getBitmap();
+        Flowable<Location> getLocation();
 
-        String getLocation();
-
-        void getWeather();
+        Flowable<JsonObject> getWeather(double lat, double lon);
 
         void processPhoto(byte[] photo);
 

@@ -38,6 +38,6 @@ public class FarmerRemoteDataSourceTest {
     @Test
     public void doesFarmerExists() {
         CelpaApiService celpaApiService = CelpaApiHelper.getApiInstance();
-        celpaApiService.isFarmerRegistered("kheldiente", "mikediente123");
+        celpaApiService.getFarmer("kheldiente", "mikediente123");
     }
 }

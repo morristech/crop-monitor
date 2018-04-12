@@ -88,18 +88,17 @@ public class AddCropDetailsFragment extends Fragment
     }
 
     private void init() {
-
-        Bitmap photoTaken = BitmapUtils.getBitmapFromStorage(getContext(), crop.img.get(0).imgPath);
-        cropImgView.setImageBitmap(photoTaken);
-
         changeApproxDateBtn.setOnClickListener(this);
+        showCapturedPhoto();
 
-        // Init approx. date of harvest
         final Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
 
+        datePickerDialog = new DatePickerDialog(getActivity(), this, year, month, day);
+
+        // Init approx. date of harvest
         String formattedDate = DateUtils.getFormattedString(year, month, day);
         setApproxDateOfHarvest(formattedDate);
     }
@@ -112,13 +111,12 @@ public class AddCropDetailsFragment extends Fragment
 
     @Override
     public void showCapturedPhoto() {
-
+        Bitmap photoTaken = BitmapUtils.getBitmapFromStorage(getContext(), crop.img.get(0).imgPath);
+        cropImgView.setImageBitmap(photoTaken);
     }
 
     @Override
-    public void showLocation() {
-
-    }
+    public void showLocation() {}
 
     @Override
     public void showWeather() {
@@ -159,7 +157,6 @@ public class AddCropDetailsFragment extends Fragment
         int dayOfMonth = datePickerDialog.getDatePicker().getDayOfMonth();
 
         crop.approxDateOfHarvest = DateUtils.getDate(year, month, dayOfMonth).getTime() / 1000;
-        crop.weather = "";
         crop.timeStamp = System.currentTimeMillis() / 1000;
 
         presenter.saveCropDetails(crop);
