@@ -105,6 +105,8 @@ public class TakeCropPhotoPresenter implements TakeCropPhotoContract.Presenter {
                 })
                 .subscribe(filePath -> {
                             unsubscribe();
+                            // Reset list of images stored!
+                            crop.img = new ArrayList<>(0);
                             crop.img.add(new Image(filePath));
                             takePhotoView.hideLoadingDialog();
                             takePhotoView.goToAddCropDetails(crop);

@@ -28,6 +28,9 @@ import com.celpa.celpaapp.data.Crop;
 import com.celpa.celpaapp.utils.AppSettings;
 import com.celpa.celpaapp.utils.BitmapUtils;
 import com.celpa.celpaapp.utils.DateUtils;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
 import com.livinglifetechway.quickpermissions.annotations.WithPermissions;
 
 import java.text.ParseException;
@@ -55,6 +58,8 @@ public class AddCropDetailsFragment extends Fragment
     private EditText fertsUsedEdittxt;
     private EditText waterAppliedEdittxt;
     private TextView approxDateHarvestTxt;
+    private TextView locationTxt;
+    private TextView weatherTxt;
     private Button changeApproxDateBtn;
     private ImageView cropImgView;
 
@@ -81,6 +86,8 @@ public class AddCropDetailsFragment extends Fragment
         approxDateHarvestTxt = root.findViewById(R.id.txt_approx_date_harvest);
         waterAppliedEdittxt = root.findViewById(R.id.edittxt_water_applied);
         changeApproxDateBtn = root.findViewById(R.id.btn_change_approx_date);
+        locationTxt = root.findViewById(R.id.txt_location);
+        weatherTxt = root.findViewById(R.id.txt_weather);
 
         init();
 
@@ -90,6 +97,8 @@ public class AddCropDetailsFragment extends Fragment
     private void init() {
         changeApproxDateBtn.setOnClickListener(this);
         showCapturedPhoto();
+        showLocation();
+        showWeather();
 
         final Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
@@ -116,11 +125,19 @@ public class AddCropDetailsFragment extends Fragment
     }
 
     @Override
-    public void showLocation() {}
+    public void showLocation() {
+        try {
+            JsonObject addressObj = new JsonParser().parse(crop.location).getAsJsonObject();
+            locationTxt.setText(addressObj.getAsJsonPrimitive("address").getAsString());
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     @Override
     public void showWeather() {
-
+        weatherTxt.setText(crop.weather);
     }
 
     @Override
