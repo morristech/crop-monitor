@@ -117,7 +117,8 @@ public class AddCropDetailsFragment extends Fragment
         datePickerDialog = new DatePickerDialog(getActivity(), this, year, month, day);
 
         // Init approx. date of harvest
-        String formattedDate = DateUtils.getFormattedString(year, month, day);
+        // Need to +1 in month becasue January === 1
+        String formattedDate = DateUtils.getFormattedString(year, month + 1, day);
         setPlantedStartDate(formattedDate);
     }
 
@@ -162,12 +163,9 @@ public class AddCropDetailsFragment extends Fragment
 
     @Override
     public void showDatePickerDialog() {
-        final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
+        if(datePickerDialog == null)
+            return;
 
-        datePickerDialog = new DatePickerDialog(getActivity(), this, year, month, day);
         datePickerDialog.show();
     }
 
@@ -188,7 +186,7 @@ public class AddCropDetailsFragment extends Fragment
         crop.noOfWaterAppliedPerDay = Double.parseDouble(waterAppliedEdittxt.getText().toString());
 
         int year = datePickerDialog.getDatePicker().getYear();
-        int month = datePickerDialog.getDatePicker().getMonth();
+        int month = datePickerDialog.getDatePicker().getMonth() + 1; // Need to +1 because January == 1
         int dayOfMonth = datePickerDialog.getDatePicker().getDayOfMonth();
 
         crop.plantedStartDate = DateUtils.getDate(year, month, dayOfMonth).getTime() / 1000;
@@ -259,6 +257,7 @@ public class AddCropDetailsFragment extends Fragment
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        month += 1; // January == 1 so need to +1
         String formattedDate = DateUtils.getFormattedString(year, month, dayOfMonth);
         setPlantedStartDate(formattedDate);
     }
