@@ -12,6 +12,8 @@ import com.celpa.celpaapp.utils.RetrofitUtils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -72,7 +74,14 @@ public class CropRemoteDataSource implements CropDataSource {
         json.addProperty("no_of_water_applied", crop.noOfWaterAppliedPerDay);
         json.addProperty("planted_start_date", crop.plantedStartDate);
         json.addProperty("weather", crop.weather);
-        json.addProperty("location", crop.location);
+
+        try {
+            JsonObject locObj = new JsonParser().parse(crop.location).getAsJsonObject();
+            json.add("location", locObj);
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+        }
+
         json.addProperty("timeStamp", crop.timeStamp);
 
         RequestBody requestBody = RetrofitUtils.createPartFromJson(json);

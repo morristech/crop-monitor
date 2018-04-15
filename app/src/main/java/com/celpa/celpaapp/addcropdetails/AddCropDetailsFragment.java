@@ -175,10 +175,10 @@ public class AddCropDetailsFragment extends Fragment
     public void saveToLocalAndRemoteSources() {
         crop.farmerId = AppSettings.getInstance(getContext()).getFarmerLoggedIn();
 
-        long selected = defaulNamesSpinner.getSelectedItemId();
+        long selected = defaulNamesSpinner.getSelectedItemPosition();
         String cropName = "";
-        if(selected < MAX_DEFAULT_CROP_NAMES - 3) {
-            cropName = getResources().getStringArray(R.array.crop_name_defaults)[0];
+        if(selected < MAX_DEFAULT_CROP_NAMES - 1) {
+            cropName = getResources().getStringArray(R.array.crop_name_defaults)[defaulNamesSpinner.getSelectedItemPosition()];
         } else {
             cropName = nameEdittxt.getText().toString();
         }
