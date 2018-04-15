@@ -15,10 +15,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.celpa.celpaapp.R;
@@ -41,11 +43,14 @@ import java.util.Date;
 public class AddCropDetailsFragment extends Fragment
         implements AddCropDetailsContract.View,
         View.OnClickListener,
-        DatePickerDialog.OnDateSetListener {
+        DatePickerDialog.OnDateSetListener,
+        AdapterView.OnItemSelectedListener {
 
     private static final String TAG = AddCropDetailsFragment.class.getSimpleName();
 
     private static final String EXTRA_CROP = "crop";
+
+    private static final int MAX_DEFAULT_CROP_NAMES = 4;
 
     private Crop crop;
 
@@ -54,10 +59,11 @@ public class AddCropDetailsFragment extends Fragment
     private DatePickerDialog datePickerDialog;
     private LoadingDialog loadingDialog;
     private OkDialog okDialog;
+    private Spinner defaulNamesSpinner;
     private EditText nameEdittxt;
     private EditText fertsUsedEdittxt;
     private EditText waterAppliedEdittxt;
-    private TextView approxDateHarvestTxt;
+    private TextView plantedStartDateTxt;
     private TextView locationTxt;
     private TextView weatherTxt;
     private Button changeApproxDateBtn;
@@ -81,9 +87,10 @@ public class AddCropDetailsFragment extends Fragment
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_addcropdetails, container, false);
         cropImgView = root.findViewById(R.id.iv_crop);
+        defaulNamesSpinner = root.findViewById(R.id.sp_crop_names);
         nameEdittxt = root.findViewById(R.id.edittxt_crop_name);
         fertsUsedEdittxt = root.findViewById(R.id.edittxt_fert_used);
-        approxDateHarvestTxt = root.findViewById(R.id.txt_approx_date_harvest);
+        plantedStartDateTxt = root.findViewById(R.id.txt_planted_start_date);
         waterAppliedEdittxt = root.findViewById(R.id.edittxt_water_applied);
         changeApproxDateBtn = root.findViewById(R.id.btn_change_approx_date);
         locationTxt = root.findViewById(R.id.txt_location);
@@ -100,6 +107,8 @@ public class AddCropDetailsFragment extends Fragment
         showLocation();
         showWeather();
 
+        defaulNamesSpinner.setOnItemSelectedListener(this);
+
         final Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
@@ -109,7 +118,7 @@ public class AddCropDetailsFragment extends Fragment
 
         // Init approx. date of harvest
         String formattedDate = DateUtils.getFormattedString(year, month, day);
-        setApproxDateOfHarvest(formattedDate);
+        setPlantedStartDate(formattedDate);
     }
 
 
@@ -165,23 +174,32 @@ public class AddCropDetailsFragment extends Fragment
     @WithPermissions(permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE})
     public void saveToLocalAndRemoteSources() {
         crop.farmerId = AppSettings.getInstance(getContext()).getFarmerLoggedIn();
-        crop.name = nameEdittxt.getText().toString();
-        crop.noOfFertilizersUsed = Long.parseLong(fertsUsedEdittxt.getText().toString());
-        crop.noOfWaterAppliedPerDay = Long.parseLong(waterAppliedEdittxt.getText().toString());
+
+        long selected = defaulNamesSpinner.getSelectedItemId();
+        String cropName = "";
+        if(selected < MAX_DEFAULT_CROP_NAMES - 3) {
+            cropName = getResources().getStringArray(R.array.crop_name_defaults)[0];
+        } else {
+            cropName = nameEdittxt.getText().toString();
+        }
+
+        crop.name = cropName;
+        crop.noOfFertilizersUsed = Double.parseDouble(fertsUsedEdittxt.getText().toString());
+        crop.noOfWaterAppliedPerDay = Double.parseDouble(waterAppliedEdittxt.getText().toString());
 
         int year = datePickerDialog.getDatePicker().getYear();
         int month = datePickerDialog.getDatePicker().getMonth();
         int dayOfMonth = datePickerDialog.getDatePicker().getDayOfMonth();
 
-        crop.approxDateOfHarvest = DateUtils.getDate(year, month, dayOfMonth).getTime() / 1000;
+        crop.plantedStartDate = DateUtils.getDate(year, month, dayOfMonth).getTime() / 1000;
         crop.timeStamp = System.currentTimeMillis() / 1000;
 
         presenter.saveCropDetails(crop);
     }
 
     @Override
-    public void setApproxDateOfHarvest(String dateOfHarvest) {
-        approxDateHarvestTxt.setText(dateOfHarvest);
+    public void setPlantedStartDate(String dateOfHarvest) {
+        plantedStartDateTxt.setText(dateOfHarvest);
     }
 
     @Override
@@ -242,6 +260,20 @@ public class AddCropDetailsFragment extends Fragment
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         String formattedDate = DateUtils.getFormattedString(year, month, dayOfMonth);
-        setApproxDateOfHarvest(formattedDate);
+        setPlantedStartDate(formattedDate);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if(position == MAX_DEFAULT_CROP_NAMES - 1) {
+            nameEdittxt.setVisibility(View.VISIBLE);
+        } else {
+            nameEdittxt.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        defaulNamesSpinner.setSelection(defaulNamesSpinner.getSelectedItemPosition());
     }
 }

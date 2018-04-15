@@ -37,4 +37,11 @@
     <string name="harvest_date">Harvest date</string>
     <string name="sample">Sample</string>
     <string name="refresh">Refresh</string>
+    <string name="planted_start_date">Planted</string>
+    <string-array name="crop_name_defaults">
+        <item>Lettuce</item>
+        <item>Cucumber</item>
+        <item>Chili(Pangsigang)</item>
+        <item>Other</item>
+    </string-array>
 </resources>

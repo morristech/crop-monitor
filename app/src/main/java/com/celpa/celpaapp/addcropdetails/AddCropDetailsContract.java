@@ -22,7 +22,7 @@ public interface AddCropDetailsContract {
 
         void showDatePickerDialog();
 
-        void setApproxDateOfHarvest(String dateOfHarvest);
+        void setPlantedStartDate(String dateOfHarvest);
 
         void showOkDialog(String msg);
 

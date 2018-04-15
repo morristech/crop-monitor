@@ -60,7 +60,7 @@ public class CropLocalDataSource implements CropDataSource {
         String imgPath = c.getString(c.getColumnIndexOrThrow(CropEntry.COL_CROP_IMG_PATH));
         long noOfFertsUsed = c.getLong(c.getColumnIndexOrThrow(CropEntry.COL_NO_OF_FERTS_USED));
         long noOfWaterApplied = c.getLong(c.getColumnIndexOrThrow(CropEntry.COL_NO_OF_WATER_APPLIED));
-        long approxDateHarvest = c.getLong(c.getColumnIndexOrThrow(CropEntry.COL_APPROX_DATE_HARVEST));
+        long plantedStartDate = c.getLong(c.getColumnIndexOrThrow(CropEntry.COL_PLANTED_START_DATE));
         String weather = c.getString(c.getColumnIndexOrThrow(CropEntry.COL_WEATHER));
 
         Crop crop = new Crop();
@@ -69,7 +69,7 @@ public class CropLocalDataSource implements CropDataSource {
         crop.img.add(new Image(imgPath));
         crop.noOfFertilizersUsed = noOfFertsUsed;
         crop.noOfWaterAppliedPerDay = noOfWaterApplied;
-        crop.approxDateOfHarvest = approxDateHarvest;
+        crop.plantedStartDate = plantedStartDate;
         crop.weather = weather;
 
         return crop;
@@ -83,7 +83,7 @@ public class CropLocalDataSource implements CropDataSource {
                 CropEntry.COL_CROP_IMG_PATH,
                 CropEntry.COL_NO_OF_FERTS_USED,
                 CropEntry.COL_NO_OF_WATER_APPLIED,
-                CropEntry.COL_APPROX_DATE_HARVEST,
+                CropEntry.COL_PLANTED_START_DATE,
                 CropEntry.COL_WEATHER
         };
 
@@ -108,7 +108,7 @@ public class CropLocalDataSource implements CropDataSource {
                 CropEntry.COL_CROP_IMG_PATH,
                 CropEntry.COL_NO_OF_FERTS_USED,
                 CropEntry.COL_NO_OF_WATER_APPLIED,
-                CropEntry.COL_APPROX_DATE_HARVEST,
+                CropEntry.COL_PLANTED_START_DATE,
                 CropEntry.COL_WEATHER
         };
 

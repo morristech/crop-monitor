@@ -113,9 +113,9 @@
                 />
 
             <TextView
-                android:id="@+id/txt_approx_date_harvest_label"
+                android:id="@+id/txt_planted_start_date_label"
                 style="@style/AppTextView"
-                android:text="@string/harvest_date"
+                android:text="@string/planted_start_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="0dp"
@@ -125,9 +125,9 @@
                 />
 
             <TextView
-                android:id="@+id/txt_approx_date_harvest"
+                android:id="@+id/txt_planted_start_date"
                 style="@style/AppTextView"
-                tools:text="@string/harvest_date"
+                tools:text="@string/planted_start_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="0dp"
@@ -136,7 +136,7 @@
                 android:textStyle="bold"
                 android:textColor="@android:color/holo_red_dark"
                 app:layout_constraintTop_toBottomOf="@+id/txt_weather_label"
-                app:layout_constraintLeft_toRightOf="@+id/txt_approx_date_harvest_label"
+                app:layout_constraintLeft_toRightOf="@+id/txt_planted_start_date_label"
                 />
 
             <TextView
@@ -148,7 +148,7 @@
                 android:padding="0dp"
                 android:layout_marginLeft="20dp"
                 app:layout_constraintLeft_toRightOf="@+id/iv_crop"
-                app:layout_constraintTop_toBottomOf="@+id/txt_approx_date_harvest_label"
+                app:layout_constraintTop_toBottomOf="@+id/txt_planted_start_date_label"
                 />
 
             <TextView

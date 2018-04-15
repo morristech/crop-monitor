@@ -96,7 +96,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/txt_approx_date_harvest"
+                    android:id="@+id/txt_planted_start_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/AppTextView"
@@ -119,12 +119,23 @@
 
         </LinearLayout>
 
-        <EditText
+        <Spinner
+            android:id="@+id/sp_crop_names"
             android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border"
+            style="@style/AppEditText"
+            android:entries="@array/crop_name_defaults"
+            />
+
+        <EditText
             android:id="@+id/edittxt_crop_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:hint="@string/crop_name"
+            android:visibility="gone"
             style="@style/AppEditText"
             />
 

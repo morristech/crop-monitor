@@ -7,6 +7,7 @@ public class CelpaPersistenceContract {
 
     private static final String TEXT_TYPE = " TEXT";
     private static final String INTEGER_TYPE = " INTEGER";
+    private static final String DECIMAL_TYPE = " REAL";
     private static final String COMMA_SEP = ",";
     private static final String PRIMARY_KEY = " PRIMARY KEY";
 
@@ -20,7 +21,7 @@ public class CelpaPersistenceContract {
         public static final String COL_TIMESTAMP = "timeStamp";
         public static final String COL_NO_OF_FERTS_USED = "no_of_ferts_used";
         public static final String COL_NO_OF_WATER_APPLIED = "no_of_water_applied";
-        public static final String COL_APPROX_DATE_HARVEST = "approx_date_harvest";
+        public static final String COL_PLANTED_START_DATE = "planted_start_date";
         public static final String COL_LOCATION = "location"; // {address: "", lat: "", lng: ""}
         public static final String COL_WEATHER = "weather";
 
@@ -31,9 +32,9 @@ public class CelpaPersistenceContract {
                 COL_CROP_IMG_PATH + TEXT_TYPE + COMMA_SEP +
                 COL_LOCATION + TEXT_TYPE + COMMA_SEP +
                 COL_WEATHER + TEXT_TYPE + COMMA_SEP +
-                COL_NO_OF_FERTS_USED + INTEGER_TYPE + COMMA_SEP +
-                COL_NO_OF_WATER_APPLIED + INTEGER_TYPE + COMMA_SEP +
-                COL_APPROX_DATE_HARVEST + INTEGER_TYPE + ")";
+                COL_NO_OF_FERTS_USED + DECIMAL_TYPE + COMMA_SEP +
+                COL_NO_OF_WATER_APPLIED + DECIMAL_TYPE + COMMA_SEP +
+                COL_PLANTED_START_DATE + INTEGER_TYPE + ")";
 
         public static final String DROP_TB_CROP = "DROP TABLE IF EXISTS " + TB_CROP;
 

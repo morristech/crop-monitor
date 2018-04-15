@@ -20,9 +20,9 @@ public class Crop implements Parcelable {
     public List<Image> img = new ArrayList<>(0);
     public String name = "";
     public long timeStamp = 0;
-    public long noOfFertilizersUsed = 0;
-    public long approxDateOfHarvest = 0;
-    public long noOfWaterAppliedPerDay = 0;
+    public double noOfFertilizersUsed = 0;
+    public long plantedStartDate = 0;
+    public double noOfWaterAppliedPerDay = 0;
     public String weather = "";
     public String location = ""; // A json string
 
@@ -35,7 +35,7 @@ public class Crop implements Parcelable {
         in.readList(img, Image.class.getClassLoader());
         timeStamp = in.readLong();
         noOfFertilizersUsed = in.readLong();
-        approxDateOfHarvest = in.readLong();
+        plantedStartDate = in.readLong();
         noOfWaterAppliedPerDay = in.readLong();
         weather = in.readString();
         location = in.readString();
@@ -53,9 +53,9 @@ public class Crop implements Parcelable {
         dest.writeString(name);
         dest.writeList(img);
         dest.writeLong(timeStamp);
-        dest.writeLong(noOfFertilizersUsed);
-        dest.writeLong(approxDateOfHarvest);
-        dest.writeLong(noOfWaterAppliedPerDay);
+        dest.writeDouble(noOfFertilizersUsed);
+        dest.writeLong(plantedStartDate);
+        dest.writeDouble(noOfWaterAppliedPerDay);
         dest.writeString(weather);
         dest.writeString(location);
     }
@@ -76,10 +76,10 @@ public class Crop implements Parcelable {
     @Override
     public String toString() {
         return String.format("id: %s, name: %s, img: %s, timeStamp: %s, " +
-                "noOfFertilizersUsed: %s, approxDateOfHarvest: %s, noOfWaterAppliedPerDay: %s" +
+                "noOfFertilizersUsed: %s, plantedStartDate: %s, noOfWaterAppliedPerDay: %s" +
                 "weather: %s, location: %s",
                 id, name, img,
-                timeStamp, noOfFertilizersUsed, approxDateOfHarvest,
+                timeStamp, noOfFertilizersUsed, plantedStartDate,
                 noOfWaterAppliedPerDay, weather, location);
     }
 
@@ -97,7 +97,7 @@ public class Crop implements Parcelable {
         json.addProperty("timeStamp", timeStamp);
         json.addProperty("no_of_ferts_used", noOfFertilizersUsed);
         json.addProperty("no_of_water_applied", noOfWaterAppliedPerDay);
-        json.addProperty("approx_date_harvest", approxDateOfHarvest);
+        json.addProperty("planted_start_date", plantedStartDate);
         json.addProperty("weather", weather);
         json.addProperty("location", location);
 
@@ -109,9 +109,9 @@ public class Crop implements Parcelable {
         crop.id = obj.getAsJsonPrimitive("id").getAsLong();
         crop.name = obj.getAsJsonPrimitive("name").getAsString();
         crop.location = obj.getAsJsonObject("location").toString();
-        crop.noOfFertilizersUsed = obj.getAsJsonPrimitive("no_of_ferts_used").getAsLong();
-        crop.noOfWaterAppliedPerDay = obj.getAsJsonPrimitive("no_of_water_applied").getAsLong();
-        crop.approxDateOfHarvest = obj.getAsJsonPrimitive("approx_date_harvest").getAsLong();
+        crop.noOfFertilizersUsed = obj.getAsJsonPrimitive("no_of_ferts_used").getAsDouble();
+        crop.noOfWaterAppliedPerDay = obj.getAsJsonPrimitive("no_of_water_applied").getAsDouble();
+        crop.plantedStartDate = obj.getAsJsonPrimitive("planted_start_date").getAsLong();
         crop.weather = obj.getAsJsonPrimitive("weather").getAsString();
         crop.timeStamp = obj.getAsJsonPrimitive("timestamp").getAsLong();
 

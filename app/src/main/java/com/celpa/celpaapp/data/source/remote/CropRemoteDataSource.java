@@ -70,7 +70,7 @@ public class CropRemoteDataSource implements CropDataSource {
         json.addProperty("name", crop.name);
         json.addProperty("no_of_ferts_used", crop.noOfFertilizersUsed);
         json.addProperty("no_of_water_applied", crop.noOfWaterAppliedPerDay);
-        json.addProperty("approx_date_harvest", crop.approxDateOfHarvest);
+        json.addProperty("planted_start_date", crop.plantedStartDate);
         json.addProperty("weather", crop.weather);
         json.addProperty("location", crop.location);
         json.addProperty("timeStamp", crop.timeStamp);

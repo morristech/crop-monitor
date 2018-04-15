@@ -57,7 +57,7 @@ public class CropAdapter extends RecyclerView.Adapter<CropAdapter.ViewHolder> {
         TextView cropNameTxt;
         TextView locationTxt;
         TextView weatherTxt;
-        TextView harvestDateTxt;
+        TextView plantedStartDateTxt;
         TextView fertsUsedTxt;
         TextView waterAppliedTxt;
 
@@ -67,7 +67,7 @@ public class CropAdapter extends RecyclerView.Adapter<CropAdapter.ViewHolder> {
             cropNameTxt = itemView.findViewById(R.id.txt_crop_name);
             locationTxt = itemView.findViewById(R.id.txt_location);
             weatherTxt = itemView.findViewById(R.id.txt_weather);
-            harvestDateTxt = itemView.findViewById(R.id.txt_approx_date_harvest);
+            plantedStartDateTxt = itemView.findViewById(R.id.txt_planted_start_date);
             fertsUsedTxt = itemView.findViewById(R.id.txt_ferts_used);
             waterAppliedTxt = itemView.findViewById(R.id.txt_water_applied);
         }
@@ -83,7 +83,7 @@ public class CropAdapter extends RecyclerView.Adapter<CropAdapter.ViewHolder> {
             }
 
             weatherTxt.setText(crop.weather);
-            harvestDateTxt.setText(DateUtils.getFormattedString(crop.approxDateOfHarvest));
+            plantedStartDateTxt.setText(DateUtils.getFormattedString(crop.plantedStartDate));
             fertsUsedTxt.setText(String.valueOf(crop.noOfFertilizersUsed));
             waterAppliedTxt.setText(String.valueOf(crop.noOfWaterAppliedPerDay));
 
