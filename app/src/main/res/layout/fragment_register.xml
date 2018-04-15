@@ -40,6 +40,16 @@
             />
 
         <EditText
+            android:id="@+id/edittext_mobileNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/mobile_number"
+            android:inputType="number"
+            style="@style/AppEditText"
+            android:layout_marginTop="20dp"
+            />
+
+        <EditText
             android:id="@+id/edittext_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

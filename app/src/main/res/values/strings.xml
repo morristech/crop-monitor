@@ -38,6 +38,7 @@
     <string name="sample">Sample</string>
     <string name="refresh">Refresh</string>
     <string name="planted_start_date">Planted</string>
+    <string name="mobile_number">Mobile number</string>
     <string-array name="crop_name_defaults">
         <item>Lettuce</item>
         <item>Cucumber</item>

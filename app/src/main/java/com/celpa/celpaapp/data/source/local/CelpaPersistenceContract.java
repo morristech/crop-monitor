@@ -46,6 +46,7 @@ public class CelpaPersistenceContract {
         public static final String COL_FIRST_NAME = "firstName";
         public static final String COL_LAST_NAME = "lastName";
         public static final String COL_EMAIL = "email";
+        public static final String COL_MOBILE_NUMBER = "mobile_number";
         public static final String COL_USER_NAME = "userName";
         public static final String COL_PASSWORD = "password";
         public static final String COL_FARMER_ID = "farmerId";
@@ -55,6 +56,7 @@ public class CelpaPersistenceContract {
                 COL_FARMER_ID + INTEGER_TYPE + COMMA_SEP +
                 COL_FIRST_NAME + TEXT_TYPE + COMMA_SEP +
                 COL_LAST_NAME + TEXT_TYPE + COMMA_SEP +
+                COL_MOBILE_NUMBER + INTEGER_TYPE + COMMA_SEP +
                 COL_EMAIL + TEXT_TYPE + COMMA_SEP +
                 COL_USER_NAME + TEXT_TYPE + COMMA_SEP +
                 COL_PASSWORD + TEXT_TYPE + ")";

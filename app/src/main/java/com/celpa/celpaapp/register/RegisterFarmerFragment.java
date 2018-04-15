@@ -32,6 +32,7 @@ public class RegisterFarmerFragment extends Fragment
     private OkDialog okDialog;
     private EditText firstNameEdittxt;
     private EditText lastNameEdittxt;
+    private EditText mobileNumberEdittxt;
     private EditText emailEdittxt;
     private EditText userNameEdittxt;
     private EditText passwordEdittxt;
@@ -56,6 +57,7 @@ public class RegisterFarmerFragment extends Fragment
         View root = inflater.inflate(R.layout.fragment_register, container, false);
         firstNameEdittxt = root.findViewById(R.id.edittext_firstName);
         lastNameEdittxt = root.findViewById(R.id.edittext_lastName);
+        mobileNumberEdittxt = root.findViewById(R.id.edittext_mobileNumber);
         emailEdittxt = root.findViewById(R.id.edittext_email);
         userNameEdittxt = root.findViewById(R.id.edittext_username);
         passwordEdittxt = root.findViewById(R.id.edittext_password);
@@ -122,6 +124,7 @@ public class RegisterFarmerFragment extends Fragment
         Farmer farmer = new Farmer();
         farmer.firstName = firstNameEdittxt.getText().toString();
         farmer.lastName = lastNameEdittxt.getText().toString();
+        farmer.mobileNumber = Long.parseLong(mobileNumberEdittxt.getText().toString());
         farmer.email = emailEdittxt.getText().toString();
         farmer.userName = userNameEdittxt.getText().toString();
         farmer.password = passwordEdittxt.getText().toString();

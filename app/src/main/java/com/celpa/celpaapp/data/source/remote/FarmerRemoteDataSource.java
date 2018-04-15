@@ -28,6 +28,7 @@ public class FarmerRemoteDataSource implements FarmerDataSource {
         json.addProperty("firstName", farmer.firstName);
         json.addProperty("lastName", farmer.lastName);
         json.addProperty("email", farmer.email);
+        json.addProperty("mobile_number", farmer.mobileNumber);
         json.addProperty("userName", farmer.userName);
         json.addProperty("password", farmer.password);
 
