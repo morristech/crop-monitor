@@ -3,6 +3,7 @@ package com.celpa.celpaapp.addcropdetails;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.celpa.celpaapp.R;
 import com.celpa.celpaapp.common.LoadingDialog;
@@ -44,6 +46,7 @@ public class AddCropDetailsFragment extends Fragment
         implements AddCropDetailsContract.View,
         View.OnClickListener,
         DatePickerDialog.OnDateSetListener,
+        TimePickerDialog.OnTimeSetListener,
         AdapterView.OnItemSelectedListener {
 
     private static final String TAG = AddCropDetailsFragment.class.getSimpleName();
@@ -53,10 +56,12 @@ public class AddCropDetailsFragment extends Fragment
     private static final int MAX_DEFAULT_CROP_NAMES = 4;
 
     private Crop crop;
+    private Date plantedDate;
 
     private AddCropDetailsContract.Presenter presenter;
 
     private DatePickerDialog datePickerDialog;
+    private TimePickerDialog timePickerDialog;
     private LoadingDialog loadingDialog;
     private OkDialog okDialog;
     private Spinner defaulNamesSpinner;
@@ -113,12 +118,17 @@ public class AddCropDetailsFragment extends Fragment
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
+        int hour = c.get(Calendar.HOUR);
+        int minute = c.get(Calendar.MINUTE);
 
         datePickerDialog = new DatePickerDialog(getActivity(), this, year, month, day);
+        timePickerDialog  = new TimePickerDialog(getActivity(), this, hour, minute, false);
+
+        plantedDate = DateUtils.getDate(year, month + 1, day, hour, minute);
 
         // Init approx. date of harvest
         // Need to +1 in month becasue January === 1
-        String formattedDate = DateUtils.getFormattedString(year, month + 1, day);
+        String formattedDate = DateUtils.getFormattedString(plantedDate);
         setPlantedStartDate(formattedDate);
     }
 
@@ -185,11 +195,7 @@ public class AddCropDetailsFragment extends Fragment
         crop.noOfFertilizersUsed = Double.parseDouble(fertsUsedEdittxt.getText().toString());
         crop.noOfWaterAppliedPerDay = Double.parseDouble(waterAppliedEdittxt.getText().toString());
 
-        int year = datePickerDialog.getDatePicker().getYear();
-        int month = datePickerDialog.getDatePicker().getMonth() + 1; // Need to +1 because January == 1
-        int dayOfMonth = datePickerDialog.getDatePicker().getDayOfMonth();
-
-        crop.plantedStartDate = DateUtils.getDate(year, month, dayOfMonth).getTime() / 1000;
+        crop.plantedStartDate = plantedDate.getTime() / 1000;
         crop.timeStamp = System.currentTimeMillis() / 1000;
 
         presenter.saveCropDetails(crop);
@@ -257,9 +263,7 @@ public class AddCropDetailsFragment extends Fragment
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        month += 1; // January == 1 so need to +1
-        String formattedDate = DateUtils.getFormattedString(year, month, dayOfMonth);
-        setPlantedStartDate(formattedDate);
+        timePickerDialog.show();
     }
 
     @Override
@@ -274,5 +278,15 @@ public class AddCropDetailsFragment extends Fragment
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         defaulNamesSpinner.setSelection(defaulNamesSpinner.getSelectedItemPosition());
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        int year = datePickerDialog.getDatePicker().getYear();
+        int month = datePickerDialog.getDatePicker().getMonth() + 1; // Need to +1 because January == 1
+        int dayOfMonth = datePickerDialog.getDatePicker().getDayOfMonth();
+        plantedDate = DateUtils.getDate(year, month, dayOfMonth, hourOfDay, minute);
+        String formattedDate = DateUtils.getFormattedString(plantedDate);
+        setPlantedStartDate(formattedDate);
     }
 }
