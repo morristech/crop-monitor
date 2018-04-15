@@ -15,6 +15,7 @@ public class BitmapUtils {
 
     private static final String BASE_IMG_NAME = "celpa";
     private static final String IMG_EXT = ".jpg";
+    private static final int IMG_QUALITY = 50;
 
     public static String saveBitmapToStorage(Context context, byte[] jpeg) {
         Bitmap result = BitmapFactory.decodeByteArray(jpeg, 0, jpeg.length);
@@ -24,7 +25,7 @@ public class BitmapUtils {
 
         try {
             OutputStream fOut = new FileOutputStream(file);
-            result.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+            result.compress(Bitmap.CompressFormat.JPEG, IMG_QUALITY, fOut);
             fOut.flush();
             fOut.close();
         } catch (FileNotFoundException e) {
@@ -44,7 +45,7 @@ public class BitmapUtils {
 
         try {
             OutputStream fOut = new FileOutputStream(file);
-            result.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+            result.compress(Bitmap.CompressFormat.JPEG, IMG_QUALITY, fOut);
             fOut.flush();
             fOut.close();
         } catch (FileNotFoundException e) {
