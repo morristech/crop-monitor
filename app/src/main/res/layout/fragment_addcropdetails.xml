@@ -159,6 +159,16 @@
             style="@style/AppEditText"
             />
 
+        <EditText
+            android:id="@+id/edittxt_quantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/quantity"
+            android:inputType="numberDecimal"
+            android:layout_marginTop="20dp"
+            style="@style/AppEditText"
+            />
+
     </LinearLayout>
 
 </ScrollView>

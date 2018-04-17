@@ -25,6 +25,7 @@ public class Crop implements Parcelable {
     public double noOfWaterAppliedPerDay = 0;
     public String weather = "";
     public String location = ""; // A json string
+    public double quantity;
 
     public Crop() {}
 
@@ -39,6 +40,7 @@ public class Crop implements Parcelable {
         noOfWaterAppliedPerDay = in.readLong();
         weather = in.readString();
         location = in.readString();
+        quantity = in.readDouble();
     }
 
     @Override
@@ -58,6 +60,7 @@ public class Crop implements Parcelable {
         dest.writeDouble(noOfWaterAppliedPerDay);
         dest.writeString(weather);
         dest.writeString(location);
+        dest.writeDouble(quantity);
     }
 
     public static final Creator<Crop> CREATOR = new Creator<Crop>() {
@@ -77,10 +80,10 @@ public class Crop implements Parcelable {
     public String toString() {
         return String.format("id: %s, name: %s, img: %s, timeStamp: %s, " +
                 "noOfFertilizersUsed: %s, plantedStartDate: %s, noOfWaterAppliedPerDay: %s" +
-                "weather: %s, location: %s",
+                "weather: %s, location: %s, quantity: %s",
                 id, name, img,
                 timeStamp, noOfFertilizersUsed, plantedStartDate,
-                noOfWaterAppliedPerDay, weather, location);
+                noOfWaterAppliedPerDay, weather, location, quantity);
     }
 
     public JsonObject toJsonObject() {
@@ -100,6 +103,7 @@ public class Crop implements Parcelable {
         json.addProperty("planted_start_date", plantedStartDate);
         json.addProperty("weather", weather);
         json.addProperty("location", location);
+        json.addProperty("quantity", quantity);
 
         return json;
     }
@@ -114,6 +118,7 @@ public class Crop implements Parcelable {
         crop.plantedStartDate = obj.getAsJsonPrimitive("planted_start_date").getAsLong();
         crop.weather = obj.getAsJsonPrimitive("weather").getAsString();
         crop.timeStamp = obj.getAsJsonPrimitive("timestamp").getAsLong();
+        crop.quantity = obj.getAsJsonPrimitive("quantity").getAsInt();
 
         JsonObject imgPath = obj.getAsJsonObject("img_path");
         for(JsonElement imgElement: imgPath.getAsJsonArray("photos")) {
