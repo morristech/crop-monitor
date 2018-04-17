@@ -21,14 +21,14 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField('String', 'BASE_URL', '"http://192.168.1.33:3000/celpa/"')
-            buildConfigField('String', 'BASE_IMG_URL', '"http://192.168.1.33:3000"')
+            buildConfigField('String', 'BASE_URL', '"http://192.168.0.15:3000/celpa/"')
+            buildConfigField('String', 'BASE_IMG_URL', '"http://192.168.0.15:3000"')
             buildConfigField('String', 'OPEN_WEATHER_URL', '"http://samples.openweathermap.org/data/2.5/"')
             buildConfigField('String', 'OPEN_WEATHER_API_KEY', '"df95e9af8fa7ee19efe0aee7c05fa80f"')
         }
         debug {
-            buildConfigField('String', 'BASE_URL', '"http://192.168.1.33:3000/celpa/"')
-            buildConfigField('String', 'BASE_IMG_URL', '"http://192.168.1.33:3000"')
+            buildConfigField('String', 'BASE_URL', '"http://192.168.0.15:3000/celpa/"')
+            buildConfigField('String', 'BASE_IMG_URL', '"http://192.168.0.15:3000"')
             buildConfigField('String', 'OPEN_WEATHER_URL', '"http://samples.openweathermap.org/data/2.5/"')
             buildConfigField('String', 'OPEN_WEATHER_API_KEY', '"df95e9af8fa7ee19efe0aee7c05fa80f"')
         }
@@ -39,7 +39,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation group: 'com.android.support', name: 'cardview-v7', version: '27.1.1'
-    implementation 'com.wonderkiln:camerakit:0.13.1'
+    implementation 'com.wonderkiln:camerakit:0.13.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.google.android:flexbox:0.3.2'
