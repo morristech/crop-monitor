@@ -124,7 +124,7 @@ public class RegisterFarmerFragment extends Fragment
         Farmer farmer = new Farmer();
         farmer.firstName = firstNameEdittxt.getText().toString();
         farmer.lastName = lastNameEdittxt.getText().toString();
-        farmer.mobileNumber = Long.parseLong(mobileNumberEdittxt.getText().toString());
+        farmer.mobileNumber = mobileNumberEdittxt.getText().toString();
         farmer.email = emailEdittxt.getText().toString();
         farmer.userName = userNameEdittxt.getText().toString();
         farmer.password = passwordEdittxt.getText().toString();

@@ -24,6 +24,7 @@ public class CelpaPersistenceContract {
         public static final String COL_PLANTED_START_DATE = "planted_start_date";
         public static final String COL_LOCATION = "location"; // {address: "", lat: "", lng: ""}
         public static final String COL_WEATHER = "weather";
+        public static final String COL_QUANTITY = "quantity";
 
         public static final String CREATE_TB_CROP = "CREATE TABLE " + TB_CROP + "(" +
                 _ID + INTEGER_TYPE + PRIMARY_KEY + COMMA_SEP +
@@ -32,6 +33,7 @@ public class CelpaPersistenceContract {
                 COL_CROP_IMG_PATH + TEXT_TYPE + COMMA_SEP +
                 COL_LOCATION + TEXT_TYPE + COMMA_SEP +
                 COL_WEATHER + TEXT_TYPE + COMMA_SEP +
+                COL_QUANTITY + DECIMAL_TYPE + COMMA_SEP +
                 COL_NO_OF_FERTS_USED + DECIMAL_TYPE + COMMA_SEP +
                 COL_NO_OF_WATER_APPLIED + DECIMAL_TYPE + COMMA_SEP +
                 COL_PLANTED_START_DATE + INTEGER_TYPE + ")";
@@ -56,7 +58,7 @@ public class CelpaPersistenceContract {
                 COL_FARMER_ID + INTEGER_TYPE + COMMA_SEP +
                 COL_FIRST_NAME + TEXT_TYPE + COMMA_SEP +
                 COL_LAST_NAME + TEXT_TYPE + COMMA_SEP +
-                COL_MOBILE_NUMBER + INTEGER_TYPE + COMMA_SEP +
+                COL_MOBILE_NUMBER + TEXT_TYPE + COMMA_SEP +
                 COL_EMAIL + TEXT_TYPE + COMMA_SEP +
                 COL_USER_NAME + TEXT_TYPE + COMMA_SEP +
                 COL_PASSWORD + TEXT_TYPE + ")";

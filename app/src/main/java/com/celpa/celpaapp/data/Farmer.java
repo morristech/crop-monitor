@@ -8,7 +8,7 @@ public class Farmer {
     public long id;
     public String firstName;
     public String lastName;
-    public long mobileNumber;
+    public String mobileNumber;
     public String email;
     public String userName;
     public String password;
