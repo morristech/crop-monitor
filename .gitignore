@@ -73,3 +73,4 @@ freeline_project_description.json
 .idea/modules.xml
 .idea/runConfigurations.xml
 .idea/vcs.xml
+.idea/kotlinc.xml
