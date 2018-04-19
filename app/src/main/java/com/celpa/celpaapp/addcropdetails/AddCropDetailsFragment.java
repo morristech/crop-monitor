@@ -69,6 +69,7 @@ public class AddCropDetailsFragment extends Fragment
     private EditText fertsUsedEdittxt;
     private EditText waterAppliedEdittxt;
     private EditText quantityEdittxt;
+    private EditText plantedDurEdittxt;
     private TextView plantedStartDateTxt;
     private TextView locationTxt;
     private TextView weatherTxt;
@@ -102,6 +103,7 @@ public class AddCropDetailsFragment extends Fragment
         locationTxt = root.findViewById(R.id.txt_location);
         weatherTxt = root.findViewById(R.id.txt_weather);
         quantityEdittxt = root.findViewById(R.id.edittxt_quantity);
+        plantedDurEdittxt = root.findViewById(R.id.edittxt_planted_duration);
 
         init();
 
@@ -201,6 +203,7 @@ public class AddCropDetailsFragment extends Fragment
         crop.timeStamp = System.currentTimeMillis() / 1000;
 
         crop.quantity = Double.parseDouble(quantityEdittxt.getText().toString());
+        crop.plantedDuration = Integer.parseInt(plantedDurEdittxt.getText().toString());
 
         presenter.saveCropDetails(crop);
     }

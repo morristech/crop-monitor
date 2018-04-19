@@ -6,7 +6,7 @@
     <string name="password">Password</string>
     <string name="register">Register</string>
     <string name="please_wait">Please wait</string>
-    <string name="no_of_fertilizers_used">No. of fertilizers used</string>
+    <string name="no_of_fertilizers_used">No. of fertilizers used per day</string>
     <string name="approx_date_of_harvest">Approx. date of harvest</string>
     <string name="no_of_applied_water_per_day">No. of applied water per day</string>
     <string name="save_crop_details">Save</string>
@@ -39,7 +39,8 @@
     <string name="refresh">Refresh</string>
     <string name="planted_start_date">Planted</string>
     <string name="mobile_number">Mobile number</string>
-    <string name="quantity">Quantity</string>
+    <string name="quantity">Quantity of survived planted crops</string>
+    <string name="crop_planted_duration">No. of days/weeks the crop is planted</string>
     <string-array name="crop_name_defaults">
         <item>Lettuce</item>
         <item>Cucumber</item>

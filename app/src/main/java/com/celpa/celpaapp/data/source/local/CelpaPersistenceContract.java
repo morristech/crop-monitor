@@ -25,6 +25,7 @@ public class CelpaPersistenceContract {
         public static final String COL_LOCATION = "location"; // {address: "", lat: "", lng: ""}
         public static final String COL_WEATHER = "weather";
         public static final String COL_QUANTITY = "quantity";
+        public static final String COL_CROP_PLANTED_DURATION = "crop_planted_duration";
 
         public static final String CREATE_TB_CROP = "CREATE TABLE " + TB_CROP + "(" +
                 _ID + INTEGER_TYPE + PRIMARY_KEY + COMMA_SEP +
@@ -36,6 +37,7 @@ public class CelpaPersistenceContract {
                 COL_QUANTITY + DECIMAL_TYPE + COMMA_SEP +
                 COL_NO_OF_FERTS_USED + DECIMAL_TYPE + COMMA_SEP +
                 COL_NO_OF_WATER_APPLIED + DECIMAL_TYPE + COMMA_SEP +
+                COL_CROP_PLANTED_DURATION + INTEGER_TYPE + COMMA_SEP +
                 COL_PLANTED_START_DATE + INTEGER_TYPE + ")";
 
         public static final String DROP_TB_CROP = "DROP TABLE IF EXISTS " + TB_CROP;

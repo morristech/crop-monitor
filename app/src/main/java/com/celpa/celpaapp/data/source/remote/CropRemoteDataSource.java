@@ -74,6 +74,7 @@ public class CropRemoteDataSource implements CropDataSource {
         json.addProperty("no_of_water_applied", crop.noOfWaterAppliedPerDay);
         json.addProperty("planted_start_date", crop.plantedStartDate);
         json.addProperty("weather", crop.weather);
+        json.addProperty("planted_duration", crop.plantedDuration);
 
         try {
             JsonObject locObj = new JsonParser().parse(crop.location).getAsJsonObject();

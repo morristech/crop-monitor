@@ -26,6 +26,7 @@ public class Crop implements Parcelable {
     public String weather = "";
     public String location = ""; // A json string
     public double quantity;
+    public int plantedDuration = 0;
 
     public Crop() {}
 
@@ -41,6 +42,7 @@ public class Crop implements Parcelable {
         weather = in.readString();
         location = in.readString();
         quantity = in.readDouble();
+        plantedDuration = in.readInt();
     }
 
     @Override
@@ -61,6 +63,7 @@ public class Crop implements Parcelable {
         dest.writeString(weather);
         dest.writeString(location);
         dest.writeDouble(quantity);
+        dest.writeInt(plantedDuration);
     }
 
     public static final Creator<Crop> CREATOR = new Creator<Crop>() {

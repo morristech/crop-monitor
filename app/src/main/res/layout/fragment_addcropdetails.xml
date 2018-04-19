@@ -160,6 +160,16 @@
             />
 
         <EditText
+            android:id="@+id/edittxt_planted_duration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/crop_planted_duration"
+            android:inputType="number"
+            android:layout_marginTop="20dp"
+            style="@style/AppEditText"
+            />
+
+        <EditText
             android:id="@+id/edittxt_quantity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
