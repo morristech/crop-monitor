@@ -86,7 +86,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                             throwable -> {
                                 unsubscribe();
                                 loginView.hideLoggingInDialog();
-                                loginView.showOkDialog(throwable.getMessage());
+                                loginView.showOkDialog(loginView.setFailedToLoginText());
                             }
                     );
 
