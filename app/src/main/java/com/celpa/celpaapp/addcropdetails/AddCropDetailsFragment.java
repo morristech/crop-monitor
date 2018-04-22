@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -32,6 +33,7 @@ import com.celpa.celpaapp.common.LoadingDialog;
 import com.celpa.celpaapp.common.OkDialog;
 import com.celpa.celpaapp.common.YesNoDialog;
 import com.celpa.celpaapp.data.Crop;
+import com.celpa.celpaapp.data.SquareMeter;
 import com.celpa.celpaapp.utils.AppSettings;
 import com.celpa.celpaapp.utils.BitmapUtils;
 import com.celpa.celpaapp.utils.DateUtils;
@@ -40,8 +42,11 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.livinglifetechway.quickpermissions.annotations.WithPermissions;
 
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class AddCropDetailsFragment extends Fragment
         implements AddCropDetailsContract.View,
@@ -57,6 +62,7 @@ public class AddCropDetailsFragment extends Fragment
 
     private static final int MAX_DEFAULT_CROP_NAMES = 4;
 
+    private List<String> sqMeters = new ArrayList<>(0);
     private Crop crop;
     private Date plantedDate;
 
@@ -83,6 +89,7 @@ public class AddCropDetailsFragment extends Fragment
     private CheckBox setMinSqMeterCBox;
     private LinearLayout sqMeterLayout;
     private Spinner sqMeterSpinner;
+    private ArrayAdapter<String> sqMeterAdapter;
 
     public static AddCropDetailsFragment newInstance() {
         return new AddCropDetailsFragment();
@@ -149,6 +156,11 @@ public class AddCropDetailsFragment extends Fragment
         // Need to +1 in month becasue January === 1
         String formattedDate = DateUtils.getFormattedString(plantedDate);
         setPlantedStartDate(formattedDate);
+
+        sqMeters = SquareMeter.generateSquareMeters(1000, 30000, 1000);
+        sqMeterAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, sqMeters);
+        sqMeterSpinner.setAdapter(sqMeterAdapter);
+        sqMeterSpinner.setOnItemSelectedListener(this);
     }
 
 
@@ -218,47 +230,60 @@ public class AddCropDetailsFragment extends Fragment
 
     @WithPermissions(permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE})
     public void saveToLocalAndRemoteSources() {
-        crop.farmerId = AppSettings.getInstance(getContext()).getFarmerLoggedIn();
+        try {
+            crop.farmerId = AppSettings.getInstance(getContext()).getFarmerLoggedIn();
 
-        long selected = defaulNamesSpinner.getSelectedItemPosition();
-        String cropName = "";
-        if(selected < MAX_DEFAULT_CROP_NAMES - 1) {
-            cropName = defaulNamesSpinner.getSelectedItem().toString();
-        } else {
-            cropName = nameEdittxt.getText().toString();
-        }
-
-        crop.name = cropName;
-        crop.noOfFertilizersUsed = fertsUsedEdittxt.getText().toString() + fertsUnitSpinner.getSelectedItem().toString();
-        crop.noOfWaterAppliedPerDay = waterAppliedEdittxt.getText().toString() + waterUnitSpinner.getSelectedItem().toString();
-
-        crop.plantedStartDate = plantedDate.getTime() / 1000;
-        crop.timeStamp = System.currentTimeMillis() / 1000;
-
-        crop.quantity = Double.parseDouble(quantityEdittxt.getText().toString());
-        crop.plantedDuration = Integer.parseInt(plantedDurEdittxt.getText().toString());
-
-        if(setMinSqMeterCBox.isChecked()) {
-            crop.squareMeter = Double.parseDouble(sqMeterSpinner.getSelectedItem().toString());
-        } else {
-            crop.squareMeter = 0;
-        }
-
-        showPostToMarketDialog("", new YesNoDialog.EventListener() {
-            @Override
-            public void yes() {
-                hidePostToMarketDialog();
-                crop.postToMarket = 1; // True
-                presenter.saveCropDetails(crop);
+            long selected = defaulNamesSpinner.getSelectedItemPosition();
+            String cropName = "";
+            if (selected < MAX_DEFAULT_CROP_NAMES - 1) {
+                cropName = defaulNamesSpinner.getSelectedItem().toString();
+            } else {
+                cropName = nameEdittxt.getText().toString();
             }
 
-            @Override
-            public void no() {
-                hidePostToMarketDialog();
-                crop.postToMarket = 0; // False
-                presenter.saveCropDetails(crop);
+            crop.name = cropName;
+            crop.noOfFertilizersUsed = fertsUsedEdittxt.getText().toString() + fertsUnitSpinner.getSelectedItem().toString();
+            crop.noOfWaterAppliedPerDay = waterAppliedEdittxt.getText().toString() + waterUnitSpinner.getSelectedItem().toString();
+
+            crop.plantedStartDate = plantedDate.getTime() / 1000;
+            crop.timeStamp = System.currentTimeMillis() / 1000;
+
+            if(quantityEdittxt.getText().toString().isEmpty()) {
+                crop.quantity = 0;
+            } else {
+                crop.quantity = Double.parseDouble(quantityEdittxt.getText().toString());
             }
-        });
+
+            if(plantedDurEdittxt.getText().toString().isEmpty()) {
+                crop.plantedDuration = 0;
+            } else {
+                crop.plantedDuration = Integer.parseInt(plantedDurEdittxt.getText().toString());
+            }
+
+            if (setMinSqMeterCBox.isChecked()) {
+                crop.squareMeter = Double.parseDouble(sqMeterSpinner.getSelectedItem().toString());
+            } else {
+                crop.squareMeter = 0;
+            }
+
+            showPostToMarketDialog("", new YesNoDialog.EventListener() {
+                @Override
+                public void yes() {
+                    hidePostToMarketDialog();
+                    crop.postToMarket = 1; // True
+                    presenter.saveCropDetails(crop);
+                }
+
+                @Override
+                public void no() {
+                    hidePostToMarketDialog();
+                    crop.postToMarket = 0; // False
+                    presenter.saveCropDetails(crop);
+                }
+            });
+        } catch (NumberFormatException e) {
+            showOkDialog(e.getMessage());
+        }
 
     }
 
@@ -329,16 +354,35 @@ public class AddCropDetailsFragment extends Fragment
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if(position == MAX_DEFAULT_CROP_NAMES - 1) {
-            nameEdittxt.setVisibility(View.VISIBLE);
-        } else {
-            nameEdittxt.setVisibility(View.GONE);
+        switch (parent.getId()) {
+            case R.id.sp_crop_names:
+                if(position == MAX_DEFAULT_CROP_NAMES - 1) {
+                    nameEdittxt.setVisibility(View.VISIBLE);
+                } else {
+                    nameEdittxt.setVisibility(View.GONE);
+                }
+                break;
+            case R.id.sp_minimum_sq:
+                quantityEdittxt.setText(String.valueOf(Double.parseDouble(sqMeterSpinner.getSelectedItem().toString()) / 10));
+                break;
+            default:
+                break;
         }
+
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-        defaulNamesSpinner.setSelection(defaulNamesSpinner.getSelectedItemPosition());
+        switch (parent.getId()) {
+            case R.id.sp_crop_names:
+                defaulNamesSpinner.setSelection(defaulNamesSpinner.getSelectedItemPosition());
+                break;
+            case R.id.sp_minimum_sq:
+                sqMeterSpinner.setSelection(sqMeterSpinner.getSelectedItemPosition());
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -356,9 +400,11 @@ public class AddCropDetailsFragment extends Fragment
         if(isChecked) {
             quantityEdittxt.setVisibility(View.GONE);
             sqMeterLayout.setVisibility(View.VISIBLE);
+            quantityEdittxt.setText(String.valueOf(Double.parseDouble(sqMeterSpinner.getSelectedItem().toString()) / 10));
         } else {
             sqMeterLayout.setVisibility(View.GONE);
             quantityEdittxt.setVisibility(View.VISIBLE);
+            quantityEdittxt.setText("0");
         }
     }
 }
