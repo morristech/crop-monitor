@@ -37,10 +37,10 @@
     <string name="harvest_date">Harvest date</string>
     <string name="sample">Sample</string>
     <string name="refresh">Refresh</string>
-    <string name="planted_start_date">Planted</string>
+    <string name="planted_start_date">Date and time planted</string>
     <string name="mobile_number">Mobile number</string>
-    <string name="quantity">Quantity of survived planted crops</string>
-    <string name="crop_planted_duration">No. of days the crop is planted</string>
+    <string name="quantity">Quantity of current lived crops</string>
+    <string name="crop_planted_duration">No. of days crops are planted</string>
     <string name="set_min_sq_meter">Set minimum sqm to be planted</string>
     <string name="sq_meters">sqm</string>
     <string name="post_to_market_msg">Do you want to post crop immediately to market?</string>
