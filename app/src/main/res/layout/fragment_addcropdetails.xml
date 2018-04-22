@@ -139,25 +139,69 @@
             style="@style/AppEditText"
             />
 
-        <EditText
-            android:layout_marginTop="20dp"
-            android:id="@+id/edittxt_fert_used"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/no_of_fertilizers_used"
-            android:inputType="numberDecimal"
-            style="@style/AppEditText"
-            />
 
-        <EditText
-            android:id="@+id/edittxt_water_applied"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/no_of_applied_water_per_day"
-            android:inputType="numberDecimal"
-            android:layout_marginTop="20dp"
-            style="@style/AppEditText"
-            />
+            android:orientation="horizontal"
+            >
+
+            <EditText
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:id="@+id/edittxt_fert_used"
+                android:layout_width="0dp"
+                android:layout_weight="2.5"
+                android:layout_height="wrap_content"
+                android:hint="@string/no_of_fertilizers_used"
+                android:inputType="numberDecimal"
+                style="@style/AppEditText"
+                />
+
+            <Spinner
+                android:id="@+id/sp_ferts_unit"
+                android:layout_marginTop="10dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                style="@style/AppEditText"
+                android:entries="@array/crop_fertilizer_unit_defaults"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/edittxt_water_applied"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.5"
+                android:layout_marginRight="10dp"
+                android:hint="@string/no_of_applied_water_per_day"
+                android:inputType="numberDecimal"
+                android:layout_marginTop="20dp"
+                style="@style/AppEditText"
+                />
+
+            <Spinner
+                android:id="@+id/sp_water_unit"
+                android:layout_marginTop="10dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                style="@style/AppEditText"
+                android:entries="@array/crop_water_unit_defaults"
+                />
+
+        </LinearLayout>
 
         <EditText
             android:id="@+id/edittxt_planted_duration"
@@ -169,15 +213,71 @@
             style="@style/AppEditText"
             />
 
-        <EditText
-            android:id="@+id/edittxt_quantity"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/quantity"
-            android:inputType="numberDecimal"
-            android:layout_marginTop="20dp"
-            style="@style/AppEditText"
-            />
+            android:layout_marginTop="10dp"
+            android:background="@color/colorPrimary"
+            android:orientation="vertical"
+            >
+
+            <CheckBox
+                android:id="@+id/cb_min_sq_meter"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/set_min_sq_meter"
+                android:textColor="@android:color/white"
+                />
+
+            <LinearLayout
+                android:id="@+id/ll_sqm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="20dp"
+                android:visibility="gone"
+                >
+
+                <Spinner
+                    android:id="@+id/sp_minimum_sq"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/border"
+                    style="@style/AppEditText"
+                    android:entries="@array/crop_water_unit_defaults"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="5dp"
+                    style="@style/AppTextView"
+                    android:textColor="@android:color/white"
+                    android:text="@string/sq_meters"
+                    />
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/edittxt_quantity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:hint="@string/quantity"
+                android:inputType="numberDecimal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                style="@style/AppEditText"
+                android:textColor="@android:color/white"
+                />
+
+        </LinearLayout>
 
     </LinearLayout>
 

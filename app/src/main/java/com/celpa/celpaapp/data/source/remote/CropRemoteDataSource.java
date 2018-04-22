@@ -85,6 +85,7 @@ public class CropRemoteDataSource implements CropDataSource {
 
         json.addProperty("timeStamp", crop.timeStamp);
         json.addProperty("quantity", crop.quantity);
+        json.addProperty("post_to_market", crop.postToMarket);
 
         RequestBody requestBody = RetrofitUtils.createPartFromJson(json);
 

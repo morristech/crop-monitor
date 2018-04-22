@@ -41,10 +41,23 @@
     <string name="mobile_number">Mobile number</string>
     <string name="quantity">Quantity of survived planted crops</string>
     <string name="crop_planted_duration">No. of days the crop is planted</string>
+    <string name="set_min_sq_meter">Set minimum sqm to be planted</string>
+    <string name="sq_meters">sqm</string>
+    <string name="post_to_market_msg">Do you want to post crop immediately to market?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     <string-array name="crop_name_defaults">
         <item>Lettuce</item>
         <item>Cucumber</item>
         <item>Chili(Pangsigang)</item>
         <item>Other</item>
+    </string-array>
+    <string-array name="crop_fertilizer_unit_defaults">
+        <item>kg</item>
+        <item>g</item>
+    </string-array>
+    <string-array name="crop_water_unit_defaults">
+        <item>liters</item>
+        <item>ml</item>
     </string-array>
 </resources>

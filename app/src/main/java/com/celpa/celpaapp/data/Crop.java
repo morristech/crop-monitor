@@ -20,13 +20,15 @@ public class Crop implements Parcelable {
     public List<Image> img = new ArrayList<>(0);
     public String name = "";
     public long timeStamp = 0;
-    public double noOfFertilizersUsed = 0;
+    public String noOfFertilizersUsed = "";
     public long plantedStartDate = 0;
-    public double noOfWaterAppliedPerDay = 0;
+    public String noOfWaterAppliedPerDay = "";
     public String weather = "";
     public String location = ""; // A json string
     public double quantity;
+    public double squareMeter;
     public int plantedDuration = 0;
+    public int postToMarket = 0; // Either 1 or 0
 
     public Crop() {}
 
@@ -36,13 +38,15 @@ public class Crop implements Parcelable {
         name = in.readString();
         in.readList(img, Image.class.getClassLoader());
         timeStamp = in.readLong();
-        noOfFertilizersUsed = in.readLong();
+        noOfFertilizersUsed = in.readString();
         plantedStartDate = in.readLong();
-        noOfWaterAppliedPerDay = in.readLong();
+        noOfWaterAppliedPerDay = in.readString();
         weather = in.readString();
         location = in.readString();
         quantity = in.readDouble();
+        squareMeter = in.readDouble();
         plantedDuration = in.readInt();
+        postToMarket = in.readInt();
     }
 
     @Override
@@ -57,13 +61,15 @@ public class Crop implements Parcelable {
         dest.writeString(name);
         dest.writeList(img);
         dest.writeLong(timeStamp);
-        dest.writeDouble(noOfFertilizersUsed);
+        dest.writeString(noOfFertilizersUsed);
         dest.writeLong(plantedStartDate);
-        dest.writeDouble(noOfWaterAppliedPerDay);
+        dest.writeString(noOfWaterAppliedPerDay);
         dest.writeString(weather);
         dest.writeString(location);
         dest.writeDouble(quantity);
+        dest.writeDouble(squareMeter);
         dest.writeInt(plantedDuration);
+        dest.writeInt(postToMarket);
     }
 
     public static final Creator<Crop> CREATOR = new Creator<Crop>() {
@@ -116,8 +122,8 @@ public class Crop implements Parcelable {
         crop.id = obj.getAsJsonPrimitive("id").getAsLong();
         crop.name = obj.getAsJsonPrimitive("name").getAsString();
         crop.location = obj.getAsJsonObject("location").toString();
-        crop.noOfFertilizersUsed = obj.getAsJsonPrimitive("no_of_ferts_used").getAsDouble();
-        crop.noOfWaterAppliedPerDay = obj.getAsJsonPrimitive("no_of_water_applied").getAsDouble();
+        crop.noOfFertilizersUsed = obj.getAsJsonPrimitive("no_of_ferts_used").getAsString();
+        crop.noOfWaterAppliedPerDay = obj.getAsJsonPrimitive("no_of_water_applied").getAsString();
         crop.plantedStartDate = obj.getAsJsonPrimitive("planted_start_date").getAsLong();
         crop.weather = obj.getAsJsonPrimitive("weather").getAsString();
         crop.timeStamp = obj.getAsJsonPrimitive("timestamp").getAsLong();

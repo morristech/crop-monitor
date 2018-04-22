@@ -5,7 +5,6 @@ import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,9 +17,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -28,6 +30,7 @@ import android.widget.TimePicker;
 import com.celpa.celpaapp.R;
 import com.celpa.celpaapp.common.LoadingDialog;
 import com.celpa.celpaapp.common.OkDialog;
+import com.celpa.celpaapp.common.YesNoDialog;
 import com.celpa.celpaapp.data.Crop;
 import com.celpa.celpaapp.utils.AppSettings;
 import com.celpa.celpaapp.utils.BitmapUtils;
@@ -37,8 +40,6 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.livinglifetechway.quickpermissions.annotations.WithPermissions;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -47,7 +48,8 @@ public class AddCropDetailsFragment extends Fragment
         View.OnClickListener,
         DatePickerDialog.OnDateSetListener,
         TimePickerDialog.OnTimeSetListener,
-        AdapterView.OnItemSelectedListener {
+        AdapterView.OnItemSelectedListener,
+        CompoundButton.OnCheckedChangeListener {
 
     private static final String TAG = AddCropDetailsFragment.class.getSimpleName();
 
@@ -63,7 +65,8 @@ public class AddCropDetailsFragment extends Fragment
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;
     private LoadingDialog loadingDialog;
-    private OkDialog okDialog;
+    private OkDialog cropSavedOkDialog;
+    private YesNoDialog postToMarkerDialog;
     private Spinner defaulNamesSpinner;
     private EditText nameEdittxt;
     private EditText fertsUsedEdittxt;
@@ -75,6 +78,11 @@ public class AddCropDetailsFragment extends Fragment
     private TextView weatherTxt;
     private Button changeApproxDateBtn;
     private ImageView cropImgView;
+    private Spinner fertsUnitSpinner;
+    private Spinner waterUnitSpinner;
+    private CheckBox setMinSqMeterCBox;
+    private LinearLayout sqMeterLayout;
+    private Spinner sqMeterSpinner;
 
     public static AddCropDetailsFragment newInstance() {
         return new AddCropDetailsFragment();
@@ -104,6 +112,11 @@ public class AddCropDetailsFragment extends Fragment
         weatherTxt = root.findViewById(R.id.txt_weather);
         quantityEdittxt = root.findViewById(R.id.edittxt_quantity);
         plantedDurEdittxt = root.findViewById(R.id.edittxt_planted_duration);
+        fertsUnitSpinner = root.findViewById(R.id.sp_ferts_unit);
+        waterUnitSpinner = root.findViewById(R.id.sp_water_unit);
+        setMinSqMeterCBox = root.findViewById(R.id.cb_min_sq_meter);
+        sqMeterLayout = root.findViewById(R.id.ll_sqm);
+        sqMeterSpinner = root.findViewById(R.id.sp_minimum_sq);
 
         init();
 
@@ -117,6 +130,8 @@ public class AddCropDetailsFragment extends Fragment
         showWeather();
 
         defaulNamesSpinner.setOnItemSelectedListener(this);
+
+        setMinSqMeterCBox.setOnCheckedChangeListener(this);
 
         final Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
@@ -183,6 +198,24 @@ public class AddCropDetailsFragment extends Fragment
         datePickerDialog.show();
     }
 
+    @Override
+    public void showPostToMarketDialog(String msg, YesNoDialog.EventListener listener) {
+        if(msg.isEmpty()) {
+            msg = getString(R.string.post_to_market_msg);
+        }
+        postToMarkerDialog = YesNoDialog.newInstance(msg, listener);
+        postToMarkerDialog.show(getFragmentManager(), TAG);
+    }
+
+    @Override
+    public void hidePostToMarketDialog() {
+        if(postToMarkerDialog == null) {
+            return;
+        }
+
+        postToMarkerDialog.dismiss();
+    }
+
     @WithPermissions(permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE})
     public void saveToLocalAndRemoteSources() {
         crop.farmerId = AppSettings.getInstance(getContext()).getFarmerLoggedIn();
@@ -190,14 +223,14 @@ public class AddCropDetailsFragment extends Fragment
         long selected = defaulNamesSpinner.getSelectedItemPosition();
         String cropName = "";
         if(selected < MAX_DEFAULT_CROP_NAMES - 1) {
-            cropName = getResources().getStringArray(R.array.crop_name_defaults)[defaulNamesSpinner.getSelectedItemPosition()];
+            cropName = defaulNamesSpinner.getSelectedItem().toString();
         } else {
             cropName = nameEdittxt.getText().toString();
         }
 
         crop.name = cropName;
-        crop.noOfFertilizersUsed = Double.parseDouble(fertsUsedEdittxt.getText().toString());
-        crop.noOfWaterAppliedPerDay = Double.parseDouble(waterAppliedEdittxt.getText().toString());
+        crop.noOfFertilizersUsed = fertsUsedEdittxt.getText().toString() + fertsUnitSpinner.getSelectedItem().toString();
+        crop.noOfWaterAppliedPerDay = waterAppliedEdittxt.getText().toString() + waterUnitSpinner.getSelectedItem().toString();
 
         crop.plantedStartDate = plantedDate.getTime() / 1000;
         crop.timeStamp = System.currentTimeMillis() / 1000;
@@ -205,7 +238,28 @@ public class AddCropDetailsFragment extends Fragment
         crop.quantity = Double.parseDouble(quantityEdittxt.getText().toString());
         crop.plantedDuration = Integer.parseInt(plantedDurEdittxt.getText().toString());
 
-        presenter.saveCropDetails(crop);
+        if(setMinSqMeterCBox.isChecked()) {
+            crop.squareMeter = Double.parseDouble(sqMeterSpinner.getSelectedItem().toString());
+        } else {
+            crop.squareMeter = 0;
+        }
+
+        showPostToMarketDialog("", new YesNoDialog.EventListener() {
+            @Override
+            public void yes() {
+                hidePostToMarketDialog();
+                crop.postToMarket = 1; // True
+                presenter.saveCropDetails(crop);
+            }
+
+            @Override
+            public void no() {
+                hidePostToMarketDialog();
+                crop.postToMarket = 0; // False
+                presenter.saveCropDetails(crop);
+            }
+        });
+
     }
 
     @Override
@@ -215,14 +269,14 @@ public class AddCropDetailsFragment extends Fragment
 
     @Override
     public void showOkDialog(String msg) {
-        okDialog = OkDialog.newInstance(msg);
-        okDialog.show(getFragmentManager(), TAG);
+        cropSavedOkDialog = OkDialog.newInstance(msg);
+        cropSavedOkDialog.show(getFragmentManager(), TAG);
     }
 
     @Override
     public void showOkDialog(String msg, OkDialog.EventListener listener) {
-        okDialog = OkDialog.newInstance(msg, listener);
-        okDialog.show(getFragmentManager(), TAG);
+        cropSavedOkDialog = OkDialog.newInstance(msg, listener);
+        cropSavedOkDialog.show(getFragmentManager(), TAG);
     }
 
     @Override
@@ -295,5 +349,16 @@ public class AddCropDetailsFragment extends Fragment
         plantedDate = DateUtils.getDate(year, month, dayOfMonth, hourOfDay, minute);
         String formattedDate = DateUtils.getFormattedString(plantedDate);
         setPlantedStartDate(formattedDate);
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if(isChecked) {
+            quantityEdittxt.setVisibility(View.GONE);
+            sqMeterLayout.setVisibility(View.VISIBLE);
+        } else {
+            sqMeterLayout.setVisibility(View.GONE);
+            quantityEdittxt.setVisibility(View.VISIBLE);
+        }
     }
 }

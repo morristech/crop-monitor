@@ -21,14 +21,14 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField('String', 'BASE_URL', '"http://192.168.0.15:3000/celpa/"')
-            buildConfigField('String', 'BASE_IMG_URL', '"http://192.168.0.15:3000"')
+            buildConfigField('String', 'BASE_URL', '"http://192.168.1.34:3000/celpa/"')
+            buildConfigField('String', 'BASE_IMG_URL', '"http://192.168.1.34:3000"')
             buildConfigField('String', 'OPEN_WEATHER_URL', '"http://samples.openweathermap.org/data/2.5/"')
             buildConfigField('String', 'OPEN_WEATHER_API_KEY', '"df95e9af8fa7ee19efe0aee7c05fa80f"')
         }
         debug {
-            buildConfigField('String', 'BASE_URL', '"http://192.168.0.15:3000/celpa/"')
-            buildConfigField('String', 'BASE_IMG_URL', '"http://192.168.0.15:3000"')
+            buildConfigField('String', 'BASE_URL', '"http://192.168.1.34:3000/celpa/"')
+            buildConfigField('String', 'BASE_IMG_URL', '"http://192.168.1.34:3000"')
             buildConfigField('String', 'OPEN_WEATHER_URL', '"http://samples.openweathermap.org/data/2.5/"')
             buildConfigField('String', 'OPEN_WEATHER_API_KEY', '"df95e9af8fa7ee19efe0aee7c05fa80f"')
         }

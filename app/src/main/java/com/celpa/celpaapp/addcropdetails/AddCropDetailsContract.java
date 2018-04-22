@@ -4,6 +4,7 @@ package com.celpa.celpaapp.addcropdetails;
 import com.celpa.celpaapp.BasePresenter;
 import com.celpa.celpaapp.BaseView;
 import com.celpa.celpaapp.common.OkDialog;
+import com.celpa.celpaapp.common.YesNoDialog;
 import com.celpa.celpaapp.data.Crop;
 
 public interface AddCropDetailsContract {
@@ -21,6 +22,10 @@ public interface AddCropDetailsContract {
         void hideLoadingDialog();
 
         void showDatePickerDialog();
+
+        void showPostToMarketDialog(String msg, YesNoDialog.EventListener listener);
+
+        void hidePostToMarketDialog();
 
         void setPlantedStartDate(String dateOfHarvest);
 

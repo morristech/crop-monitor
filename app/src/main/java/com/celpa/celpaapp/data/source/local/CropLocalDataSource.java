@@ -58,8 +58,8 @@ public class CropLocalDataSource implements CropDataSource {
         long id = c.getLong(c.getColumnIndexOrThrow(CropEntry._ID));
         String name = c.getString(c.getColumnIndexOrThrow(CropEntry.COL_CROP_NAME));
         String imgPath = c.getString(c.getColumnIndexOrThrow(CropEntry.COL_CROP_IMG_PATH));
-        long noOfFertsUsed = c.getLong(c.getColumnIndexOrThrow(CropEntry.COL_NO_OF_FERTS_USED));
-        long noOfWaterApplied = c.getLong(c.getColumnIndexOrThrow(CropEntry.COL_NO_OF_WATER_APPLIED));
+        String noOfFertsUsed = c.getString(c.getColumnIndexOrThrow(CropEntry.COL_NO_OF_FERTS_USED));
+        String noOfWaterApplied = c.getString(c.getColumnIndexOrThrow(CropEntry.COL_NO_OF_WATER_APPLIED));
         long plantedStartDate = c.getLong(c.getColumnIndexOrThrow(CropEntry.COL_PLANTED_START_DATE));
         String weather = c.getString(c.getColumnIndexOrThrow(CropEntry.COL_WEATHER));
 
