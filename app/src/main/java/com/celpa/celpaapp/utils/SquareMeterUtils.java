@@ -1,10 +1,10 @@
-package com.celpa.celpaapp.data;
+package com.celpa.celpaapp.utils;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SquareMeter {
+public class SquareMeterUtils {
 
 
     public static List<String> generateSquareMeters(int min, int max, int interval) {
@@ -14,6 +14,10 @@ public class SquareMeter {
             hectares.add(String.valueOf(k));
         }
         return hectares;
+    }
+
+    public static double toHectares(double squareMeters) {
+        return squareMeters / 10000;
     }
 
 

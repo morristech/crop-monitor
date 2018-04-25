@@ -255,10 +255,38 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:layout_marginLeft="5dp"
                     style="@style/AppTextView"
                     android:textColor="@android:color/white"
                     android:text="@string/sq_meters"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="5dp"
+                    style="@style/AppTextView"
+                    android:textColor="@android:color/white"
+                    android:text="="
+                    />
+
+                <TextView
+                    android:id="@+id/txt_hectares"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    style="@style/AppTextView"
+                    android:textColor="@android:color/white"
+                    android:text="0.1"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    style="@style/AppTextView"
+                    android:textColor="@android:color/white"
+                    android:text="@string/hectares"
                     />
 
             </LinearLayout>

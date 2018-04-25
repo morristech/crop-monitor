@@ -46,6 +46,7 @@
     <string name="post_to_market_msg">Do you want to post crop immediately to market?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="hectares">hectares</string>
     <string-array name="crop_name_defaults">
         <item>Lettuce</item>
         <item>Cucumber</item>

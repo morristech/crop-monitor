@@ -33,7 +33,7 @@ import com.celpa.celpaapp.common.LoadingDialog;
 import com.celpa.celpaapp.common.OkDialog;
 import com.celpa.celpaapp.common.YesNoDialog;
 import com.celpa.celpaapp.data.Crop;
-import com.celpa.celpaapp.data.SquareMeter;
+import com.celpa.celpaapp.utils.SquareMeterUtils;
 import com.celpa.celpaapp.utils.AppSettings;
 import com.celpa.celpaapp.utils.BitmapUtils;
 import com.celpa.celpaapp.utils.DateUtils;
@@ -42,7 +42,6 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.livinglifetechway.quickpermissions.annotations.WithPermissions;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -82,6 +81,7 @@ public class AddCropDetailsFragment extends Fragment
     private TextView plantedStartDateTxt;
     private TextView locationTxt;
     private TextView weatherTxt;
+    private TextView hectaresTxt;
     private Button changeApproxDateBtn;
     private ImageView cropImgView;
     private Spinner fertsUnitSpinner;
@@ -124,6 +124,7 @@ public class AddCropDetailsFragment extends Fragment
         setMinSqMeterCBox = root.findViewById(R.id.cb_min_sq_meter);
         sqMeterLayout = root.findViewById(R.id.ll_sqm);
         sqMeterSpinner = root.findViewById(R.id.sp_minimum_sq);
+        hectaresTxt = root.findViewById(R.id.txt_hectares);
 
         init();
 
@@ -157,7 +158,7 @@ public class AddCropDetailsFragment extends Fragment
         String formattedDate = DateUtils.getFormattedString(plantedDate);
         setPlantedStartDate(formattedDate);
 
-        sqMeters = SquareMeter.generateSquareMeters(1000, 30000, 1000);
+        sqMeters = SquareMeterUtils.generateSquareMeters(1000, 30000, 1000);
         sqMeterAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, sqMeters);
         sqMeterSpinner.setAdapter(sqMeterAdapter);
         sqMeterSpinner.setOnItemSelectedListener(this);
@@ -363,12 +364,41 @@ public class AddCropDetailsFragment extends Fragment
                 }
                 break;
             case R.id.sp_minimum_sq:
-                quantityEdittxt.setText(String.valueOf(Double.parseDouble(sqMeterSpinner.getSelectedItem().toString()) / 10));
+                processSquareMeter();
                 break;
             default:
                 break;
         }
 
+    }
+
+    private void processSquareMeter() {
+        long selected = defaulNamesSpinner.getSelectedItemPosition();
+        String cropName = "";
+        if (selected < MAX_DEFAULT_CROP_NAMES - 1) {
+            cropName = defaulNamesSpinner.getSelectedItem().toString();
+        } else {
+            cropName = nameEdittxt.getText().toString();
+        }
+        quantityEdittxt.setText(
+                String.valueOf(processQuantity(cropName, Double.parseDouble(sqMeterSpinner.getSelectedItem().toString())))
+        );
+        hectaresTxt.setText(
+                String.valueOf(SquareMeterUtils.toHectares(Double.parseDouble(sqMeterSpinner.getSelectedItem().toString())))
+        );
+    }
+
+    private double processQuantity(String cropName, double squareMeters) {
+        String[] defaultCrops = getResources().getStringArray(R.array.crop_name_defaults);
+        if(cropName.equals(defaultCrops[0])) { // Lettuce
+            return squareMeters / 1.5;
+        } else if(cropName.equals(defaultCrops[1])) { // Cucumber
+            return squareMeters / 4;
+        } else if(cropName.equals(defaultCrops[2])) { // Chili(Pangsigang)
+            return squareMeters / 3.333;
+        } else {
+            return 0d;
+        }
     }
 
     @Override
@@ -379,6 +409,9 @@ public class AddCropDetailsFragment extends Fragment
                 break;
             case R.id.sp_minimum_sq:
                 sqMeterSpinner.setSelection(sqMeterSpinner.getSelectedItemPosition());
+                hectaresTxt.setText(
+                        String.valueOf(SquareMeterUtils.toHectares(Double.parseDouble(sqMeterSpinner.getSelectedItem().toString())))
+                );
                 break;
             default:
                 break;
