@@ -54,8 +54,8 @@
         <item>Other</item>
     </string-array>
     <string-array name="crop_fertilizer_unit_defaults">
-        <item>kg</item>
-        <item>g</item>
+        <item>liters</item>
+        <item>sacks</item>
     </string-array>
     <string-array name="crop_water_unit_defaults">
         <item>liters</item>
