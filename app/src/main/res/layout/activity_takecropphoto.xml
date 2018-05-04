@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.celpa.celpaapp.takecropphoto.TakeCropPhotoActivity">
+    tools:context="com.celpa.celpaapp.midien.celpa.celpaapp.takecropphoto.TakeCropPhotoActivity">
 
     <FrameLayout
         android:id="@+id/content_frame"
